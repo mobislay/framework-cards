@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Шкала зрелости</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300..700&family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet">
+
+<style>
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #f9f8f5;
+      --surface: #ffffff;
+      --surface-2: #f4f3f0;
+      --border: rgba(0,0,0,0.08);
+      --text: #1a1814;
+      --text-muted: #6b6861;
+      --text-faint: #a09e9a;
+      --divider: #e5e3de;
+      --font-display: 'Playfair Display', Georgia, serif;
+      --font-body: 'Inter', 'Helvetica Neue', sans-serif;
+      --radius-sm: 6px;
+      --radius-md: 10px;
+      --radius-lg: 14px;
+      --radius-xl: 20px;
+      --shadow-sm: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+      --shadow-md: 0 4px 16px rgba(0,0,0,0.08), 0 2px 6px rgba(0,0,0,0.04);
+      --shadow-lg: 0 12px 40px rgba(0,0,0,0.10), 0 4px 12px rgba(0,0,0,0.05);
+      --space-1:4px; --space-2:8px; --space-3:12px; --space-4:16px;
+      --space-5:20px; --space-6:24px; --space-8:32px; --space-10:40px;
+    }
+    body {
+      font-family: var(--font-body); font-size: 15px; line-height: 1.6;
+      color: var(--text); background: var(--bg); min-height: 100vh;
+      padding: var(--space-8) var(--space-4);
+    }
+    .card {
+      max-width: 860px; margin: 0 auto; background: var(--surface);
+      border-radius: var(--radius-xl); box-shadow: var(--shadow-lg); overflow: hidden;
+    }
+
+    /* HEADER */
+    .card-header { padding: var(--space-10) var(--space-8); position: relative; overflow: hidden; }
+    .card-header::before {
+      content: ''; position: absolute; inset: 0;
+      background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none'%3E%3Cg fill='%23ffffff' fill-opacity='0.04'%3E%3Ccircle cx='30' cy='30' r='28'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E") repeat;
+      pointer-events: none;
+    }
+    .card-header-inner { position: relative; z-index: 1; }
+    .tag-row { display: flex; gap: var(--space-2); margin-bottom: var(--space-4); flex-wrap: wrap; }
+    .tag {
+      font-size: 11px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase;
+      padding: 3px 10px; border-radius: 100px;
+      border: 1px solid rgba(255,255,255,0.3); color: rgba(255,255,255,0.85); background: rgba(255,255,255,0.1);
+    }
+    .card-category { font-size: 12px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(255,255,255,0.65); margin-bottom: var(--space-2); }
+    .card-title { font-family: var(--font-display); font-size: clamp(28px,5vw,40px); font-weight: 700; color: #fff; line-height: 1.15; margin-bottom: var(--space-2); }
+    .card-subtitle { font-size: 14px; color: rgba(255,255,255,0.7); margin-bottom: var(--space-5); }
+    .card-lead {
+      font-size: 15px; line-height: 1.65; color: rgba(255,255,255,0.88);
+      max-width: 64ch; border-left: 3px solid rgba(255,255,255,0.35);
+      padding-left: var(--space-4); font-style: italic;
+    }
+
+    /* BODY */
+    .card-body { padding: var(--space-8); }
+    .section-label { font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-faint); margin-bottom: var(--space-4); }
+    .divider { height: 1px; background: var(--divider); margin: var(--space-6) 0; }
+
+    /* KEY IDEAS */
+    .key-ideas-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px,1fr)); gap: var(--space-3); margin-bottom: var(--space-6); }
+    .idea-chip { background: var(--surface-2); border: 1px solid var(--border); border-radius: var(--radius-md); padding: var(--space-3) var(--space-4); }
+    .idea-chip-label { font-size: 11px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 4px; }
+    .idea-chip-text { font-size: 13px; color: var(--text-muted); line-height: 1.5; }
+
+    /* HOW TO */
+    .how-to { background: var(--surface-2); border-radius: var(--radius-lg); padding: var(--space-6); margin-bottom: var(--space-6); }
+    .how-label { font-size: 12px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-faint); margin-bottom: var(--space-4); }
+    .how-steps { display: flex; flex-direction: column; gap: var(--space-3); }
+    .how-step { display: flex; gap: var(--space-3); align-items: flex-start; }
+    .step-num { width: 22px; height: 22px; border-radius: 50%; color: #fff; font-size: 11px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 2px; }
+    .step-text { font-size: 13.5px; color: var(--text-muted); line-height: 1.55; }
+    .step-text strong { color: var(--text); font-weight: 600; }
+
+    /* SEE ALSO */
+    .see-also-label { font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-faint); margin-bottom: var(--space-3); }
+    .see-also-tags { display: flex; flex-wrap: wrap; gap: var(--space-2); }
+    .see-tag { font-size: 12.5px; border-radius: 100px; padding: 4px 12px; font-weight: 500; cursor: default; transition: background 180ms ease; }
+
+    @media (max-width: 600px) {
+      .card-body { padding: var(--space-5) var(--space-4); }
+      .card-header { padding: var(--space-8) var(--space-5); }
+      .key-ideas-grid { grid-template-columns: 1fr; }
+    }
+
+
+  :root {
+    --accent:       #1a5c3a;
+    --accent-light: #d4f1e6;
+    --c1: #e5383b; --c1-bg: #fde8e8;
+    --c2: #f27a1a; --c2-bg: #fef0e2;
+    --c3: #f5c518; --c3-bg: #fef9e5;
+    --c4: #93c840; --c4-bg: #edf7dc;
+    --c5: #4cb976; --c5-bg: #dff2e9;
+    --c6: #1aab73; --c6-bg: #d4f1e6;
+  }
+
+  .card-header { background: linear-gradient(135deg, #0d3824 0%, #1a5c3a 50%, #1aab73 100%); }
+
+  /* SCALE */
+  .scale { display: flex; flex-direction: column; gap: var(--space-3); margin-bottom: var(--space-5); }
+  .level {
+    display: grid; grid-template-columns: 48px 1fr; gap: var(--space-4);
+    align-items: start; padding: 14px 16px; border-radius: var(--radius-lg);
+    border: 1px solid rgba(34,30,18,.07); cursor: default;
+    transition: transform .15s ease, box-shadow .15s ease;
+  }
+  .level:hover { transform: translateX(4px); box-shadow: var(--shadow-md); }
+  .lv1 { background: var(--c1-bg); } .lv2 { background: var(--c2-bg); }
+  .lv3 { background: var(--c3-bg); } .lv4 { background: var(--c4-bg); }
+  .lv5 { background: var(--c5-bg); } .lv6 { background: var(--c6-bg); }
+  .level-num {
+    width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center;
+    font-size: 18px; font-weight: 800; color: #fff; flex-shrink: 0;
+  }
+  .lv1 .level-num { background: var(--c1); } .lv2 .level-num { background: var(--c2); }
+  .lv3 .level-num { background: var(--c3); } .lv4 .level-num { background: var(--c4); }
+  .lv5 .level-num { background: var(--c5); } .lv6 .level-num { background: var(--c6); }
+  .level-name { font-size: 15px; font-weight: 700; margin-bottom: 4px; }
+  .level-quote { font-size: 13.5px; color: #4a4539; font-style: italic; }
+
+  .target-band {
+    margin-top: var(--space-3); padding: 12px 16px; border-radius: var(--radius-md);
+    background: linear-gradient(135deg, var(--c5-bg), var(--c6-bg));
+    border: 1.5px solid var(--c5); display: flex; align-items: center;
+    gap: var(--space-3); font-size: 14.5px; font-weight: 600; color: #1a3d2f;
+  }
+
+  /* TWO-COL */
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-4); margin-bottom: var(--space-6); }
+  .box { background: var(--surface-2); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: var(--space-5); }
+  .box-title { font-size: 11px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; color: var(--text-faint); margin-bottom: var(--space-4); }
+
+  .questions { display: flex; flex-direction: column; gap: var(--space-3); }
+  .q-row { display: flex; gap: var(--space-3); align-items: flex-start; }
+  .q-num { width: 24px; height: 24px; border-radius: 50%; background: #1f1d18; color: #fff; font-size: 11px; font-weight: 800; display: grid; place-items: center; flex-shrink: 0; margin-top: 2px; }
+  .q-text { font-size: 14px; color: var(--text-muted); }
+  .q-text strong { color: var(--text); }
+
+  .formula-steps { display: flex; flex-direction: column; gap: var(--space-2); }
+  .f-step { padding: 8px 12px; border-radius: var(--radius-md); font-size: 14px; font-weight: 600; }
+  .f1 { background: var(--c3-bg); color: #5a4a00; }
+  .f2 { background: var(--c4-bg); color: #3a5210; }
+  .f3 { background: var(--c5-bg); color: #1a4a30; }
+  .f4 { background: var(--c6-bg); color: #0d3824; }
+
+  /* MAIN THOUGHT */
+  .main-thought {
+    background: linear-gradient(135deg, #0d3824, #1a5c3a); border-radius: var(--radius-lg);
+    padding: var(--space-6) var(--space-8); color: #fff; margin-bottom: var(--space-6);
+  }
+  .main-thought-label { font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,.6); margin-bottom: var(--space-3); }
+  .main-thought-text { font-family: var(--font-display); font-size: clamp(16px,2.5vw,20px); line-height: 1.5; color: #fff; margin-bottom: var(--space-3); }
+  .main-thought-text em { font-style: italic; color: rgba(255,255,255,.85); }
+  .main-thought-attr { font-size: 12px; color: rgba(255,255,255,.55); font-style: italic; }
+
+  .step-num { background: var(--accent); }
+  .see-tag { color: var(--accent); background: var(--accent-light); }
+  .see-tag:hover { background: #a3e6cb; }
+  .idea-chip-label { color: var(--accent); }
+
+  @media (max-width: 640px) {
+    .two-col { grid-template-columns: 1fr; }
+    .level { grid-template-columns: 40px 1fr; }
+  }
+</style>
+</head>
+<body>
+<article class="card" role="main">
+
+  <header class="card-header">
+    <div class="card-header-inner">
+      <div class="tag-row">
+        <span class="tag">диагностика</span>
+        <span class="tag">проблема-решение</span>
+        <span class="tag">коучинг</span>
+      </div>
+      <p class="card-category">🔬 Ситуационный анализ</p>
+      <h1 class="card-title">Шкала зрелости<br>проблемы</h1>
+      <p class="card-subtitle">Maturity Scale · Problem-Solving Framework</p>
+      <p class="card-lead">Прежде чем решать проблему — определи, на каком уровне зрелости она находится. Ответ «мы знаем X» и «мы умеем X» — принципиально разные точки входа для вмешательства.</p>
+    </div>
+  </header>
+
+  <div class="card-body">
+
+    <p class="section-label">6 уровней зрелости</p>
+
+    <div class="scale">
+      <div class="level lv1">
+        <div class="level-num">1</div>
+        <div>
+          <div class="level-name">Не осознана</div>
+          <div class="level-quote">«Проблема? Какая проблема?» — боль ещё не сформулирована, симптомы не связаны.</div>
+        </div>
+      </div>
+      <div class="level lv2">
+        <div class="level-num">2</div>
+        <div>
+          <div class="level-name">Осознана</div>
+          <div class="level-quote">«Что-то идёт не так» — боль есть, но её природа и масштаб не определены.</div>
+        </div>
+      </div>
+      <div class="level lv3">
+        <div class="level-num">3</div>
+        <div>
+          <div class="level-name">Сформулирована</div>
+          <div class="level-quote">Проблема названа, описана в терминах X, Y, Z. Появляется возможность измерить и сравнить.</div>
+        </div>
+      </div>
+      <div class="level lv4">
+        <div class="level-num">4</div>
+        <div>
+          <div class="level-name">Диагностирована</div>
+          <div class="level-quote">Известны корневые причины X. Команда понимает, почему проблема возникает снова и снова.</div>
+        </div>
+      </div>
+      <div class="level lv5">
+        <div class="level-num">5</div>
+        <div>
+          <div class="level-name">Решение найдено</div>
+          <div class="level-quote">Есть гипотеза или доказанный подход. Решение X устраняет корневую причину, протестировано.</div>
+        </div>
+      </div>
+      <div class="level lv6">
+        <div class="level-num">6</div>
+        <div>
+          <div class="level-name">Решение внедрено</div>
+          <div class="level-quote">Решение X работает системно, встроено в процессы, даёт стабильный результат.</div>
+        </div>
+      </div>
+      <div class="target-band">
+        <span>🎯</span>
+        <span>Цель вмешательства: перевести проблему с уровней <strong>4–5</strong> на <strong>уровень 6</strong> — системное решение.</span>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="two-col">
+      <div class="box">
+        <div class="box-title">Вопросы для диагностики уровня</div>
+        <div class="questions">
+          <div class="q-row"><div class="q-num">1</div><div class="q-text"><strong>Можем ли мы назвать проблему?</strong> — Уровень 1→3</div></div>
+          <div class="q-row"><div class="q-num">2</div><div class="q-text"><strong>Знаем ли мы причину?</strong> — Уровень 3→4</div></div>
+          <div class="q-row"><div class="q-num">3</div><div class="q-text"><strong>Есть ли у нас решение?</strong> — Уровень 4→5</div></div>
+          <div class="q-row"><div class="q-num">4</div><div class="q-text"><strong>Работает ли оно системно?</strong> — Уровень 5→6</div></div>
+          <div class="q-row"><div class="q-num">5</div><div class="q-text"><strong>Где узкое место сейчас?</strong> — выбор следующего шага</div></div>
+        </div>
+      </div>
+      <div class="box">
+        <div class="box-title">Маршрут роста</div>
+        <div class="formula-steps">
+          <div class="f-step f1">① Назвать и описать боль</div>
+          <div class="f-step f2">② Найти корневую причину</div>
+          <div class="f-step f3">③ Разработать и протестировать решение</div>
+          <div class="f-step f4">④ Встроить решение в систему</div>
+        </div>
+        <div style="margin-top:14px; font-size:13px; color:var(--text-muted); line-height:1.6;">
+          Каждый переход — отдельный проект. Нельзя перескочить уровни без потери качества решения.
+        </div>
+      </div>
+    </div>
+
+    <p class="section-label">Ключевые идеи</p>
+    <div class="key-ideas-grid">
+      <div class="idea-chip">
+        <div class="idea-chip-label">Точность входа</div>
+        <div class="idea-chip-text">Предлагать решение на уровне 2 — деньги на ветер. Сначала сформулируй проблему.</div>
+      </div>
+      <div class="idea-chip">
+        <div class="idea-chip-label">Ownership</div>
+        <div class="idea-chip-text">Уровень зрелости зависит от того, кто «владеет» проблемой. Без владельца — прогресса нет.</div>
+      </div>
+      <div class="idea-chip">
+        <div class="idea-chip-label">Разные инструменты</div>
+        <div class="idea-chip-text">На каждом уровне нужен свой инструмент: интервью → 5 Почему → эксперимент → SOP.</div>
+      </div>
+      <div class="idea-chip">
+        <div class="idea-chip-label">Регресс возможен</div>
+        <div class="idea-chip-text">При изменении контекста, команды или рынка решение может «деградировать» до уровня 3–4.</div>
+      </div>
+    </div>
+
+    <div class="main-thought">
+      <div class="main-thought-label">Главная мысль</div>
+      <div class="main-thought-text">Большинство организаций <em>решают не ту проблему</em> — потому что перескакивают к решениям, не пройдя этапы осознания и диагностики. Шкала зрелости помогает остановиться и зайти с правильного уровня.</div>
+      <div class="main-thought-attr">— Problem-Solving Maturity Model</div>
+    </div>
+
+    <div class="how-to">
+      <div class="how-label">Как применять</div>
+      <div class="how-steps">
+        <div class="how-step">
+          <div class="step-num">1</div>
+          <div class="step-text"><strong>Оцени текущий уровень</strong> — задай 5 диагностических вопросов, определи, где находится проблема прямо сейчас.</div>
+        </div>
+        <div class="how-step">
+          <div class="step-num">2</div>
+          <div class="step-text"><strong>Выбери правильный инструмент</strong> — уровень 1–2: интервью; 3: фреймворки описания; 4: Root Cause Analysis; 5: эксперимент; 6: стандартизация.</div>
+        </div>
+        <div class="how-step">
+          <div class="step-num">3</div>
+          <div class="step-text"><strong>Двигайся пошагово</strong> — ставь цель перейти на один уровень за спринт, не пытайся прыгнуть с 2 на 6.</div>
+        </div>
+        <div class="how-step">
+          <div class="step-num">4</div>
+          <div class="step-text"><strong>Фиксируй деградацию</strong> — регулярно проверяй, не откатилась ли проблема на уровень ниже после изменений в команде или контексте.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="see-also-label">Смотрите также</div>
+    <div class="see-also-tags">
+      <span class="see-tag">5 Почему</span>
+      <span class="see-tag">SMART-цели</span>
+      <span class="see-tag">Problem Framing</span>
+      <span class="see-tag">Pyramid Principle</span>
+      <span class="see-tag">Coaching Questions</span>
+      <span class="see-tag">Root Cause Analysis</span>
+    </div>
+  </div>
+</article>
+</body>
+</html>
