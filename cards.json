@@ -73,15 +73,51 @@
       "subtitle": "Генри Минцберг — 10 школ стратегии",
       "category": "strategy",
       "icon": "🏛️"
+    },
+    {
+      "id": "maturity-scale",
+      "file": "maturity_scale_card_redesign.html",
+      "name": "Шкала зрелости проблемы",
+      "subtitle": "Maturity Scale · Problem-Solving Framework",
+      "category": "research",
+      "icon": "🔬"
     }
   ],
   "categories": {
-    "strategy":     { "name": "Стратегия и бизнес",         "icon": "🏛️", "color": "#1e3a8a" },
-    "research":     { "name": "Исследование и проектирование", "icon": "🔬", "color": "#6d28d9" },
-    "planning":     { "name": "Планирование и управление",  "icon": "🎯", "color": "#3730a3" },
-    "analysis":     { "name": "Анализ и данные",            "icon": "📊", "color": "#334155" },
-    "leadership":   { "name": "Лидерство и HR",             "icon": "👥", "color": "#3730a3" },
-    "productivity": { "name": "Продуктивность",             "icon": "⚡", "color": "#006e6b" },
-    "operations":   { "name": "Процессы и операции",        "icon": "⚙️", "color": "#0f4c54" }
+    "strategy": {
+      "name": "Стратегия и бизнес",
+      "icon": "🏛️",
+      "color": "#1e3a8a"
+    },
+    "research": {
+      "name": "Исследование и проектирование",
+      "icon": "🔬",
+      "color": "#6d28d9"
+    },
+    "planning": {
+      "name": "Планирование и управление",
+      "icon": "🎯",
+      "color": "#3730a3"
+    },
+    "analysis": {
+      "name": "Анализ и данные",
+      "icon": "📊",
+      "color": "#334155"
+    },
+    "leadership": {
+      "name": "Лидерство и HR",
+      "icon": "👥",
+      "color": "#3730a3"
+    },
+    "productivity": {
+      "name": "Продуктивность",
+      "icon": "⚡",
+      "color": "#006e6b"
+    },
+    "operations": {
+      "name": "Процессы и операции",
+      "icon": "⚙️",
+      "color": "#0f4c54"
+    }
   }
 }
