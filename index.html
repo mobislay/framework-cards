@@ -1,0 +1,904 @@
+<!DOCTYPE html>
+<html lang="ru" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Framework Cards — каталог</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@700;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ── RESET & TOKENS ─────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --sidebar-w: 280px;
+  --sidebar-collapsed-w: 56px;
+  --header-h: 58px;
+
+  --bg:           #f3f4f6;
+  --surface:      #ffffff;
+  --surface-2:    #f9fafb;
+  --border:       #e5e7eb;
+  --text:         #111827;
+  --text-mid:     #374151;
+  --text-muted:   #6b7280;
+
+  --teal:         #006e6b;
+  --teal-light:   #e0f3f2;
+  --purple:       #6d28d9;
+  --purple-light: #ede9fe;
+
+  --font-head: 'Unbounded', sans-serif;
+  --font-body: 'Inter', sans-serif;
+
+  --transition: 260ms cubic-bezier(0.16, 1, 0.3, 1);
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.08);
+  --shadow-md: 0 4px 16px rgba(0,0,0,0.10);
+}
+
+[data-theme="dark"] {
+  --bg:         #111827;
+  --surface:    #1f2937;
+  --surface-2:  #1a2333;
+  --border:     #374151;
+  --text:       #f9fafb;
+  --text-mid:   #d1d5db;
+  --text-muted: #9ca3af;
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.3);
+  --shadow-md: 0 4px 16px rgba(0,0,0,0.4);
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--font-body);
+  background: var(--bg);
+  min-height: 100vh;
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── LAYOUT SHELL ───────────────────────────────────── */
+.app-shell {
+  display: grid;
+  grid-template-rows: var(--header-h) 1fr;
+  grid-template-columns: var(--sidebar-w) 1fr;
+  min-height: 100vh;
+  transition: grid-template-columns var(--transition);
+}
+.app-shell.sidebar-collapsed {
+  grid-template-columns: var(--sidebar-collapsed-w) 1fr;
+}
+
+/* ── HEADER ─────────────────────────────────────────── */
+.app-header {
+  grid-column: 1 / -1;
+  grid-row: 1;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 0 20px;
+  box-shadow: var(--shadow-sm);
+  z-index: 100;
+  position: sticky;
+  top: 0;
+}
+.header-toggle-btn, .theme-btn {
+  width: 36px; height: 36px;
+  border-radius: 8px;
+  background: none;
+  border: 1px solid var(--border);
+  color: var(--text-mid);
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  transition: background var(--transition), color var(--transition), border-color var(--transition);
+}
+.header-toggle-btn:hover, .theme-btn:hover { background: var(--bg); color: var(--text); }
+
+.app-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+}
+.logo-mark { width: 32px; height: 32px; flex-shrink: 0; }
+.app-title {
+  font-family: var(--font-head);
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text);
+  letter-spacing: -0.02em;
+  white-space: nowrap;
+}
+.header-spacer { flex: 1; }
+
+.header-meta {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-right: 8px;
+}
+.header-meta strong { color: var(--text-mid); font-weight: 600; }
+
+/* ── SIDEBAR ────────────────────────────────────────── */
+.app-sidebar {
+  grid-column: 1;
+  grid-row: 2;
+  background: var(--surface);
+  border-right: 1px solid var(--border);
+  overflow-y: auto;
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+  position: sticky;
+  top: var(--header-h);
+  height: calc(100vh - var(--header-h));
+  transition: width var(--transition);
+  width: var(--sidebar-w);
+}
+.app-shell.sidebar-collapsed .app-sidebar {
+  width: var(--sidebar-collapsed-w);
+}
+
+/* Search */
+.sidebar-search {
+  padding: 14px 16px 10px;
+  position: sticky;
+  top: 0;
+  background: var(--surface);
+  z-index: 2;
+}
+.app-shell.sidebar-collapsed .sidebar-search { display: none; }
+.search-input {
+  width: 100%;
+  padding: 8px 12px 8px 32px;
+  font-size: 13px;
+  font-family: var(--font-body);
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--text);
+  outline: none;
+  transition: border-color var(--transition);
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%236b7280' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><circle cx='11' cy='11' r='8'/><path d='m21 21-4.3-4.3'/></svg>");
+  background-repeat: no-repeat;
+  background-position: 10px center;
+}
+.search-input:focus { border-color: var(--teal); }
+
+.sidebar-section-label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  padding: 16px 16px 6px;
+  white-space: nowrap;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.sidebar-section-label .cat-dot {
+  width: 8px; height: 8px; border-radius: 50%;
+  flex-shrink: 0;
+}
+.app-shell.sidebar-collapsed .sidebar-section-label { opacity: 0; pointer-events: none; }
+
+.nav-list { list-style: none; padding: 2px 8px; }
+.nav-item { margin-bottom: 2px; }
+
+.nav-link {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 10px;
+  border-radius: 8px;
+  text-decoration: none;
+  color: var(--text-mid);
+  font-size: 13.5px;
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  cursor: pointer;
+  border: none;
+  background: none;
+  width: 100%;
+  text-align: left;
+  font-family: var(--font-body);
+  transition: background var(--transition), color var(--transition);
+}
+.nav-link:hover { background: var(--bg); color: var(--text); }
+.nav-link.active { background: var(--teal-light); color: var(--teal); }
+[data-theme="dark"] .nav-link.active { background: rgba(0,110,107,0.2); color: #4f98a3; }
+
+.nav-icon {
+  width: 20px; height: 20px;
+  flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 16px;
+}
+.nav-label {
+  transition: opacity var(--transition), max-width var(--transition);
+  max-width: 220px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.app-shell.sidebar-collapsed .nav-label { opacity: 0; max-width: 0; }
+
+.nav-badge {
+  margin-left: auto;
+  background: var(--surface-2);
+  color: var(--text-muted);
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: 100px;
+  flex-shrink: 0;
+  transition: opacity var(--transition);
+  border: 1px solid var(--border);
+}
+.app-shell.sidebar-collapsed .nav-badge { opacity: 0; }
+
+.sidebar-divider {
+  height: 1px;
+  background: var(--border);
+  margin: 8px 16px;
+}
+
+.sidebar-empty {
+  padding: 20px 16px;
+  font-size: 12px;
+  color: var(--text-muted);
+  text-align: center;
+  line-height: 1.6;
+}
+
+/* ── MAIN CONTENT ───────────────────────────────────── */
+.app-main {
+  grid-column: 2;
+  grid-row: 2;
+  overflow-y: auto;
+  padding: 36px 32px;
+  display: flex;
+  flex-direction: column;
+}
+
+.content-panel { display: none; }
+.content-panel.active { display: block; }
+
+/* ── WELCOME ─────────────────────────────────────────── */
+.welcome-panel {
+  max-width: 1000px;
+  margin: 0 auto;
+  width: 100%;
+}
+.welcome-header {
+  text-align: center;
+  margin-bottom: 32px;
+}
+.welcome-icon {
+  width: 72px; height: 72px;
+  background: linear-gradient(135deg, var(--teal-light) 0%, var(--purple-light) 100%);
+  border-radius: 20px;
+  display: inline-flex; align-items: center; justify-content: center;
+  font-size: 36px;
+  margin-bottom: 16px;
+}
+.welcome-title {
+  font-family: var(--font-head);
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--text);
+  letter-spacing: -0.02em;
+  margin-bottom: 8px;
+}
+.welcome-sub {
+  font-size: 14px;
+  color: var(--text-muted);
+  max-width: 480px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+.category-block { margin-bottom: 32px; }
+.category-block-title {
+  font-family: var(--font-head);
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.category-block-title .cat-dot {
+  width: 10px; height: 10px; border-radius: 50%;
+}
+.category-block-title .count {
+  font-family: var(--font-body);
+  font-size: 11px;
+  color: var(--text-muted);
+  font-weight: 500;
+  margin-left: 4px;
+}
+
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 14px;
+}
+
+.preview-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 18px 20px;
+  cursor: pointer;
+  text-align: left;
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  transition: box-shadow var(--transition), transform var(--transition), border-color var(--transition);
+  text-decoration: none;
+  color: inherit;
+  font-family: var(--font-body);
+}
+.preview-card:hover {
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+  border-color: transparent;
+}
+.preview-card-icon {
+  width: 44px; height: 44px;
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 20px;
+  flex-shrink: 0;
+  color: #fff;
+}
+.preview-card-text { flex: 1; min-width: 0; }
+.preview-card-name {
+  font-family: var(--font-head);
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text);
+  letter-spacing: -0.01em;
+  margin-bottom: 4px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.preview-card-desc {
+  font-size: 12px;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+
+/* ── CARD VIEWER ────────────────────────────────────── */
+.card-viewer {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+  max-width: 900px;
+  margin: 0 auto;
+  width: 100%;
+}
+.card-viewer-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--border);
+  background: var(--surface-2);
+}
+.viewer-dots { display: flex; gap: 6px; }
+.dot { width: 11px; height: 11px; border-radius: 50%; }
+.dot-red    { background: #ff5f57; }
+.dot-yellow { background: #febc2e; }
+.dot-green  { background: #28c840; }
+
+.viewer-title {
+  font-size: 12px;
+  color: var(--text-muted);
+  font-weight: 500;
+  flex: 1;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.viewer-action {
+  color: var(--text-muted);
+  text-decoration: none;
+  font-size: 12px;
+  padding: 4px 10px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  transition: background var(--transition), color var(--transition);
+}
+.viewer-action:hover { background: var(--bg); color: var(--text); }
+
+.card-iframe {
+  width: 100%;
+  border: none;
+  display: block;
+  background: #f3f4f6;
+  min-height: 900px;
+}
+
+/* ── STATES ─────────────────────────────────────────── */
+.state-panel {
+  max-width: 520px;
+  margin: 60px auto;
+  text-align: center;
+  padding: 32px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+}
+.state-icon {
+  font-size: 40px;
+  margin-bottom: 16px;
+}
+.state-title {
+  font-family: var(--font-head);
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 10px;
+}
+.state-text {
+  font-size: 13px;
+  color: var(--text-muted);
+  line-height: 1.6;
+  margin-bottom: 16px;
+}
+.state-text code {
+  background: var(--bg);
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 12px;
+  color: var(--text-mid);
+  font-family: 'SF Mono', Consolas, monospace;
+}
+
+/* ── LOADING SKELETON ───────────────────────────────── */
+.skeleton {
+  background: linear-gradient(90deg, var(--surface-2) 25%, var(--bg) 50%, var(--surface-2) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.4s ease-in-out infinite;
+  border-radius: 8px;
+}
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+.skeleton-row {
+  height: 36px;
+  margin: 4px 8px;
+}
+
+/* ── RESPONSIVE ─────────────────────────────────────── */
+@media (max-width: 768px) {
+  :root { --sidebar-w: 260px; }
+  .app-main { padding: 20px 16px; }
+  .app-shell { grid-template-columns: 0 1fr; }
+  .app-shell:not(.sidebar-collapsed) { grid-template-columns: var(--sidebar-w) 1fr; }
+  .app-sidebar { position: fixed; z-index: 50; }
+}
+
+/* ── SCROLLBAR ──────────────────────────────────────── */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+:focus-visible {
+  outline: 2px solid var(--teal);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+button { cursor: pointer; font-family: inherit; }
+</style>
+</head>
+<body>
+
+<div class="app-shell" id="shell">
+
+  <!-- ══ HEADER ══════════════════════════════════════════ -->
+  <header class="app-header">
+    <button class="header-toggle-btn" id="sidebarToggle" aria-label="Скрыть/развернуть меню">
+      <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+        <line x1="2" y1="5" x2="16" y2="5"/>
+        <line x1="2" y1="9" x2="16" y2="9"/>
+        <line x1="2" y1="13" x2="16" y2="13"/>
+      </svg>
+    </button>
+
+    <a class="app-logo" href="#" onclick="showHome(); return false;">
+      <svg class="logo-mark" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect width="32" height="32" rx="8" fill="url(#lg)"/>
+        <path d="M8 10h6l3 5-3 5H8l3-5-3-5z" fill="white" opacity="0.9"/>
+        <path d="M14 10h10v3h-7l3 2-3 2h7v3H14l4-5-4-5z" fill="white" opacity="0.7"/>
+        <defs>
+          <linearGradient id="lg" x1="0" y1="0" x2="32" y2="32" gradientUnits="userSpaceOnUse">
+            <stop stop-color="#006e6b"/>
+            <stop offset="1" stop-color="#6d28d9"/>
+          </linearGradient>
+        </defs>
+      </svg>
+      <span class="app-title" id="appTitle">Framework Cards</span>
+    </a>
+
+    <div class="header-spacer"></div>
+
+    <div class="header-meta" id="headerMeta"></div>
+
+    <button class="theme-btn" id="themeToggle" aria-label="Переключить тему">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+      </svg>
+    </button>
+  </header>
+
+  <!-- ══ SIDEBAR ═════════════════════════════════════════ -->
+  <nav class="app-sidebar" aria-label="Навигация">
+
+    <div class="sidebar-search">
+      <input type="search" class="search-input" id="searchInput" placeholder="Поиск карточки…" autocomplete="off">
+    </div>
+
+    <ul class="nav-list">
+      <li class="nav-item">
+        <button class="nav-link" id="homeLink" onclick="showHome()">
+          <span class="nav-icon">🏠</span>
+          <span class="nav-label">Главная</span>
+        </button>
+      </li>
+    </ul>
+
+    <div class="sidebar-divider"></div>
+
+    <div id="sidebarCards">
+      <!-- Skeleton, заменяется после fetch -->
+      <div class="sidebar-section-label">Карточки</div>
+      <div class="skeleton skeleton-row"></div>
+      <div class="skeleton skeleton-row"></div>
+      <div class="skeleton skeleton-row"></div>
+      <div class="skeleton skeleton-row"></div>
+    </div>
+
+  </nav>
+
+  <!-- ══ MAIN ════════════════════════════════════════════ -->
+  <main class="app-main" id="mainContent">
+
+    <!-- Главная -->
+    <div class="content-panel active" id="panel-home">
+      <div class="welcome-panel">
+        <div class="welcome-header">
+          <div class="welcome-icon">🃏</div>
+          <div class="welcome-title" id="welcomeTitle">Framework Cards</div>
+          <p class="welcome-sub" id="welcomeSubtitle">Интерактивные карточки фреймворков и методологий для продуктовых команд и исследователей.</p>
+        </div>
+        <div id="homeCategories">
+          <!-- Заполняется скриптом -->
+        </div>
+      </div>
+    </div>
+
+    <!-- Состояние «не загрузилось» -->
+    <div class="content-panel" id="panel-error">
+      <div class="state-panel">
+        <div class="state-icon">⚠️</div>
+        <div class="state-title">Не удалось загрузить список карточек</div>
+        <div class="state-text" id="errorText">
+          Файл <code>cards.json</code> не найден или содержит ошибку. Убедитесь, что он лежит рядом с <code>index.html</code> в корне репозитория.
+        </div>
+      </div>
+    </div>
+
+    <!-- Панель карточки -->
+    <div class="content-panel" id="panel-viewer">
+      <div class="card-viewer">
+        <div class="card-viewer-header">
+          <div class="viewer-dots">
+            <div class="dot dot-red"></div>
+            <div class="dot dot-yellow"></div>
+            <div class="dot dot-green"></div>
+          </div>
+          <div class="viewer-title" id="viewerTitle">—</div>
+          <a class="viewer-action" id="viewerOpen" href="#" target="_blank" rel="noopener">Открыть</a>
+        </div>
+        <iframe
+          id="cardIframe"
+          class="card-iframe"
+          src="about:blank"
+          title="Framework card"
+          loading="lazy"
+        ></iframe>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<script>
+// ═══════════════════════════════════════════════════════════
+//  State
+// ═══════════════════════════════════════════════════════════
+const shell = document.getElementById('shell');
+const sidebarToggle = document.getElementById('sidebarToggle');
+const searchInput = document.getElementById('searchInput');
+
+let catalog = null;         // parsed cards.json
+let currentId = null;       // currently shown card id
+
+// ═══════════════════════════════════════════════════════════
+//  Sidebar collapse
+// ═══════════════════════════════════════════════════════════
+sidebarToggle.addEventListener('click', () => {
+  shell.classList.toggle('sidebar-collapsed');
+});
+
+// ═══════════════════════════════════════════════════════════
+//  Theme toggle
+// ═══════════════════════════════════════════════════════════
+(function() {
+  const btn = document.getElementById('themeToggle');
+  const html = document.documentElement;
+  const saved = localStorage.getItem('fc-theme');
+  let dark = saved ? saved === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches;
+  html.setAttribute('data-theme', dark ? 'dark' : 'light');
+  updateIcon();
+  btn.addEventListener('click', () => {
+    dark = !dark;
+    html.setAttribute('data-theme', dark ? 'dark' : 'light');
+    localStorage.setItem('fc-theme', dark ? 'dark' : 'light');
+    updateIcon();
+  });
+  function updateIcon() {
+    btn.innerHTML = dark
+      ? '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>'
+      : '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>';
+  }
+})();
+
+// ═══════════════════════════════════════════════════════════
+//  Helpers
+// ═══════════════════════════════════════════════════════════
+function escapeHTML(s) {
+  return String(s ?? '').replace(/[&<>"']/g, c => ({
+    '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
+  }[c]));
+}
+
+function getCategory(catId) {
+  return (catalog.categories && catalog.categories[catId]) || {
+    name: catId || 'Без категории', icon: '📄', color: '#6b7280'
+  };
+}
+
+function showPanel(panelId) {
+  document.querySelectorAll('.content-panel').forEach(p => p.classList.remove('active'));
+  const p = document.getElementById('panel-' + panelId);
+  if (p) p.classList.add('active');
+}
+
+function setActiveLink(id) {
+  document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+  if (id === 'home') {
+    document.getElementById('homeLink').classList.add('active');
+  } else {
+    const link = document.querySelector('.nav-link[data-card-id="' + CSS.escape(id) + '"]');
+    if (link) {
+      link.classList.add('active');
+      link.scrollIntoView({ block: 'nearest' });
+    }
+  }
+}
+
+// ═══════════════════════════════════════════════════════════
+//  Rendering
+// ═══════════════════════════════════════════════════════════
+function renderSidebar(filter = '') {
+  const container = document.getElementById('sidebarCards');
+  if (!catalog) return;
+  const q = filter.trim().toLowerCase();
+  const matches = catalog.cards.filter(c =>
+    !q ||
+    c.name.toLowerCase().includes(q) ||
+    (c.subtitle || '').toLowerCase().includes(q)
+  );
+
+  if (matches.length === 0) {
+    container.innerHTML = '<div class="sidebar-empty">Ничего не найдено по запросу «' + escapeHTML(filter) + '»</div>';
+    return;
+  }
+
+  // Группируем по категориям в порядке, определённом в catalog.categories
+  const catOrder = Object.keys(catalog.categories || {});
+  const usedCats = [...new Set(matches.map(c => c.category).filter(Boolean))];
+  // Сохраняем порядок, который задан в categories, потом добавляем неизвестные
+  const ordered = [
+    ...catOrder.filter(id => usedCats.includes(id)),
+    ...usedCats.filter(id => !catOrder.includes(id))
+  ];
+
+  let html = '';
+  ordered.forEach(catId => {
+    const cat = getCategory(catId);
+    const cards = matches.filter(c => c.category === catId);
+    if (!cards.length) return;
+    html += `<div class="sidebar-section-label">
+      <span class="cat-dot" style="background:${cat.color}"></span>
+      <span>${escapeHTML(cat.name)}</span>
+    </div>`;
+    html += '<ul class="nav-list">';
+    cards.forEach(card => {
+      html += `<li class="nav-item">
+        <button class="nav-link" data-card-id="${escapeHTML(card.id)}" onclick="showCard('${escapeHTML(card.id)}')">
+          <span class="nav-icon">${escapeHTML(card.icon || '📄')}</span>
+          <span class="nav-label" title="${escapeHTML(card.name)}">${escapeHTML(card.name)}</span>
+        </button>
+      </li>`;
+    });
+    html += '</ul>';
+  });
+
+  container.innerHTML = html;
+  // Восстановим активную подсветку
+  if (currentId) setActiveLink(currentId);
+}
+
+function renderHome() {
+  if (!catalog) return;
+  const root = document.getElementById('homeCategories');
+  document.getElementById('welcomeTitle').textContent = catalog.title || 'Framework Cards';
+  document.getElementById('welcomeSubtitle').textContent =
+    catalog.subtitle || 'Интерактивные карточки фреймворков и методологий.';
+  document.getElementById('appTitle').textContent = catalog.title || 'Framework Cards';
+
+  const total = catalog.cards.length;
+  document.getElementById('headerMeta').innerHTML =
+    total ? `<strong>${total}</strong> карточек в каталоге` : '';
+
+  const catOrder = Object.keys(catalog.categories || {});
+  const usedCats = [...new Set(catalog.cards.map(c => c.category).filter(Boolean))];
+  const ordered = [
+    ...catOrder.filter(id => usedCats.includes(id)),
+    ...usedCats.filter(id => !catOrder.includes(id))
+  ];
+
+  let html = '';
+  ordered.forEach(catId => {
+    const cat = getCategory(catId);
+    const cards = catalog.cards.filter(c => c.category === catId);
+    if (!cards.length) return;
+    html += `<section class="category-block">
+      <h3 class="category-block-title">
+        <span class="cat-dot" style="background:${cat.color}"></span>
+        ${escapeHTML(cat.icon || '')} ${escapeHTML(cat.name)}
+        <span class="count">· ${cards.length}</span>
+      </h3>
+      <div class="cards-grid">
+        ${cards.map(card => `
+          <button class="preview-card" onclick="showCard('${escapeHTML(card.id)}')">
+            <div class="preview-card-icon" style="background:${cat.color}">${escapeHTML(card.icon || '📄')}</div>
+            <div class="preview-card-text">
+              <div class="preview-card-name">${escapeHTML(card.name)}</div>
+              <div class="preview-card-desc">${escapeHTML(card.subtitle || '')}</div>
+            </div>
+          </button>`).join('')}
+      </div>
+    </section>`;
+  });
+  root.innerHTML = html;
+}
+
+// ═══════════════════════════════════════════════════════════
+//  Navigation
+// ═══════════════════════════════════════════════════════════
+function showHome() {
+  currentId = null;
+  location.hash = '';
+  showPanel('home');
+  setActiveLink('home');
+}
+
+function showCard(id) {
+  if (!catalog) return;
+  const card = catalog.cards.find(c => c.id === id);
+  if (!card) { showHome(); return; }
+  currentId = id;
+  if (location.hash !== '#' + id) location.hash = id;
+
+  const iframe = document.getElementById('cardIframe');
+  // Меняем src только если он реально другой — чтобы не перезагружать ту же карточку
+  const newSrc = card.file;
+  if (iframe.getAttribute('src') !== newSrc) {
+    iframe.setAttribute('src', newSrc);
+  }
+  document.getElementById('viewerTitle').textContent =
+    (card.icon ? card.icon + ' ' : '') + card.name +
+    (card.subtitle ? ' — ' + card.subtitle : '');
+  const openLink = document.getElementById('viewerOpen');
+  openLink.setAttribute('href', card.file);
+
+  showPanel('viewer');
+  setActiveLink(id);
+
+  // Прокрутить наверх main
+  document.getElementById('mainContent').scrollTop = 0;
+}
+
+// ═══════════════════════════════════════════════════════════
+//  Search
+// ═══════════════════════════════════════════════════════════
+searchInput.addEventListener('input', e => {
+  renderSidebar(e.target.value);
+});
+
+// ═══════════════════════════════════════════════════════════
+//  Error state
+// ═══════════════════════════════════════════════════════════
+function showError(msg) {
+  document.getElementById('errorText').innerHTML = msg;
+  document.getElementById('sidebarCards').innerHTML =
+    '<div class="sidebar-empty">Не удалось загрузить<br>список карточек</div>';
+  showPanel('error');
+}
+
+// ═══════════════════════════════════════════════════════════
+//  Load catalog
+// ═══════════════════════════════════════════════════════════
+async function loadCatalog() {
+  try {
+    const res = await fetch('cards.json', { cache: 'no-cache' });
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    catalog = await res.json();
+    if (!Array.isArray(catalog.cards)) throw new Error('Ожидается поле cards[] в cards.json');
+
+    renderHome();
+    renderSidebar();
+
+    // Роутинг по hash
+    const hash = location.hash.replace('#', '');
+    if (hash) {
+      showCard(hash);
+    } else {
+      showHome();
+    }
+  } catch (e) {
+    console.error(e);
+    if (location.protocol === 'file:') {
+      showError(
+        'Страница открыта как локальный файл (<code>file://</code>) — браузер блокирует чтение <code>cards.json</code>. ' +
+        'Опубликуйте папку на GitHub Pages, Netlify или запустите локальный сервер (<code>python3 -m http.server</code>).'
+      );
+    } else {
+      showError(
+        'Не удалось загрузить <code>cards.json</code>: ' + escapeHTML(e.message) +
+        '. Проверьте, что файл лежит рядом с <code>index.html</code>.'
+      );
+    }
+  }
+}
+
+// Реакция на изменение хэша (браузерные «назад/вперёд»)
+window.addEventListener('hashchange', () => {
+  const hash = location.hash.replace('#', '');
+  if (!hash) showHome();
+  else if (hash !== currentId) showCard(hash);
+});
+
+// Запуск
+loadCatalog();
+</script>
+</body>
+</html>

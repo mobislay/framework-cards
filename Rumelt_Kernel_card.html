@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ядро стратегии — Ричард Румельт</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@700;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --accent:        #1e3a8a;
+    --accent-dark:   #162d6e;
+    --accent-light:  #dbeafe;
+    --accent-mid:    #93c5fd;
+    --bad-color:     #991b1b;
+    --bad-bg:        #fee2e2;
+    --purple:        #7c3aed;
+    --purple-bg:     #ede9fe;
+    --text-dark:     #111827;
+    --text-mid:      #374151;
+    --text-light:    #6b7280;
+    --border:        #e5e7eb;
+    --bg:            #ffffff;
+    --card-bg:       #f9fafb;
+    --font-head:     'Unbounded', sans-serif;
+    --font-body:     'Inter', sans-serif;
+    --r:             12px;
+  }
+
+  body {
+    font-family: var(--font-body);
+    background: #f3f4f6;
+    min-height: 100vh;
+    display: flex; align-items: center; justify-content: center;
+    padding: 24px;
+  }
+
+  .card {
+    width: 640px;
+    background: var(--bg);
+    border-radius: 20px; overflow: hidden;
+    box-shadow: 0 4px 32px rgba(0,0,0,0.10), 0 1px 4px rgba(0,0,0,0.06);
+  }
+
+  /* ── HEADER ── */
+  .card-header {
+    background: var(--accent);
+    padding: 32px 36px 28px;
+    position: relative; overflow: hidden;
+  }
+  .card-header::before {
+    content: ''; position: absolute;
+    top: -40px; right: -40px; width: 220px; height: 220px;
+    border-radius: 50%; background: rgba(255,255,255,0.05);
+  }
+  .card-header::after {
+    content: ''; position: absolute;
+    bottom: -50px; right: 80px; width: 140px; height: 140px;
+    border-radius: 50%; background: rgba(255,255,255,0.04);
+  }
+  .category-badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: rgba(255,255,255,0.15); color: #fff;
+    font-size: 11px; font-weight: 600;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    padding: 5px 12px; border-radius: 100px; margin-bottom: 16px;
+  }
+  .card-title {
+    font-family: var(--font-head);
+    font-size: 34px; font-weight: 900; color: #fff;
+    line-height: 1.05; letter-spacing: -1px;
+    position: relative; z-index: 1;
+  }
+  .card-title span {
+    display: block; font-size: 13px;
+    font-family: var(--font-body); font-weight: 500;
+    color: rgba(255,255,255,0.7);
+    letter-spacing: 0.04em; margin-top: 8px;
+  }
+  .header-tags { display: flex; gap: 8px; margin-top: 18px; }
+  .htag {
+    font-size: 11px; font-weight: 600;
+    padding: 3px 10px; border-radius: 100px;
+    letter-spacing: 0.04em; text-transform: lowercase;
+  }
+  .htag-portfolio { background: rgba(124,58,237,0.22); color: #c4b5fd; border: 1px solid rgba(196,181,253,0.3); }
+
+  /* ── BODY ── */
+  .card-body {
+    padding: 28px 36px;
+    display: flex; flex-direction: column; gap: 20px;
+  }
+
+  /* ── SCHEMA ── */
+  .schema-block {
+    background: var(--card-bg);
+    border-radius: var(--r); padding: 18px 20px 16px;
+    border: 1px solid var(--border);
+  }
+  .schema-label {
+    font-size: 10px; font-weight: 700;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--text-light); margin-bottom: 14px;
+  }
+
+  /* Конвейер ядра */
+  .kernel-pipeline {
+    display: flex;
+    align-items: stretch;
+    gap: 0;
+  }
+
+  .kernel-step {
+    flex: 1;
+    background: var(--accent-light);
+    border-radius: 10px;
+    padding: 14px 12px;
+    display: flex; flex-direction: column; gap: 6px;
+    position: relative;
+  }
+  .kernel-step + .kernel-step {
+    margin-left: 0;
+  }
+
+  /* Стрелки между шагами */
+  .k-arrow {
+    display: flex; align-items: center; justify-content: center;
+    width: 28px; flex-shrink: 0;
+  }
+  .k-arrow svg { color: var(--accent); opacity: 0.5; }
+
+  .kstep-num {
+    width: 24px; height: 24px; border-radius: 50%;
+    background: var(--accent);
+    color: #fff; font-size: 11px; font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 4px;
+  }
+  .kstep-title {
+    font-size: 13px; font-weight: 700; color: var(--accent);
+    line-height: 1.2;
+  }
+  .kstep-en {
+    font-size: 10px; font-weight: 600; color: var(--accent);
+    opacity: 0.6; letter-spacing: 0.04em; text-transform: uppercase;
+  }
+  .kstep-desc {
+    font-size: 10.5px; color: var(--text-mid); line-height: 1.45;
+    margin-top: 2px;
+  }
+
+  /* Блок «Плохая стратегия» */
+  .bad-block {
+    border-radius: var(--r);
+    border: 1.5px solid #fca5a5;
+    background: #fff5f5;
+    padding: 14px 16px;
+  }
+  .bad-header {
+    display: flex; align-items: center; gap: 8px; margin-bottom: 10px;
+  }
+  .bad-icon {
+    font-size: 16px;
+  }
+  .bad-title {
+    font-size: 12px; font-weight: 700; color: var(--bad-color);
+    letter-spacing: 0.02em;
+  }
+  .bad-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 8px;
+  }
+  .bad-item {
+    background: var(--bad-bg);
+    border-radius: 8px; padding: 8px 10px;
+  }
+  .bad-item-title {
+    font-size: 11px; font-weight: 700; color: var(--bad-color);
+    margin-bottom: 3px;
+  }
+  .bad-item-text {
+    font-size: 10.5px; color: #7f1d1d; line-height: 1.4;
+  }
+
+  /* ── MAIN IDEA ── */
+  .main-idea {
+    font-size: 15.5px; font-weight: 600; color: var(--text-dark);
+    line-height: 1.55; border-left: 3px solid var(--accent);
+    padding-left: 14px;
+  }
+
+  /* ── DESCRIPTION ── */
+  .description {
+    font-size: 13.5px; line-height: 1.65; color: var(--text-mid);
+  }
+
+  /* ── ЦИТАТА ── */
+  .quote-block {
+    background: var(--accent-light);
+    border-radius: var(--r);
+    padding: 14px 18px;
+    border-left: 3px solid var(--accent);
+  }
+  .quote-text {
+    font-size: 13px; font-style: italic; color: var(--accent);
+    line-height: 1.6; font-weight: 500;
+  }
+  .quote-author {
+    font-size: 11px; color: var(--text-light); margin-top: 6px;
+    font-weight: 600;
+  }
+
+  /* ── SEE ALSO ── */
+  .see-also-label {
+    font-size: 10px; font-weight: 700;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--text-light); margin-bottom: 8px;
+  }
+  .see-also-chips { display: flex; flex-wrap: wrap; gap: 7px; }
+  .chip {
+    font-size: 12px; font-weight: 500;
+    background: #f1f5f9; color: #334155;
+    border: 1px solid #e2e8f0;
+    padding: 4px 12px; border-radius: 100px;
+    transition: background 0.15s, color 0.15s;
+  }
+  .chip:hover { background: var(--accent-light); color: var(--accent); border-color: var(--accent-mid); }
+
+  /* ── TAGS ── */
+  .tags-row {
+    display: flex; gap: 8px; padding: 16px 36px;
+    border-top: 1px solid var(--border); background: var(--card-bg);
+  }
+  .tag {
+    padding: 5px 14px; border-radius: 100px;
+    font-size: 12px; font-weight: 700;
+    letter-spacing: 0.04em; text-transform: lowercase;
+  }
+  .tag-portfolio { background: var(--purple-bg); color: var(--purple); }
+
+  /* ── FOOTER ── */
+  .card-footer {
+    padding: 10px 36px 14px; background: var(--card-bg);
+    font-size: 10px; color: var(--text-light);
+    border-top: 1px solid var(--border);
+    display: flex; justify-content: space-between; align-items: center;
+  }
+
+  @media print {
+    body { background: white; padding: 0; }
+    .card { box-shadow: none; width: 100%; border-radius: 0; }
+  }
+</style>
+</head>
+<body>
+<div class="card">
+
+  <!-- HEADER -->
+  <div class="card-header">
+    <div class="category-badge">🏛️ Стратегия и бизнес</div>
+    <div class="card-title">
+      Ядро стратегии
+      <span>Ричард Румельт · «Хорошая стратегия, плохая стратегия» · 2011</span>
+    </div>
+    <div class="header-tags">
+      <span class="htag htag-portfolio">portfolio</span>
+    </div>
+  </div>
+
+  <!-- BODY -->
+  <div class="card-body">
+
+    <!-- SCHEMA — Ядро (3 шага) -->
+    <div class="schema-block">
+      <div class="schema-label">Ядро хорошей стратегии (The Kernel)</div>
+
+      <div class="kernel-pipeline">
+
+        <!-- Шаг 1 -->
+        <div class="kernel-step">
+          <div class="kstep-num">1</div>
+          <div class="kstep-en">Diagnosis</div>
+          <div class="kstep-title">Диагноз</div>
+          <div class="kstep-desc">Определяет природу проблемы. Упрощает сложную реальность, выделяя критически важные аспекты ситуации.</div>
+        </div>
+
+        <!-- Стрелка -->
+        <div class="k-arrow">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </div>
+
+        <!-- Шаг 2 -->
+        <div class="kernel-step">
+          <div class="kstep-num">2</div>
+          <div class="kstep-en">Guiding Policy</div>
+          <div class="kstep-title">Направляющая политика</div>
+          <div class="kstep-desc">Общий подход к преодолению препятствий. Говорит не только что делать, но и что намеренно <em>не делать</em>.</div>
+        </div>
+
+        <!-- Стрелка -->
+        <div class="k-arrow">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </div>
+
+        <!-- Шаг 3 -->
+        <div class="kernel-step">
+          <div class="kstep-num">3</div>
+          <div class="kstep-en">Coherent Actions</div>
+          <div class="kstep-title">Согласованные действия</div>
+          <div class="kstep-desc">Скоординированные меры, ресурсы и решения, которые усиливают друг друга и воплощают политику в жизнь.</div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- 4 симптома плохой стратегии -->
+    <div class="bad-block">
+      <div class="bad-header">
+        <span class="bad-icon">⚠️</span>
+        <span class="bad-title">4 симптома плохой стратегии</span>
+      </div>
+      <div class="bad-grid">
+        <div class="bad-item">
+          <div class="bad-item-title">«Вода»</div>
+          <div class="bad-item-text">Пустословие, имитирующее стратегические рассуждения. Напыщенные термины без конкретного смысла.</div>
+        </div>
+        <div class="bad-item">
+          <div class="bad-item-title">Нет диагноза</div>
+          <div class="bad-item-text">Неспособность выявлять и решать конкретные проблемы. Без диагноза стратегию невозможно оценить.</div>
+        </div>
+        <div class="bad-item">
+          <div class="bad-item-title">Подмена целью</div>
+          <div class="bad-item-text">Декларация желаемого вместо плана преодоления препятствий. «Стать лидером рынка» — не стратегия.</div>
+        </div>
+        <div class="bad-item">
+          <div class="bad-item-title">Невнятные подцели</div>
+          <div class="bad-item-text">Список разрозненных инициатив без координации. Когда стратегию одобряют все — выбора не было.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MAIN IDEA -->
+    <p class="main-idea">
+      Хорошая стратегия — это не список амбиций и не позитивный настрой. Это скоординированные действия, подкреплённые чётким диагнозом реальной проблемы и направляющей политикой её решения.
+    </p>
+
+    <!-- DESCRIPTION -->
+    <p class="description">
+      Румельт показывает, что большинство «стратегий» на деле являются списком целей без анализа препятствий — то, что он называет <strong>«водой»</strong>. Настоящее ядро стратегии начинается с честного <strong>диагноза</strong>: выделить из сложной реальности один-два критически важных аспекта — «точку приложения рычага» (<em>the crux</em>). <strong>Направляющая политика</strong> — не детальный план, а принцип, задающий логику всех последующих решений и явно говорящий, от чего компания отказывается. <strong>Согласованные действия</strong> должны усиливать друг друга: именно их координация создаёт стратегическое преимущество, которое невозможно скопировать, взяв каждый элемент по отдельности.
+    </p>
+
+    <!-- ЦИТАТА -->
+    <div class="quote-block">
+      <div class="quote-text">«Любая эффективная стратегия предусматривает наличие скоординированных мер, рабочих методик и ресурсов, которые направляются на достижение конкретного результата».</div>
+      <div class="quote-author">— Ричард Румельт, «Хорошая стратегия, плохая стратегия»</div>
+    </div>
+
+    <!-- SEE ALSO -->
+    <div>
+      <div class="see-also-label">Смотрите также</div>
+      <div class="see-also-chips">
+        <span class="chip">Playing to Win (Лафли & Мартин)</span>
+        <span class="chip">Blue Ocean Strategy</span>
+        <span class="chip">OKR</span>
+        <span class="chip">Porter's Five Forces</span>
+        <span class="chip">McKinsey 7S</span>
+        <span class="chip">Jobs to be Done</span>
+      </div>
+    </div>
+
+  </div><!-- /card-body -->
+
+  <!-- TAGS -->
+  <div class="tags-row">
+    <span class="tag tag-portfolio">portfolio</span>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="card-footer">
+    <span>Ядро стратегии (The Kernel) · Ричард Румельт · «Good Strategy Bad Strategy», 2011</span>
+    <span>🏛️ Стратегия</span>
+  </div>
+
+</div>
+</body>
+</html>

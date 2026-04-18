@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Triple Diamond — карточка фреймворка</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@700;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --accent:       #0f4c54;
+    --accent-dark:  #0a3540;
+    --accent-light: #d0eaed;
+    --accent-mid:   #a0d4da;
+    --teal:         #0f4c54;
+    --purple:       #7c3aed;
+    --purple-bg:    #ede9fe;
+    --green:        #16a34a;
+    --green-bg:     #dcfce7;
+    --orange:       #ea580c;
+    --orange-bg:    #fff7ed;
+    --text-dark:    #111827;
+    --text-mid:     #374151;
+    --text-light:   #6b7280;
+    --border:       #e5e7eb;
+    --bg:           #ffffff;
+    --card-bg:      #f9fafb;
+    --font-head:    'Unbounded', sans-serif;
+    --font-body:    'Inter', sans-serif;
+    --r:            12px;
+  }
+  body {
+    font-family: var(--font-body);
+    background: #f3f4f6;
+    min-height: 100vh;
+    display: flex; align-items: center; justify-content: center;
+    padding: 24px;
+  }
+  .card {
+    width: 640px;
+    background: var(--bg);
+    border-radius: 20px; overflow: hidden;
+    box-shadow: 0 4px 32px rgba(0,0,0,0.10), 0 1px 4px rgba(0,0,0,0.06);
+  }
+
+  /* ── HEADER ── */
+  .card-header {
+    background: var(--accent);
+    padding: 32px 36px 28px;
+    position: relative; overflow: hidden;
+  }
+  .card-header::before {
+    content: ''; position: absolute;
+    top: -40px; right: -40px; width: 200px; height: 200px;
+    border-radius: 50%; background: rgba(255,255,255,0.06);
+  }
+  .card-header::after {
+    content: ''; position: absolute;
+    bottom: -60px; right: 60px; width: 150px; height: 150px;
+    border-radius: 50%; background: rgba(255,255,255,0.04);
+  }
+  .category-badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: rgba(255,255,255,0.15); color: #fff;
+    font-size: 11px; font-weight: 600;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    padding: 5px 12px; border-radius: 100px; margin-bottom: 16px;
+  }
+  .card-title {
+    font-family: var(--font-head);
+    font-size: 36px; font-weight: 900; color: #fff;
+    line-height: 1.05; letter-spacing: -1px;
+    position: relative; z-index: 1;
+  }
+  .card-title span {
+    display: block; font-size: 13px;
+    font-family: var(--font-body); font-weight: 500;
+    color: rgba(255,255,255,0.72);
+    letter-spacing: 0.04em; margin-top: 8px;
+  }
+  .header-tags { display: flex; gap: 8px; margin-top: 18px; }
+  .htag {
+    font-size: 11px; font-weight: 600;
+    padding: 3px 10px; border-radius: 100px;
+    letter-spacing: 0.04em; text-transform: lowercase;
+  }
+  .htag-portfolio { background: rgba(124,58,237,0.22); color: #c4b5fd; border: 1px solid rgba(196,181,253,0.3); }
+  .htag-product   { background: rgba(22,163,74,0.22);  color: #86efac; border: 1px solid rgba(134,239,172,0.3); }
+  .htag-feature   { background: rgba(234,88,12,0.22);  color: #fdba74; border: 1px solid rgba(253,186,116,0.3); }
+
+  /* ── BODY ── */
+  .card-body {
+    padding: 28px 36px;
+    display: flex; flex-direction: column; gap: 22px;
+  }
+
+  /* ── SCHEMA ── */
+  .schema-block {
+    background: var(--card-bg);
+    border-radius: var(--r); padding: 18px 16px 14px;
+    border: 1px solid var(--border);
+  }
+  .schema-label {
+    font-size: 10px; font-weight: 700;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--text-light); margin-bottom: 14px;
+  }
+
+  /* SVG-схема Triple Diamond */
+  .diamond-svg-wrap {
+    width: 100%;
+    overflow: hidden;
+  }
+  .diamond-svg-wrap svg {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  /* Подписи под схемой */
+  .diamond-labels {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 4px;
+    margin-top: 10px;
+  }
+  .dlabel {
+    text-align: center;
+    font-size: 10px;
+    line-height: 1.35;
+    color: var(--text-light);
+    font-weight: 500;
+  }
+  .dlabel strong {
+    display: block;
+    color: var(--text-dark);
+    font-size: 10.5px;
+    font-weight: 700;
+    margin-bottom: 2px;
+  }
+
+  /* Фазовые заголовки */
+  .phase-headers {
+    display: grid;
+    grid-template-columns: 2fr 2fr 1fr 1fr;
+    gap: 4px;
+    margin-bottom: 6px;
+  }
+  .phase-head {
+    text-align: center;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--accent);
+    font-family: var(--font-body);
+    letter-spacing: 0.02em;
+    padding: 3px 0;
+    border-bottom: 2px solid var(--accent-light);
+  }
+
+  /* ── MAIN IDEA ── */
+  .main-idea {
+    font-size: 16px; font-weight: 600; color: var(--text-dark);
+    line-height: 1.55; border-left: 3px solid var(--accent);
+    padding-left: 14px;
+  }
+
+  /* ── DESCRIPTION ── */
+  .description {
+    font-size: 13.5px; line-height: 1.65; color: var(--text-mid);
+  }
+
+  /* ── DETAILS GRID ── */
+  .details-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
+  }
+  .detail-card {
+    background: var(--card-bg); border: 1px solid var(--border);
+    border-radius: var(--r); padding: 14px 16px;
+  }
+  .detail-card-header {
+    display: flex; align-items: center; gap: 8px; margin-bottom: 6px;
+  }
+  .detail-icon {
+    width: 28px; height: 28px; border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px; flex-shrink: 0;
+  }
+  .detail-title { font-size: 12px; font-weight: 700; color: var(--text-dark); }
+  .detail-text  { font-size: 11.5px; color: var(--text-mid); line-height: 1.55; }
+
+  /* ── SEE ALSO ── */
+  .see-also-label {
+    font-size: 10px; font-weight: 700;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--text-light); margin-bottom: 8px;
+  }
+  .see-also-chips { display: flex; flex-wrap: wrap; gap: 7px; }
+  .chip {
+    font-size: 12px; font-weight: 500;
+    background: #f1f5f9; color: #334155;
+    border: 1px solid #e2e8f0;
+    padding: 4px 12px; border-radius: 100px;
+    transition: background 0.15s, color 0.15s;
+  }
+  .chip:hover { background: var(--accent-light); color: var(--accent); border-color: var(--accent-mid); }
+
+  /* ── TAGS ── */
+  .tags-row {
+    display: flex; gap: 8px; padding: 16px 36px;
+    border-top: 1px solid var(--border); background: var(--card-bg);
+  }
+  .tag {
+    padding: 5px 14px; border-radius: 100px;
+    font-size: 12px; font-weight: 700;
+    letter-spacing: 0.04em; text-transform: lowercase;
+  }
+  .tag-portfolio { background: var(--purple-bg); color: var(--purple); }
+  .tag-product   { background: var(--green-bg);  color: var(--green); }
+  .tag-feature   { background: var(--orange-bg); color: var(--orange); }
+
+  /* ── FOOTER ── */
+  .card-footer {
+    padding: 10px 36px 14px; background: var(--card-bg);
+    font-size: 10px; color: var(--text-light);
+    border-top: 1px solid var(--border);
+    display: flex; justify-content: space-between; align-items: center;
+  }
+
+  @media print {
+    body { background: white; padding: 0; }
+    .card { box-shadow: none; width: 100%; border-radius: 0; }
+  }
+</style>
+</head>
+<body>
+<div class="card">
+
+  <!-- HEADER -->
+  <div class="card-header">
+    <div class="category-badge">💎 Исследование и проектирование</div>
+    <div class="card-title">
+      Triple Diamond
+      <span>Mike Chen · Kim Lenox · Jennifer Chang · Zendesk</span>
+    </div>
+    <div class="header-tags">
+      <span class="htag htag-portfolio">portfolio</span>
+      <span class="htag htag-product">product</span>
+      <span class="htag htag-feature">feature</span>
+    </div>
+  </div>
+
+  <!-- BODY -->
+  <div class="card-body">
+
+    <!-- SCHEMA -->
+    <div class="schema-block">
+      <div class="schema-label">Визуальная схема — три фазы и шесть этапов</div>
+
+      <!-- Заголовки фаз -->
+      <div class="phase-headers">
+        <div class="phase-head">Discovery</div>
+        <div class="phase-head">Development</div>
+        <div class="phase-head">Validation</div>
+        <div class="phase-head">Rollout</div>
+      </div>
+
+      <!-- SVG-диаграмма -->
+      <div class="diamond-svg-wrap">
+        <svg viewBox="0 0 580 160" xmlns="http://www.w3.org/2000/svg" fill="none">
+          <!-- ======================== DIAMOND 1 ======================== -->
+          <!-- левый ромб: вершины (10,80) (120,15) (230,80) (120,145) -->
+          <polygon points="10,80 120,15 230,80 120,145"
+                   stroke="#0f4c54" stroke-width="2.2" fill="rgba(15,76,84,0.05)"
+                   stroke-linejoin="round"/>
+          <!-- пунктир по центру ромба 1 -->
+          <line x1="120" y1="10" x2="120" y2="150"
+                stroke="#0f4c54" stroke-width="1" stroke-dasharray="4 4" opacity="0.35"/>
+
+          <!-- ======================== DIAMOND 2 ======================== -->
+          <!-- средний ромб: вершины (230,80) (335,15) (440,80) (335,145) -->
+          <polygon points="230,80 335,15 440,80 335,145"
+                   stroke="#0f4c54" stroke-width="2.2" fill="rgba(15,76,84,0.05)"
+                   stroke-linejoin="round"/>
+          <!-- пунктир по центру ромба 2 -->
+          <line x1="335" y1="10" x2="335" y2="150"
+                stroke="#0f4c54" stroke-width="1" stroke-dasharray="4 4" opacity="0.35"/>
+
+          <!-- ======================== DIAMOND 3 (wide, elongated) ======================== -->
+          <!-- широкий вытянутый ромб: (440,80) (490,15) (570,80) (570,80) -->
+          <!-- треугольник/острый ромб -->
+          <polygon points="440,80 508,22 570,80 508,138"
+                   stroke="#0f4c54" stroke-width="2.2" fill="rgba(15,76,84,0.04)"
+                   stroke-linejoin="round"/>
+
+          <!-- Волновой паттерн внутри ромба 3 (серый заливной путь) -->
+          <path d="M445,80
+                   C455,60 468,55 480,80
+                   C492,105 505,110 515,80
+                   C525,50 538,48 548,75
+                   C555,88 562,82 568,80"
+                stroke="#b0bec5" stroke-width="6" fill="none"
+                stroke-linecap="round" opacity="0.55"/>
+          <path d="M447,80
+                   C457,63 470,58 482,80
+                   C494,102 507,107 517,78
+                   C527,52 540,50 550,76
+                   C557,89 564,83 568,80"
+                stroke="#b0bec5" stroke-width="12" fill="none"
+                stroke-linecap="round" opacity="0.2"/>
+
+          <!-- Вертикальные пунктирные разделители фаз -->
+          <!-- Граница Discovery | Development -->
+          <line x1="440" y1="5" x2="440" y2="155"
+                stroke="#0f4c54" stroke-width="1.5" stroke-dasharray="5 4" opacity="0.5"/>
+          <!-- Граница Development | Validation -->
+          <line x1="508" y1="5" x2="508" y2="155"
+                stroke="#0f4c54" stroke-width="1.5" stroke-dasharray="5 4" opacity="0.5"/>
+          <!-- Граница Validation | Rollout -->
+          <line x1="570" y1="5" x2="570" y2="155"
+                stroke="#0f4c54" stroke-width="1.5" stroke-dasharray="5 4" opacity="0.5"/>
+        </svg>
+      </div>
+
+      <!-- Подписи этапов -->
+      <div class="diamond-labels">
+        <div class="dlabel"><strong>Problem Discovery</strong>Исследование проблемы</div>
+        <div class="dlabel"><strong>Problem Definition</strong>Определение проблемы</div>
+        <div class="dlabel"><strong>Solution Discovery</strong>Поиск решений</div>
+        <div class="dlabel"><strong>Concept Validation</strong>Валидация концепта</div>
+        <div class="dlabel"><strong>Design &amp; Dev</strong>Проектирование</div>
+        <div class="dlabel"><strong>Early Access</strong>Ранний доступ</div>
+      </div>
+    </div>
+
+    <!-- MAIN IDEA -->
+    <p class="main-idea">
+      Triple Diamond расширяет Double Diamond, добавляя третью фазу — итеративную разработку и выкатку. Каждый ромб — это цикл расходящегося и сходящегося мышления.
+    </p>
+
+    <!-- DESCRIPTION -->
+    <p class="description">
+      Фреймворк предложен командой Zendesk (Mike Chen, Kim Lenox, Jennifer Chang) как эволюция классической модели Double Diamond от Design Council (2005). В <strong>Discovery</strong> команда сначала широко исследует проблемное пространство (<em>Problem Discovery</em>), затем сужает его до чёткой постановки задачи (<em>Problem Definition</em>), после чего снова расходится — изучает решения (<em>Solution Discovery</em>) и проверяет концепт (<em>Concept Validation</em>). В <strong>Development</strong> третий ромб намеренно не замкнут: он отражает реальность итеративной разработки с волновой линией внутри — команда постоянно уточняет решение. Фазы <strong>Validation</strong> и <strong>Rollout</strong> отделены вертикальными разделителями и соответствуют программе раннего доступа и коммерческому запуску.
+    </p>
+
+    <!-- DETAILS GRID -->
+    <div class="details-grid">
+
+      <div class="detail-card">
+        <div class="detail-card-header">
+          <div class="detail-icon" style="background:#d0eaed;">🔍</div>
+          <div class="detail-title">Problem Discovery</div>
+        </div>
+        <div class="detail-text">Широкое качественное исследование: интервью, наблюдения, анализ данных. Цель — понять реальный контекст, а не подтвердить гипотезы.</div>
+      </div>
+
+      <div class="detail-card">
+        <div class="detail-card-header">
+          <div class="detail-icon" style="background:#d0eaed;">🎯</div>
+          <div class="detail-title">Problem Definition</div>
+        </div>
+        <div class="detail-text">Синтез инсайтов в чёткий «How Might We» или Job Statement. Команда договаривается, какую именно проблему решает.</div>
+      </div>
+
+      <div class="detail-card">
+        <div class="detail-card-header">
+          <div class="detail-icon" style="background:#dcfce7;">💡</div>
+          <div class="detail-title">Solution Discovery</div>
+        </div>
+        <div class="detail-text">Генерация множества идей (Crazy 8s, Design Studio), прототипирование. Расходящееся мышление без ограничений реализации.</div>
+      </div>
+
+      <div class="detail-card">
+        <div class="detail-card-header">
+          <div class="detail-icon" style="background:#dcfce7;">✅</div>
+          <div class="detail-title">Concept Validation</div>
+        </div>
+        <div class="detail-text">Тестирование прототипов с пользователями. Сужение до одного проверенного концепта, готового к разработке.</div>
+      </div>
+
+      <div class="detail-card">
+        <div class="detail-card-header">
+          <div class="detail-icon" style="background:#fff7ed;">⚙️</div>
+          <div class="detail-title">Design &amp; Development</div>
+        </div>
+        <div class="detail-text">Итеративные спринты: дизайн и разработка идут параллельно. Волна внутри ромба — постоянное уточнение решения в процессе.</div>
+      </div>
+
+      <div class="detail-card">
+        <div class="detail-card-header">
+          <div class="detail-icon" style="background:#ede9fe;">🚀</div>
+          <div class="detail-title">Early Access + Rollout</div>
+        </div>
+        <div class="detail-text">Early Access Programme — контролируемый запуск для отдельных клиентов. Commercial Availability — полноценный релиз с поддержкой масштабирования.</div>
+      </div>
+
+    </div>
+
+    <!-- SEE ALSO -->
+    <div>
+      <div class="see-also-label">Смотрите также</div>
+      <div class="see-also-chips">
+        <span class="chip">Double Diamond (Design Council)</span>
+        <span class="chip">Design Thinking</span>
+        <span class="chip">User Story Map</span>
+        <span class="chip">Jobs to be Done</span>
+        <span class="chip">Opportunity Solution Tree</span>
+        <span class="chip">Lean UX</span>
+      </div>
+    </div>
+
+  </div><!-- /card-body -->
+
+  <!-- TAGS -->
+  <div class="tags-row">
+    <span class="tag tag-portfolio">portfolio</span>
+    <span class="tag tag-product">product</span>
+    <span class="tag tag-feature">feature</span>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="card-footer">
+    <span>Triple Diamond · Mike Chen, Kim Lenox, Jennifer Chang · Zendesk</span>
+    <span>💎 3D</span>
+  </div>
+
+</div>
+</body>
+</html>

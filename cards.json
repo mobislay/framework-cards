@@ -1,0 +1,87 @@
+{
+  "title": "Framework Cards",
+  "subtitle": "Каталог обучающих карточек по фреймворкам",
+  "cards": [
+    {
+      "id": "core",
+      "file": "CORE_card.html",
+      "name": "CORE",
+      "subtitle": "Capture · Organize · Review · Engage",
+      "category": "productivity",
+      "icon": "⚡"
+    },
+    {
+      "id": "jtbd",
+      "file": "JTBD_card.html",
+      "name": "JTBD",
+      "subtitle": "Jobs to be Done",
+      "category": "research",
+      "icon": "🔬"
+    },
+    {
+      "id": "sipoc",
+      "file": "SIPOC_card.html",
+      "name": "SIPOC",
+      "subtitle": "Suppliers · Inputs · Process · Outputs · Customers",
+      "category": "analysis",
+      "icon": "📊"
+    },
+    {
+      "id": "okr",
+      "file": "OKR_card.html",
+      "name": "OKR",
+      "subtitle": "Objectives and Key Results",
+      "category": "planning",
+      "icon": "🎯"
+    },
+    {
+      "id": "usm",
+      "file": "USM_card.html",
+      "name": "User Story Map",
+      "subtitle": "Jeff Patton — двумерный бэклог",
+      "category": "planning",
+      "icon": "🗺️"
+    },
+    {
+      "id": "rumelt",
+      "file": "Rumelt_Kernel_card.html",
+      "name": "Ядро стратегии",
+      "subtitle": "Richard Rumelt — Kernel of Strategy",
+      "category": "strategy",
+      "icon": "🏛️"
+    },
+    {
+      "id": "tripleDiamond",
+      "file": "TripleDiamond_card.html",
+      "name": "Triple Diamond",
+      "subtitle": "Discover · Define · Design · Deliver",
+      "category": "research",
+      "icon": "💎"
+    },
+    {
+      "id": "mckinsey7s",
+      "file": "McKinsey7S_card.html",
+      "name": "McKinsey 7S",
+      "subtitle": "Strategy · Structure · Systems · Shared Values · Style · Staff · Skills",
+      "category": "leadership",
+      "icon": "🏛️"
+    },
+    {
+      "id": "mintzberg",
+      "file": "mintzberg_safari_card.html",
+      "name": "Стратегическое сафари",
+      "subtitle": "Генри Минцберг — 10 школ стратегии",
+      "category": "strategy",
+      "icon": "🏛️"
+    }
+  ],
+  "categories": {
+    "strategy":     { "name": "Стратегия и бизнес",         "icon": "🏛️", "color": "#1e3a8a" },
+    "research":     { "name": "Исследование и проектирование", "icon": "🔬", "color": "#6d28d9" },
+    "planning":     { "name": "Планирование и управление",  "icon": "🎯", "color": "#3730a3" },
+    "analysis":     { "name": "Анализ и данные",            "icon": "📊", "color": "#334155" },
+    "leadership":   { "name": "Лидерство и HR",             "icon": "👥", "color": "#3730a3" },
+    "productivity": { "name": "Продуктивность",             "icon": "⚡", "color": "#006e6b" },
+    "operations":   { "name": "Процессы и операции",        "icon": "⚙️", "color": "#0f4c54" }
+  }
+}

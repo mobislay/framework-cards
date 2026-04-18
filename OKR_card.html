@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OKR — карточка фреймворка</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@700;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --accent:        #3730a3;
+    --accent-dark:   #2e2796;
+    --accent-light:  #e0e7ff;
+    --accent-mid:    #a5b4fc;
+    --green:         #16a34a;
+    --green-bg:      #dcfce7;
+    --green-light:   #bbf7d0;
+    --purple:        #7c3aed;
+    --purple-bg:     #ede9fe;
+    --orange:        #ea580c;
+    --orange-bg:     #fff7ed;
+    --amber:         #b45309;
+    --amber-bg:      #fef3c7;
+    --text-dark:     #111827;
+    --text-mid:      #374151;
+    --text-light:    #6b7280;
+    --border:        #e5e7eb;
+    --bg:            #ffffff;
+    --card-bg:       #f9fafb;
+    --font-head:     'Unbounded', sans-serif;
+    --font-body:     'Inter', sans-serif;
+    --r:             12px;
+  }
+  body {
+    font-family: var(--font-body);
+    background: #f3f4f6;
+    min-height: 100vh;
+    display: flex; align-items: center; justify-content: center;
+    padding: 24px;
+  }
+  .card {
+    width: 640px;
+    background: var(--bg);
+    border-radius: 20px; overflow: hidden;
+    box-shadow: 0 4px 32px rgba(0,0,0,0.10), 0 1px 4px rgba(0,0,0,0.06);
+  }
+
+  /* ── HEADER ── */
+  .card-header {
+    background: var(--accent);
+    padding: 32px 36px 28px;
+    position: relative; overflow: hidden;
+  }
+  .card-header::before {
+    content: ''; position: absolute;
+    top: -50px; right: -50px; width: 220px; height: 220px;
+    border-radius: 50%; background: rgba(255,255,255,0.06);
+  }
+  .card-header::after {
+    content: ''; position: absolute;
+    bottom: -60px; right: 70px; width: 160px; height: 160px;
+    border-radius: 50%; background: rgba(255,255,255,0.04);
+  }
+  .category-badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: rgba(255,255,255,0.15); color: #fff;
+    font-size: 11px; font-weight: 600;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    padding: 5px 12px; border-radius: 100px; margin-bottom: 16px;
+  }
+  .card-title {
+    font-family: var(--font-head);
+    font-size: 52px; font-weight: 900; color: #fff;
+    line-height: 1.0; letter-spacing: -2px;
+    position: relative; z-index: 1;
+  }
+  .card-title span {
+    display: block; font-size: 13px;
+    font-family: var(--font-body); font-weight: 500;
+    color: rgba(255,255,255,0.72);
+    letter-spacing: 0.06em; margin-top: 10px;
+    text-transform: uppercase;
+  }
+  .header-tags { display: flex; gap: 8px; margin-top: 18px; }
+  .htag {
+    font-size: 11px; font-weight: 600;
+    padding: 3px 10px; border-radius: 100px;
+    letter-spacing: 0.04em; text-transform: lowercase;
+  }
+  .htag-portfolio { background: rgba(124,58,237,0.22); color: #c4b5fd; border: 1px solid rgba(196,181,253,0.3); }
+  .htag-product   { background: rgba(22,163,74,0.22);  color: #86efac; border: 1px solid rgba(134,239,172,0.3); }
+
+  /* ── BODY ── */
+  .card-body {
+    padding: 28px 36px;
+    display: flex; flex-direction: column; gap: 20px;
+  }
+
+  /* ── SCHEMA: пирамида + цикл ── */
+  .schema-block {
+    background: var(--card-bg);
+    border-radius: var(--r); padding: 18px 20px 16px;
+    border: 1px solid var(--border);
+  }
+  .schema-label {
+    font-size: 10px; font-weight: 700;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--text-light); margin-bottom: 14px;
+  }
+
+  /* Пирамида иерархии */
+  .pyramid-wrap {
+    display: flex; flex-direction: column; align-items: center;
+    gap: 5px; margin-bottom: 16px;
+  }
+  .pyramid-level {
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    flex-direction: column; gap: 2px;
+    padding: 10px 16px; text-align: center;
+    position: relative;
+  }
+  .pl-company  { width: 52%;  background: var(--accent);      color: #fff; }
+  .pl-team     { width: 72%;  background: rgba(55,48,163,0.18); color: var(--accent); }
+  .pl-personal { width: 92%;  background: var(--accent-light); color: var(--accent); }
+  .pl-label {
+    font-size: 12px; font-weight: 700; line-height: 1.2;
+  }
+  .pl-sub {
+    font-size: 10px; opacity: 0.75; line-height: 1.3;
+  }
+  /* Стрелки между уровнями пирамиды */
+  .py-arrow {
+    font-size: 12px; color: var(--text-light); line-height: 1;
+  }
+
+  /* Цикл квартала */
+  .cycle-wrap {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 6px;
+    position: relative;
+  }
+  .cycle-step {
+    background: var(--bg);
+    border: 1.5px solid var(--border);
+    border-radius: 8px; padding: 9px 8px;
+    text-align: center; position: relative;
+  }
+  .cycle-step:not(:last-child)::after {
+    content: '→';
+    position: absolute; right: -9px; top: 50%;
+    transform: translateY(-50%);
+    font-size: 11px; color: var(--text-light);
+    font-weight: 600; z-index: 1;
+  }
+  .cs-num {
+    width: 20px; height: 20px; border-radius: 50%;
+    background: var(--accent); color: #fff;
+    font-size: 10px; font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 5px;
+  }
+  .cs-title {
+    font-size: 10.5px; font-weight: 700; color: var(--text-dark);
+    line-height: 1.2;
+  }
+  .cs-time {
+    font-size: 9.5px; color: var(--text-light); margin-top: 2px;
+  }
+
+  .schema-divider {
+    height: 1px; background: var(--border);
+    margin: 14px 0;
+  }
+  .schema-sublabel {
+    font-size: 10px; font-weight: 700;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--text-light); margin-bottom: 10px;
+  }
+
+  /* ── OKR формула ── */
+  .formula-block {
+    background: var(--accent-light);
+    border-radius: var(--r); padding: 14px 18px;
+    border: 1px solid var(--accent-mid);
+  }
+  .formula-row {
+    display: flex; align-items: flex-start; gap: 12px;
+    margin-bottom: 10px;
+  }
+  .formula-row:last-child { margin-bottom: 0; }
+  .formula-key {
+    width: 28px; height: 28px; border-radius: 8px;
+    background: var(--accent); color: #fff;
+    font-family: var(--font-head); font-size: 13px; font-weight: 900;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0; margin-top: 1px;
+  }
+  .formula-content {}
+  .formula-title {
+    font-size: 12.5px; font-weight: 700; color: var(--accent);
+    margin-bottom: 3px;
+  }
+  .formula-text {
+    font-size: 11.5px; color: var(--text-mid); line-height: 1.45;
+  }
+  .formula-example {
+    font-size: 10.5px; color: var(--accent);
+    background: rgba(55,48,163,0.1);
+    padding: 3px 8px; border-radius: 6px;
+    display: inline-block; margin-top: 4px;
+    font-style: italic;
+  }
+  .formula-sep {
+    text-align: center; font-size: 11px; font-weight: 700;
+    color: var(--text-light); letter-spacing: 0.06em;
+    margin: 6px 0;
+  }
+
+  /* ── MAIN IDEA ── */
+  .main-idea {
+    font-size: 15.5px; font-weight: 600; color: var(--text-dark);
+    line-height: 1.55; border-left: 3px solid var(--accent);
+    padding-left: 14px;
+  }
+
+  /* ── DESCRIPTION ── */
+  .description {
+    font-size: 13.5px; line-height: 1.65; color: var(--text-mid);
+  }
+
+  /* ── ПРАВИЛА ── */
+  .rules-label {
+    font-size: 10px; font-weight: 700;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--text-light); margin-bottom: 10px;
+  }
+  .rules-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 8px;
+  }
+  .rule-card {
+    background: var(--card-bg); border: 1px solid var(--border);
+    border-radius: var(--r); padding: 11px 13px;
+  }
+  .rule-title {
+    font-size: 11.5px; font-weight: 700; color: var(--text-dark);
+    margin-bottom: 4px;
+  }
+  .rule-text {
+    font-size: 10.5px; color: var(--text-mid); line-height: 1.45;
+  }
+  .rule-good { border-top: 2px solid #86efac; }
+  .rule-bad  { border-top: 2px solid #fca5a5; }
+
+  /* ── SEE ALSO ── */
+  .see-also-label {
+    font-size: 10px; font-weight: 700;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--text-light); margin-bottom: 8px;
+  }
+  .see-also-chips { display: flex; flex-wrap: wrap; gap: 7px; }
+  .chip {
+    font-size: 12px; font-weight: 500;
+    background: #f1f5f9; color: #334155;
+    border: 1px solid #e2e8f0;
+    padding: 4px 12px; border-radius: 100px;
+    transition: background 0.15s, color 0.15s;
+  }
+  .chip:hover { background: var(--accent-light); color: var(--accent); border-color: var(--accent-mid); }
+
+  /* ── TAGS ── */
+  .tags-row {
+    display: flex; gap: 8px; padding: 16px 36px;
+    border-top: 1px solid var(--border); background: var(--card-bg);
+  }
+  .tag {
+    padding: 5px 14px; border-radius: 100px;
+    font-size: 12px; font-weight: 700;
+    letter-spacing: 0.04em; text-transform: lowercase;
+  }
+  .tag-portfolio { background: var(--purple-bg); color: var(--purple); }
+  .tag-product   { background: var(--green-bg);  color: var(--green); }
+
+  /* ── FOOTER ── */
+  .card-footer {
+    padding: 10px 36px 14px; background: var(--card-bg);
+    font-size: 10px; color: var(--text-light);
+    border-top: 1px solid var(--border);
+    display: flex; justify-content: space-between; align-items: center;
+  }
+
+  @media print {
+    body { background: white; padding: 0; }
+    .card { box-shadow: none; width: 100%; border-radius: 0; }
+  }
+</style>
+</head>
+<body>
+<div class="card">
+
+  <!-- HEADER -->
+  <div class="card-header">
+    <div class="category-badge">🎯 Планирование и управление</div>
+    <div class="card-title">
+      OKR
+      <span>Objectives · Key Results</span>
+    </div>
+    <div class="header-tags">
+      <span class="htag htag-portfolio">portfolio</span>
+      <span class="htag htag-product">product</span>
+    </div>
+  </div>
+
+  <!-- BODY -->
+  <div class="card-body">
+
+    <!-- SCHEMA -->
+    <div class="schema-block">
+      <div class="schema-label">Иерархия и квартальный цикл</div>
+
+      <!-- Пирамида уровней -->
+      <div class="pyramid-wrap">
+        <div class="pyramid-level pl-company">
+          <div class="pl-label">Компания / C-level</div>
+          <div class="pl-sub">1–5 Objectives · горизонт: год</div>
+        </div>
+        <div class="py-arrow">▼</div>
+        <div class="pyramid-level pl-team">
+          <div class="pl-label">Команды / Departments</div>
+          <div class="pl-sub">OKR выровнены с компанией · горизонт: квартал</div>
+        </div>
+        <div class="py-arrow">▼</div>
+        <div class="pyramid-level pl-personal">
+          <div class="pl-label">Личные OKR</div>
+          <div class="pl-sub">Каждый сотрудник · ≤3–5 Objectives · согласованы с командой</div>
+        </div>
+      </div>
+
+      <div class="schema-divider"></div>
+      <div class="schema-sublabel">Квартальный цикл (CFR)</div>
+
+      <!-- Цикл -->
+      <div class="cycle-wrap">
+        <div class="cycle-step">
+          <div class="cs-num">1</div>
+          <div class="cs-title">Постановка OKR</div>
+          <div class="cs-time">Нед. 1–2</div>
+        </div>
+        <div class="cycle-step">
+          <div class="cs-num">2</div>
+          <div class="cs-title">Check-in / CFR</div>
+          <div class="cs-time">Еженедельно</div>
+        </div>
+        <div class="cycle-step">
+          <div class="cs-num">3</div>
+          <div class="cs-title">Mid-quarter Review</div>
+          <div class="cs-time">Середина квартала</div>
+        </div>
+        <div class="cycle-step">
+          <div class="cs-num">4</div>
+          <div class="cs-title">Ретроспектива</div>
+          <div class="cs-time">Последняя нед.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ФОРМУЛА O + KR -->
+    <div class="formula-block">
+      <div class="formula-row">
+        <div class="formula-key">O</div>
+        <div class="formula-content">
+          <div class="formula-title">Objective — Цель</div>
+          <div class="formula-text">Амбициозная, качественная, вдохновляющая цель. Отвечает на вопрос «куда?». Не измерима сама по себе — только через KR.</div>
+          <span class="formula-example">«Стать лидером по NPS среди B2B-инструментов в России»</span>
+        </div>
+      </div>
+      <div class="formula-sep">+ 2–5 Key Results на каждый Objective</div>
+      <div class="formula-row">
+        <div class="formula-key">KR</div>
+        <div class="formula-content">
+          <div class="formula-title">Key Results — Ключевые результаты</div>
+          <div class="formula-text">Измеримые, верифицируемые метрики достижения цели. Отвечают на вопрос «как поймём, что достигли?». Не задачи — это изменения в реальности.</div>
+          <span class="formula-example">«Поднять NPS с 32 до 55 к 30 июня»</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- MAIN IDEA -->
+    <p class="main-idea">
+      OKR выравнивает всю организацию вокруг нескольких важнейших приоритетов и создаёт прозрачность: каждый понимает, куда движется компания и как его работа влияет на результат.
+    </p>
+
+    <!-- DESCRIPTION -->
+    <p class="description">
+      Метод разработан Энди Гроувом в Intel в 1970-х, популяризирован Джоном Дорром, который принёс его в Google в 1999 году. OKR работают на трёх уровнях: компании, команды и личном — через <strong>выравнивание сверху вниз</strong> и <strong>автономию снизу вверх</strong> (40–60% OKR команда ставит самостоятельно). Ключевое правило: KR — это <em>outcomes</em>, а не <em>outputs</em>. Целевой показатель выполнения OKR — <strong>60–70%</strong>: 100% означает, что цель была недостаточно амбициозной. Прогресс отслеживается еженедельно через <strong>CFR</strong> (Conversations, Feedback, Recognition) вместо ежегодных ревью.
+    </p>
+
+    <!-- ПРАВИЛА хорошего OKR -->
+    <div>
+      <div class="rules-label">Хорошие и плохие OKR</div>
+      <div class="rules-grid">
+        <div class="rule-card rule-good">
+          <div class="rule-title">✓ Амбиция, не план</div>
+          <div class="rule-text">OKR должен требовать усилий. Если достижение очевидно — поднимите планку.</div>
+        </div>
+        <div class="rule-card rule-bad">
+          <div class="rule-title">✗ KR — это не задача</div>
+          <div class="rule-text">«Провести 5 встреч» — это задача. «Подписать 3 новых клиента» — Key Result.</div>
+        </div>
+        <div class="rule-card rule-good">
+          <div class="rule-title">✓ Мало, но главное</div>
+          <div class="rule-text">3–5 Objectives, 2–5 KR на каждый. Больше = нет фокуса и нет стратегии.</div>
+        </div>
+        <div class="rule-card rule-bad">
+          <div class="rule-title">✗ Не всё связать с OKR</div>
+          <div class="rule-text">BAU (business as usual) в OKR не вносится. Они только для стратегических приоритетов.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SEE ALSO -->
+    <div>
+      <div class="see-also-label">Смотрите также</div>
+      <div class="see-also-chips">
+        <span class="chip">Ядро стратегии (Румельт)</span>
+        <span class="chip">KPI</span>
+        <span class="chip">North Star Metric</span>
+        <span class="chip">Balanced Scorecard</span>
+        <span class="chip">SMART-цели</span>
+        <span class="chip">Wardley Map</span>
+      </div>
+    </div>
+
+  </div><!-- /card-body -->
+
+  <!-- TAGS -->
+  <div class="tags-row">
+    <span class="tag tag-portfolio">portfolio</span>
+    <span class="tag tag-product">product</span>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="card-footer">
+    <span>OKR · Andy Grove (Intel, 1970s) · John Doerr · «Measure What Matters», 2018</span>
+    <span>🎯 OKR</span>
+  </div>
+
+</div>
+</body>
+</html>
