@@ -59,14 +59,6 @@
       "icon": "💎"
     },
     {
-      "id": "mckinsey7s",
-      "file": "McKinsey7S_card.html",
-      "name": "McKinsey 7S",
-      "subtitle": "Strategy · Structure · Systems · Shared Values · Style · Staff · Skills",
-      "category": "leadership",
-      "icon": "🏛️"
-    },
-    {
       "id": "mintzberg",
       "file": "mintzberg_safari_card.html",
       "name": "Стратегическое сафари",
@@ -97,6 +89,14 @@
       "subtitle": "Gojko Adzic · Why → Who → How → What",
       "category": "planning",
       "icon": "🗺️"
+    },
+    {
+      "id": "mckinsey7s",
+      "file": "McKinsey7S.html",
+      "name": "Модель McKinsey 7S",
+      "subtitle": "7 Стратегических рычагов высокоэффективных компаний",
+      "category": "leadership",
+      "icon": "🏛️"
     }
   ],
   "categories": {
