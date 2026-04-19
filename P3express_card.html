@@ -1,0 +1,733 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>P3.express card</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #f3f6f9;
+      --card: #fafcff;
+      --text: #17202b;
+      --muted: #5a6a7d;
+      --line: #dce4ee;
+      --shadow: 0 20px 60px rgba(10, 25, 50, 0.09);
+      --radius: 28px;
+
+      --accent:   #1d4ed8;
+      --a-bg:     #eff3ff;
+      --b-color:  #0891b2;
+      --b-bg:     #e8f8fd;
+      --c-color:  #059669;
+      --c-bg:     #eafaf3;
+      --d-color:  #d97706;
+      --d-bg:     #fff8ec;
+      --e-color:  #7c3aed;
+      --e-bg:     #f3eeff;
+      --f-color:  #dc2626;
+      --f-bg:     #fff0f0;
+      --g-color:  #15803d;
+      --g-bg:     #edf8f1;
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      padding: 28px;
+      min-height: 100vh;
+      background:
+        radial-gradient(circle at top left, rgba(29,78,216,.10), transparent 22%),
+        radial-gradient(circle at top right, rgba(8,145,178,.10), transparent 24%),
+        linear-gradient(180deg, #f5f8fc 0%, var(--bg) 100%);
+      color: var(--text);
+      font-family: Inter, system-ui, sans-serif;
+      line-height: 1.55;
+    }
+
+    .card {
+      max-width: 1060px;
+      margin: 0 auto;
+      background: var(--card);
+      border-radius: var(--radius);
+      border: 1px solid rgba(17,30,50,.08);
+      overflow: hidden;
+      box-shadow: var(--shadow);
+    }
+
+    /* HERO */
+    .hero {
+      padding: 40px 44px 30px;
+      background:
+        linear-gradient(135deg, rgba(29,78,216,.10), rgba(8,145,178,.10) 48%, rgba(5,150,105,.09) 100%),
+        linear-gradient(180deg, #fdfeff 0%, #f4f8fd 100%);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 7px 12px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.80);
+      border: 1px solid rgba(17,30,50,.08);
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: #3d4f62;
+      margin-bottom: 14px;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(36px, 5.5vw, 62px);
+      line-height: .94;
+      letter-spacing: -0.05em;
+    }
+
+    .subtitle {
+      margin-top: 14px;
+      max-width: 780px;
+      font-size: 17px;
+      color: var(--muted);
+    }
+
+    .meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 18px;
+    }
+
+    .chip {
+      padding: 7px 13px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.85);
+      border: 1px solid rgba(17,30,50,.09);
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    /* SECTIONS */
+    .section {
+      padding: 30px 44px;
+      border-bottom: 1px solid var(--line);
+    }
+    .section:last-child { border-bottom: none; }
+
+    .section-title {
+      margin: 0 0 18px;
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    /* CYCLE FLOW */
+    .cycle-outer {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .cycle-row {
+      display: grid;
+      gap: 8px;
+    }
+    .cycle-row.top    { grid-template-columns: repeat(3, 1fr); }
+    .cycle-row.loop   { grid-template-columns: 1fr 1.6fr 1fr; }
+    .cycle-row.bottom { grid-template-columns: repeat(2, 1fr); }
+
+    .phase {
+      border-radius: 18px;
+      padding: 16px 18px 14px;
+      border: 1px solid rgba(17,30,50,.08);
+      position: relative;
+    }
+
+    .phase-code {
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+
+    .phase h3 {
+      margin: 0 0 6px;
+      font-size: 16px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+
+    .phase p {
+      margin: 0;
+      font-size: 13px;
+      color: #4a5b6e;
+    }
+
+    .phase.a { background: linear-gradient(160deg,#fff 0%,var(--a-bg) 100%); }
+    .phase.b { background: linear-gradient(160deg,#fff 0%,var(--b-bg) 100%); }
+    .phase.c { background: linear-gradient(160deg,#fff 0%,var(--c-bg) 100%); }
+    .phase.d { background: linear-gradient(160deg,#fff 0%,var(--d-bg) 100%); }
+    .phase.e { background: linear-gradient(160deg,#fff 0%,var(--e-bg) 100%); }
+    .phase.f { background: linear-gradient(160deg,#fff 0%,var(--f-bg) 100%); }
+    .phase.g { background: linear-gradient(160deg,#fff 0%,var(--g-bg) 100%); }
+
+    .phase.a .phase-code { color: var(--accent); }
+    .phase.b .phase-code { color: var(--b-color); }
+    .phase.c .phase-code { color: var(--c-color); }
+    .phase.d .phase-code { color: var(--d-color); }
+    .phase.e .phase-code { color: var(--e-color); }
+    .phase.f .phase-code { color: var(--f-color); }
+    .phase.g .phase-code { color: var(--g-color); }
+
+    /* CYCLE BADGE в центре */
+    .cycle-core {
+      border-radius: 22px;
+      background:
+        radial-gradient(circle at center, rgba(255,255,255,.97) 0%, rgba(235,242,255,.95) 100%);
+      border: 2px dashed rgba(29,78,216,.20);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 20px 16px;
+      gap: 6px;
+    }
+
+    .cycle-label {
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: rgba(29,78,216,.55);
+    }
+
+    .cycle-title {
+      font-size: 22px;
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      color: var(--accent);
+      line-height: 1;
+    }
+
+    .cycle-sub {
+      font-size: 13px;
+      color: var(--muted);
+      max-width: 18ch;
+    }
+
+    .note {
+      margin-top: 14px;
+      padding: 14px 18px;
+      border-radius: 16px;
+      background: #f1f5ff;
+      border: 1px solid rgba(29,78,216,.12);
+      font-size: 14.5px;
+      color: #2a3c55;
+    }
+
+    /* STEPS GRID */
+    .steps-outer {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 10px;
+    }
+
+    .phase-col {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .phase-header {
+      border-radius: 12px;
+      padding: 10px 10px 8px;
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: .04em;
+      text-transform: uppercase;
+      text-align: center;
+      border: 1px solid rgba(17,30,50,.08);
+    }
+
+    .phase-header.a { background: var(--a-bg); color: var(--accent); }
+    .phase-header.b { background: var(--b-bg); color: var(--b-color); }
+    .phase-header.c { background: var(--c-bg); color: var(--c-color); }
+    .phase-header.d { background: var(--d-bg); color: var(--d-color); }
+    .phase-header.e { background: var(--e-bg); color: var(--e-color); }
+    .phase-header.f { background: var(--f-bg); color: var(--f-color); }
+    .phase-header.g { background: var(--g-bg); color: var(--g-color); }
+
+    .step-item {
+      border-radius: 10px;
+      padding: 7px 9px;
+      font-size: 11.5px;
+      line-height: 1.4;
+      border: 1px solid rgba(17,30,50,.07);
+      background: #fff;
+      color: #2a3b50;
+    }
+
+    .step-item strong {
+      display: block;
+      font-size: 10.5px;
+      font-weight: 700;
+      letter-spacing: .04em;
+      margin-bottom: 2px;
+      color: #7a8fa0;
+    }
+
+    /* 4 DOCUMENTS */
+    .docs-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+    }
+
+    .doc-card {
+      border-radius: 18px;
+      padding: 18px 16px 16px;
+      border: 1px solid rgba(17,30,50,.08);
+      background: #fff;
+    }
+
+    .doc-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      display: grid;
+      place-items: center;
+      font-size: 18px;
+      margin-bottom: 10px;
+    }
+
+    .doc-card h4 { margin: 0 0 6px; font-size: 15px; font-weight: 700; }
+    .doc-card p  { margin: 0; font-size: 13px; color: var(--muted); }
+
+    /* ROLES */
+    .roles-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+    }
+
+    .role-card {
+      border-radius: 18px;
+      padding: 18px 16px;
+      border: 1px solid rgba(17,30,50,.08);
+      background: #fff;
+    }
+
+    .role-badge {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    .role-card h4 { margin: 0 0 6px; font-size: 15px; font-weight: 700; }
+    .role-card p  { margin: 0; font-size: 13px; color: var(--muted); }
+
+    /* NUPP */
+    .nupp-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+    }
+
+    .nupp-item {
+      border-radius: 16px;
+      padding: 16px;
+      border: 1px solid rgba(17,30,50,.07);
+      background: #fff;
+    }
+
+    .nupp-num {
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: rgba(29,78,216,.50);
+      margin-bottom: 4px;
+    }
+
+    .nupp-item h4 { margin: 0 0 5px; font-size: 14px; font-weight: 700; }
+    .nupp-item p  { margin: 0; font-size: 13px; color: var(--muted); }
+
+    /* MAIN THOUGHT / APPLY */
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1.1fr .9fr;
+      gap: 16px;
+    }
+
+    .box {
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      background: #fff;
+      padding: 22px;
+    }
+
+    /* LIMITATIONS / PROS */
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .list-box {
+      border-radius: 18px;
+      padding: 18px 20px;
+      border: 1px solid rgba(17,30,50,.08);
+    }
+
+    .list-box.green { background: #f0fbf5; border-color: rgba(5,150,105,.14); }
+    .list-box.amber { background: #fffaee; border-color: rgba(217,119,6,.14); }
+
+    .list-box ul { margin: 0; padding-left: 18px; }
+    .list-box ul li { font-size: 14px; color: #2a3c50; margin-bottom: 7px; }
+    .list-box ul li:last-child { margin-bottom: 0; }
+    .list-box h3 { margin: 0 0 12px; font-size: 13px; font-weight: 800; letter-spacing:.06em; text-transform:uppercase; }
+    .list-box.green h3 { color: #0b6b3b; }
+    .list-box.amber h3 { color: #7c4b00; }
+
+    /* TAGS */
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .tags span {
+      padding: 9px 14px;
+      border-radius: 999px;
+      background: #eef2fa;
+      color: #324260;
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    @media (max-width: 960px) {
+      .steps-outer, .docs-grid { grid-template-columns: repeat(4, 1fr); }
+      .cycle-row.top, .cycle-row.loop, .cycle-row.bottom { grid-template-columns: 1fr; }
+      .cycle-core { min-height: 80px; }
+      .grid-2, .two-col, .roles-grid, .nupp-grid { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 640px) {
+      body { padding: 12px; }
+      .hero, .section { padding: 22px 18px; }
+      .steps-outer { grid-template-columns: repeat(2, 1fr); }
+      .docs-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+  </style>
+</head>
+<body>
+<article class="card">
+
+  <!-- HERO -->
+  <header class="hero">
+    <div class="eyebrow">🚀 Управление проектами</div>
+    <h1>P3.express</h1>
+    <div class="subtitle">Минималистичная циклическая система управления проектами: 33 шага в 7 этапах, месячные и еженедельные циклы, четыре обязательных документа и принципы NUPP. Разработана в Европе, адаптирована для русскоязычной аудитории Дмитрием и Валерией Ильенковыми.</div>
+    <div class="meta">
+      <span class="chip">33 шага</span>
+      <span class="chip">7 этапов</span>
+      <span class="chip">Waterfall + Agile</span>
+      <span class="chip">Месячный цикл</span>
+      <span class="chip">NUPP принципы</span>
+    </div>
+  </header>
+
+  <!-- LIFECYCLE SCHEMA -->
+  <section class="section">
+    <h2 class="section-title">Жизненный цикл проекта</h2>
+    <div class="cycle-outer">
+
+      <div class="cycle-row top">
+        <div class="phase a">
+          <div class="phase-code">A · Запуск</div>
+          <h3>Запуск проекта</h3>
+          <p>A01–A10: назначить спонсора и PM, описать проект, определить результаты и риски, провести ревью и решить Go/No-Go.</p>
+        </div>
+        <div class="phase f">
+          <div class="phase-code">F · Закрытие</div>
+          <h3>Закрытие проекта</h3>
+          <p>F01–F06: передать продукт, оценить удовлетворённость, сделать ревью, архивировать документы, отметить завершение 🎉</p>
+        </div>
+        <div class="phase g">
+          <div class="phase-code">G · После</div>
+          <h3>После проекта</h3>
+          <p>G01–G02: оценить полученные выгоды и сгенерировать новые идеи. Единственный «послепроектный» этап.</p>
+        </div>
+      </div>
+
+      <div class="cycle-row loop">
+        <div style="display:flex; flex-direction:column; gap:8px;">
+          <div class="phase b">
+            <div class="phase-code">B · Планирование цикла</div>
+            <h3>Планирование цикла</h3>
+            <p>B01–B05: детализировать планы на месяц, ежемесячное ревью, снова Go/No-Go, стартовая встреча, фокусированная коммуникация.</p>
+          </div>
+          <div class="phase e">
+            <div class="phase-code">E · Закрытие цикла</div>
+            <h3>Закрытие цикла</h3>
+            <p>E01–E03: оценить удовлетворённость стейкхолдеров, извлечь уроки и запланировать улучшения, направить коммуникацию.</p>
+          </div>
+        </div>
+
+        <div class="cycle-core">
+          <div class="cycle-label">Повторяющийся</div>
+          <div class="cycle-title">Месячный<br>цикл</div>
+          <div class="cycle-sub">B → C → D → E повторяются каждый месяц до закрытия</div>
+        </div>
+
+        <div style="display:flex; flex-direction:column; gap:8px;">
+          <div class="phase c">
+            <div class="phase-code">C · Еженедельные</div>
+            <h3>Еженедельные действия</h3>
+            <p>C01–C04: оценить прогресс, реагировать на отклонения, провести еженедельную встречу, направить коммуникацию.</p>
+          </div>
+          <div class="phase d">
+            <div class="phase-code">D · Ежедневные</div>
+            <h3>Ежедневные действия</h3>
+            <p>D01–D02: управлять рисками, проблемами и запросами на изменение; принять готовую работу.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="note"><strong>Ключевой принцип цикличности:</strong> три вложенных цикла — ежемесячный, еженедельный, ежедневный — делают управленческие действия регулярными и предсказуемыми без бюрократической перегрузки.</div>
+  </section>
+
+  <!-- 33 STEPS -->
+  <section class="section">
+    <h2 class="section-title">33 шага по этапам</h2>
+    <div class="steps-outer">
+
+      <div class="phase-col">
+        <div class="phase-header a">A · Запуск<br><small style="font-size:10px;font-weight:600;">10 шагов</small></div>
+        <div class="step-item"><strong>A01</strong>Назначить спонсора</div>
+        <div class="step-item"><strong>A02</strong>Назначить менеджера проекта</div>
+        <div class="step-item"><strong>A03</strong>Назначить ключевых членов команды</div>
+        <div class="step-item"><strong>A04</strong>Описать проект (резюме)</div>
+        <div class="step-item"><strong>A05</strong>Определить ожидаемые результаты</div>
+        <div class="step-item"><strong>A06</strong>Определить риски и меры реагирования</div>
+        <div class="step-item"><strong>A07</strong>Провести ревью запуска</div>
+        <div class="step-item"><strong>A08</strong>Решить «Go/No-Go»</div>
+        <div class="step-item"><strong>A09</strong>Провести стартовую встречу</div>
+        <div class="step-item"><strong>A10</strong>Направить фокус. коммуникацию</div>
+      </div>
+
+      <div class="phase-col">
+        <div class="phase-header b">B · Планирование<br><small style="font-size:10px;font-weight:600;">5 шагов</small></div>
+        <div class="step-item"><strong>B01</strong>Обновить и детализировать планы</div>
+        <div class="step-item"><strong>B02</strong>Провести ежемесячное ревью</div>
+        <div class="step-item"><strong>B03</strong>Решить «Go/No-Go»</div>
+        <div class="step-item"><strong>B04</strong>Провести стартовую встречу цикла</div>
+        <div class="step-item"><strong>B05</strong>Направить фокус. коммуникацию</div>
+      </div>
+
+      <div class="phase-col">
+        <div class="phase-header c">C · Еженедельно<br><small style="font-size:10px;font-weight:600;">4 шага</small></div>
+        <div class="step-item"><strong>C01</strong>Оценить и зафиксировать прогресс</div>
+        <div class="step-item"><strong>C02</strong>Реагировать на отклонения</div>
+        <div class="step-item"><strong>C03</strong>Провести еженедельную встречу</div>
+        <div class="step-item"><strong>C04</strong>Направить фокус. коммуникацию</div>
+      </div>
+
+      <div class="phase-col">
+        <div class="phase-header d">D · Ежедневно<br><small style="font-size:10px;font-weight:600;">2 шага</small></div>
+        <div class="step-item"><strong>D01</strong>Управлять рисками, проблемами и изменениями</div>
+        <div class="step-item"><strong>D02</strong>Принять готовую работу</div>
+      </div>
+
+      <div class="phase-col">
+        <div class="phase-header e">E · Закрытие цикла<br><small style="font-size:10px;font-weight:600;">3 шага</small></div>
+        <div class="step-item"><strong>E01</strong>Оценить удовлетворённость стейкхолдеров</div>
+        <div class="step-item"><strong>E02</strong>Извлечь уроки и запланировать улучшения</div>
+        <div class="step-item"><strong>E03</strong>Направить фокус. коммуникацию</div>
+      </div>
+
+      <div class="phase-col">
+        <div class="phase-header f">F · Закрытие проекта<br><small style="font-size:10px;font-weight:600;">6 шагов</small></div>
+        <div class="step-item"><strong>F01</strong>Передать продукт</div>
+        <div class="step-item"><strong>F02</strong>Оценить удовлетворённость</div>
+        <div class="step-item"><strong>F03</strong>Сделать ревью закрытия</div>
+        <div class="step-item"><strong>F04</strong>Заархивировать документы</div>
+        <div class="step-item"><strong>F05</strong>Отметить окончание!</div>
+        <div class="step-item"><strong>F06</strong>Передать проект</div>
+      </div>
+
+      <div class="phase-col">
+        <div class="phase-header g">G · После проекта<br><small style="font-size:10px;font-weight:600;">2 шага</small></div>
+        <div class="step-item"><strong>G01</strong>Оценить полученные выгоды</div>
+        <div class="step-item"><strong>G02</strong>Сгенерировать новые идеи</div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- 4 DOCUMENTS -->
+  <section class="section">
+    <h2 class="section-title">4 обязательных документа</h2>
+    <div class="docs-grid">
+      <div class="doc-card">
+        <div class="doc-icon" style="background:#eff3ff;">📄</div>
+        <h4>Резюме проекта</h4>
+        <p>Цель, обоснование, ограничения, допущения и ключевые результаты. Создаётся на этапе A, используется как стратегический ориентир до закрытия.</p>
+      </div>
+      <div class="doc-card">
+        <div class="doc-icon" style="background:#eafaf3;">🗺️</div>
+        <h4>Карта результатов</h4>
+        <p>Иерархическая структура ожидаемых результатов (mind map или WBS). Связывает цели со списком задач и служит основой для графика.</p>
+      </div>
+      <div class="doc-card">
+        <div class="doc-icon" style="background:#fff8ec;">📋</div>
+        <h4>Реестр последующих действий</h4>
+        <p>Единый список рисков, проблем и запросов на изменение. Обновляется ежедневно, помогает не терять «хвосты» между циклами.</p>
+      </div>
+      <div class="doc-card">
+        <div class="doc-icon" style="background:#f3eeff;">❤️‍🩺</div>
+        <h4>Реестр «Здоровье проекта»</h4>
+        <p>Обновляется в конце каждого цикла: удовлетворённость стейкхолдеров, проблемы, риски и предложения по улучшению.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ROLES -->
+  <section class="section">
+    <h2 class="section-title">Ключевые роли</h2>
+    <div class="roles-grid">
+      <div class="role-card">
+        <div class="role-badge" style="background:#eff3ff;color:#1d4ed8;">Sponsor</div>
+        <h4>Спонсор</h4>
+        <p>Высшая роль: отвечает за целесообразность проекта, принимает решение Go/No-Go, обеспечивает финансирование и ресурсы. Обычно член совета директоров.</p>
+      </div>
+      <div class="role-card">
+        <div class="role-badge" style="background:#eafaf3;color:#059669;">Project Manager</div>
+        <h4>Менеджер проекта</h4>
+        <p>Отвечает за достижение результатов и состояние команды. Ведёт все управленческие шаги, не занимается микроменеджментом — только координация и устранение блокеров.</p>
+      </div>
+      <div class="role-card">
+        <div class="role-badge" style="background:#fff8ec;color:#d97706;">Team Lead</div>
+        <h4>Тимлид (лидер команды)</h4>
+        <p>«Технический менеджер»: принимает готовую работу от членов команды, передаёт результаты PM. Мост между исполнителями и управленческим уровнем.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- NUPP -->
+  <section class="section">
+    <h2 class="section-title">6 принципов NUPP — Nearly Universal Principles of Projects</h2>
+    <div class="nupp-grid">
+      <div class="nupp-item">
+        <div class="nupp-num">NUP1</div>
+        <h4>Выбирай результаты и истину</h4>
+        <p>Предпочитай факты и реальные результаты групповым привязанностям. Не жертвуй правдой ради комфорта команды.</p>
+      </div>
+      <div class="nupp-item">
+        <div class="nupp-num">NUP2</div>
+        <h4>Работай со стейкхолдерами</h4>
+        <p>Регулярно вовлекай заинтересованных сторон: понимай их ожидания, давай обратную связь, управляй уровнем удовлетворённости.</p>
+      </div>
+      <div class="nupp-item">
+        <div class="nupp-num">NUP3</div>
+        <h4>Всегда будь проактивен</h4>
+        <p>Не жди, пока риски станут проблемами. Действуй превентивно: выявляй угрозы заранее и планируй меры реагирования.</p>
+      </div>
+      <div class="nupp-item">
+        <div class="nupp-num">NUP4</div>
+        <h4>Реагируй на изменения</h4>
+        <p>Среда меняется — планы должны адаптироваться. Контролируй изменения через реестр, а не замалчивай их.</p>
+      </div>
+      <div class="nupp-item">
+        <div class="nupp-num">NUP5</div>
+        <h4>Не делай ничего без цели</h4>
+        <p>Каждый шаг, встреча или документ должны иметь чёткую цель. Если действие не работает на результат — откажись от него.</p>
+      </div>
+      <div class="nupp-item">
+        <div class="nupp-num">NUP6</div>
+        <h4>Используй воспроизводимые элементы</h4>
+        <p>Повторяющиеся циклы, чек-листы и шаблоны экономят энергию и снижают риск пропустить важное. Система важнее импровизации.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- MAIN THOUGHT + HOW TO APPLY -->
+  <section class="section">
+    <div class="grid-2">
+      <div class="box">
+        <h2 class="section-title">Главная мысль</h2>
+        <div style="font-size:19px; line-height:1.50; letter-spacing:-0.02em; color:#17202b; max-width:32ch;">
+          P3.express — это <strong>не ещё одна методология с тяжёлой документацией</strong>, а минималистичный конвейер: три вложенных цикла (месяц → неделя → день) задают ритм, 33 конкретных шага — порядок действий, 4 документа — достаточную базу знаний. Смысл в <strong>регулярности, а не в полноте</strong>.
+        </div>
+      </div>
+      <div class="box">
+        <h2 class="section-title">Как применять</h2>
+        <ol style="padding-left:18px; margin:0; display:grid; gap:8px;">
+          <li style="font-size:14px; color:#2a3c55;"><strong>Назначь спонсора</strong> — без него проект потеряет поддержку при первом конфликте.</li>
+          <li style="font-size:14px; color:#2a3c55;"><strong>Пройди этап A полностью</strong> — резюме и карта результатов сэкономят недели хаоса.</li>
+          <li style="font-size:14px; color:#2a3c55;"><strong>Запускай месячные циклы B→E</strong> — Go/No-Go в начале каждого цикла защищает от «зомби-проектов».</li>
+          <li style="font-size:14px; color:#2a3c55;"><strong>Не пропускай G после завершения</strong> — оценка выгод замыкает петлю обучения организации.</li>
+          <li style="font-size:14px; color:#2a3c55;"><strong>Адаптируй, но не упрощай роли</strong> — спонсор и PM должны быть разными людьми.</li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROS / LIMITATIONS -->
+  <section class="section">
+    <div class="two-col">
+      <div class="list-box green">
+        <h3>Сильные стороны</h3>
+        <ul>
+          <li>Входной порог низкий — не нужно учить новый жаргон или покупать ПО.</li>
+          <li>Совместим с Agile и Waterfall одновременно: степень детализации планов — на усмотрение команды.</li>
+          <li>Встроенные «стоп-клапаны» Go/No-Go в A и B защищают от сжигания бюджета на нежизнеспособных проектах.</li>
+          <li>Три вложенных цикла создают предсказуемый ритм без ежедневных статус-митингов на 30 человек.</li>
+          <li>Этап G (после проекта) уникален: большинство методологий про него «забывают».</li>
+        </ul>
+      </div>
+      <div class="list-box amber">
+        <h3>Ограничения</h3>
+        <ul>
+          <li>Месячный цикл слишком длинный для быстрых продуктовых спринтов — лучше подойдёт Scrum.</li>
+          <li>Не описывает инструменты: нет рекомендаций по Jira, Confluence, Trello — нужно настраивать самостоятельно.</li>
+          <li>Слабо раскрыта работа с большими портфелями и программами — P3.express — про один проект.</li>
+          <li>Требует дисциплины спонсора: без вовлечённого спонсора система деградирует в «формальность».</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- SEE ALSO -->
+  <section class="section">
+    <h2 class="section-title">Смотрите также</h2>
+    <div class="tags">
+      <span>PMBOK (PMI)</span>
+      <span>PRINCE2</span>
+      <span>Scrum</span>
+      <span>NUPP Guide</span>
+      <span>micro.P3.express</span>
+      <span>Risk Register</span>
+      <span>Outcome Map</span>
+      <span>Go/No-Go Decision</span>
+    </div>
+  </section>
+
+</article>
+</body>
+</html>
