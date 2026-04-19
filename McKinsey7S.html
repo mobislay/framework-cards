@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Модель McKinsey 7S — карточка фреймворка</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@700;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --accent:        #3730a3;
+    --accent-dark:   #2e2796;
+    --accent-light:  #e0e7ff;
+    --accent-mid:    #c7d2fe;
+
+    /* Цвета 7 элементов (из инфографики) */
+    --c-strategy:   #e07070; /* розово-красный */
+    --c-structure:  #4aada8; /* бирюзовый */
+    --c-systems:    #4aada8;
+    --c-skills:     #e89c60; /* оранжевый */
+    --c-staff:      #7badd6; /* голубой */
+    --c-style:      #a87dc8; /* фиолетовый */
+    --c-values:     #c9b84c; /* золотой */
+
+    --purple:       #7c3aed;
+    --purple-bg:    #ede9fe;
+    --green:        #16a34a;
+    --green-bg:     #dcfce7;
+    --text-dark:    #111827;
+    --text-mid:     #374151;
+    --text-light:   #6b7280;
+    --border:       #e5e7eb;
+    --bg:           #ffffff;
+    --card-bg:      #f9fafb;
+    --font-head:    'Unbounded', sans-serif;
+    --font-body:    'Inter', sans-serif;
+    --r:            12px;
+  }
+
+  body {
+    font-family: var(--font-body);
+    background: #f3f4f6;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+  }
+
+  .card {
+    width: 640px;
+    background: var(--bg);
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 4px 32px rgba(0,0,0,0.10), 0 1px 4px rgba(0,0,0,0.06);
+  }
+
+  /* ── HEADER ── */
+  .card-header {
+    background: var(--accent);
+    padding: 32px 36px 28px;
+    position: relative;
+    overflow: hidden;
+  }
+  .card-header::before {
+    content: ''; position: absolute;
+    top: -40px; right: -40px;
+    width: 200px; height: 200px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.06);
+  }
+  .card-header::after {
+    content: ''; position: absolute;
+    bottom: -60px; right: 60px;
+    width: 150px; height: 150px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.04);
+  }
+  .category-badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: rgba(255,255,255,0.15);
+    color: #fff; font-size: 11px; font-weight: 600;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    padding: 5px 12px; border-radius: 100px; margin-bottom: 16px;
+  }
+  .card-title {
+    font-family: var(--font-head);
+    font-size: 36px; font-weight: 900; color: #fff;
+    line-height: 1.05; letter-spacing: -1px;
+    position: relative; z-index: 1;
+  }
+  .card-title span {
+    display: block; font-size: 13px;
+    font-family: var(--font-body); font-weight: 500;
+    color: rgba(255,255,255,0.72);
+    letter-spacing: 0.04em; margin-top: 8px;
+  }
+  .header-tags { display: flex; gap: 8px; margin-top: 18px; }
+  .htag {
+    font-size: 11px; font-weight: 600;
+    padding: 3px 10px; border-radius: 100px;
+    letter-spacing: 0.04em; text-transform: lowercase;
+  }
+  .htag-portfolio { background: rgba(124,58,237,0.22); color: #c4b5fd; border: 1px solid rgba(196,181,253,0.3); }
+  .htag-product   { background: rgba(22,163,74,0.22);  color: #86efac; border: 1px solid rgba(134,239,172,0.3); }
+
+  /* ── BODY ── */
+  .card-body {
+    padding: 28px 36px;
+    display: flex; flex-direction: column; gap: 22px;
+  }
+
+  /* ── SCHEMA ── */
+  .schema-block {
+    background: var(--card-bg);
+    border-radius: var(--r); padding: 20px 20px 16px;
+    border: 1px solid var(--border);
+  }
+  .schema-label {
+    font-size: 10px; font-weight: 700;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--text-light); margin-bottom: 16px;
+  }
+
+  /* Сетка-паутина: 3 колонки × 3 строки + SVG-линии */
+  .web-wrap {
+    position: relative;
+  }
+
+  .web-svg {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .web-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: auto auto auto;
+    gap: 8px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .s7-node {
+    border-radius: 10px; padding: 10px 8px;
+    display: flex; flex-direction: column;
+    align-items: center; text-align: center; gap: 4px;
+    position: relative;
+  }
+  .s7-node .s7-icon { font-size: 20px; line-height: 1; }
+  .s7-node .s7-name {
+    font-size: 12px; font-weight: 700; line-height: 1.2;
+  }
+  .s7-node .s7-desc {
+    font-size: 10px; line-height: 1.35; opacity: 0.85;
+    margin-top: 2px;
+  }
+
+  /* Индивидуальные цвета */
+  .n-strategy  { background: #fde8e8; color: #7f1d1d; }
+  .n-structure { background: #ccefed; color: #134e4a; }
+  .n-skills    { background: #fde8cc; color: #7c2d12; }
+  .n-values    { background: #fef3c7; color: #78350f; border: 2px solid #f59e0b; }
+  .n-staff     { background: #dbeafe; color: #1e3a8a; }
+  .n-systems   { background: #ccefed; color: #134e4a; }
+  .n-style     { background: #ede9fe; color: #4c1d95; }
+
+  /* Позиции */
+  .pos-top    { grid-column: 2; grid-row: 1; }
+  .pos-ml     { grid-column: 1; grid-row: 2; }
+  .pos-center { grid-column: 2; grid-row: 2; }
+  .pos-mr     { grid-column: 3; grid-row: 2; }
+  .pos-bl     { grid-column: 1; grid-row: 3; }
+  .pos-bot    { grid-column: 2; grid-row: 3; }
+  .pos-br     { grid-column: 3; grid-row: 3; }
+
+  /* Легенда */
+  .schema-legend {
+    display: flex; gap: 16px; margin-top: 12px;
+    justify-content: center;
+  }
+  .legend-item {
+    display: flex; align-items: center; gap: 5px;
+    font-size: 10px; color: var(--text-light); font-weight: 600;
+  }
+  .legend-dot { width: 10px; height: 10px; border-radius: 3px; }
+
+  /* ── MAIN IDEA ── */
+  .main-idea {
+    font-size: 16px; font-weight: 600; color: var(--text-dark);
+    line-height: 1.55; border-left: 3px solid var(--accent);
+    padding-left: 14px;
+  }
+
+  /* ── DESCRIPTION ── */
+  .description {
+    font-size: 13.5px; line-height: 1.65; color: var(--text-mid);
+  }
+
+  /* ── СОВЕТЫ — пронумерованные карточки ── */
+  .tips-label {
+    font-size: 10px; font-weight: 700;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--text-light); margin-bottom: 10px;
+  }
+  .tips-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 8px;
+  }
+  .tip-card {
+    background: var(--card-bg); border: 1px solid var(--border);
+    border-radius: var(--r); padding: 12px 14px;
+    display: flex; gap: 10px; align-items: flex-start;
+  }
+  .tip-num {
+    width: 22px; height: 22px; border-radius: 50%;
+    background: var(--accent); color: #fff;
+    font-size: 11px; font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0; margin-top: 1px;
+  }
+  .tip-body {}
+  .tip-title {
+    font-size: 11.5px; font-weight: 700;
+    color: var(--text-dark); margin-bottom: 3px;
+  }
+  .tip-text {
+    font-size: 10.5px; color: var(--text-mid); line-height: 1.45;
+  }
+
+  /* ── SEE ALSO ── */
+  .see-also-label {
+    font-size: 10px; font-weight: 700;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--text-light); margin-bottom: 8px;
+  }
+  .see-also-chips { display: flex; flex-wrap: wrap; gap: 7px; }
+  .chip {
+    font-size: 12px; font-weight: 500;
+    background: #f1f5f9; color: #334155;
+    border: 1px solid #e2e8f0;
+    padding: 4px 12px; border-radius: 100px;
+    transition: background 0.15s, color 0.15s;
+  }
+  .chip:hover { background: var(--accent-light); color: var(--accent); border-color: var(--accent-mid); }
+
+  /* ── TAGS ROW ── */
+  .tags-row {
+    display: flex; gap: 8px;
+    padding: 16px 36px;
+    border-top: 1px solid var(--border);
+    background: var(--card-bg);
+  }
+  .tag {
+    padding: 5px 14px; border-radius: 100px;
+    font-size: 12px; font-weight: 700;
+    letter-spacing: 0.04em; text-transform: lowercase;
+  }
+  .tag-portfolio { background: var(--purple-bg); color: var(--purple); }
+  .tag-product   { background: var(--green-bg);  color: var(--green); }
+
+  /* ── FOOTER ── */
+  .card-footer {
+    padding: 10px 36px 14px;
+    background: var(--card-bg); font-size: 10px;
+    color: var(--text-light); border-top: 1px solid var(--border);
+    display: flex; justify-content: space-between; align-items: center;
+  }
+
+  @media print {
+    body { background: white; padding: 0; }
+    .card { box-shadow: none; width: 100%; border-radius: 0; }
+  }
+</style>
+</head>
+<body>
+<div class="card">
+
+  <!-- HEADER -->
+  <div class="card-header">
+    <div class="category-badge">🏛️ Лидерство и HR</div>
+    <div class="card-title">
+      Модель McKinsey 7S
+      <span>7 Стратегических рычагов высокоэффективных компаний</span>
+    </div>
+    <div class="header-tags">
+      <span class="htag htag-portfolio">portfolio</span>
+      <span class="htag htag-product">product</span>
+    </div>
+  </div>
+
+  <!-- BODY -->
+  <div class="card-body">
+
+    <!-- SCHEMA -->
+    <div class="schema-block">
+      <div class="schema-label">Визуальная схема — 7 взаимосвязанных элементов</div>
+
+      <div class="web-wrap">
+        <!-- SVG-паутина соединений -->
+        <svg class="web-svg" viewBox="0 0 580 300" preserveAspectRatio="none" fill="none"
+             xmlns="http://www.w3.org/2000/svg">
+          <!-- Центр примерно (290, 150) -->
+          <!-- Стратегия (290,50) → Ценности (290,150) -->
+          <line x1="290" y1="60"  x2="290" y2="130" stroke="#d1d5db" stroke-width="1.5" stroke-dasharray="4 3"/>
+          <!-- Структура (490,130) → Ценности -->
+          <line x1="470" y1="130" x2="320" y2="150" stroke="#d1d5db" stroke-width="1.5" stroke-dasharray="4 3"/>
+          <!-- Системы (490,220) → Ценности -->
+          <line x1="470" y1="210" x2="320" y2="165" stroke="#d1d5db" stroke-width="1.5" stroke-dasharray="4 3"/>
+          <!-- Навыки (90,130) → Ценности -->
+          <line x1="110" y1="130" x2="260" y2="150" stroke="#d1d5db" stroke-width="1.5" stroke-dasharray="4 3"/>
+          <!-- Персонал (90,220) → Ценности -->
+          <line x1="110" y1="210" x2="260" y2="165" stroke="#d1d5db" stroke-width="1.5" stroke-dasharray="4 3"/>
+          <!-- Стиль (290,240) → Ценности -->
+          <line x1="290" y1="230" x2="290" y2="175" stroke="#d1d5db" stroke-width="1.5" stroke-dasharray="4 3"/>
+          <!-- Стратегия → Структура -->
+          <line x1="320" y1="55"  x2="470" y2="120" stroke="#e5e7eb" stroke-width="1"/>
+          <!-- Стратегия → Навыки -->
+          <line x1="260" y1="55"  x2="110" y2="120" stroke="#e5e7eb" stroke-width="1"/>
+          <!-- Навыки → Персонал -->
+          <line x1="100" y1="155" x2="100" y2="195" stroke="#e5e7eb" stroke-width="1"/>
+          <!-- Структура → Системы -->
+          <line x1="480" y1="155" x2="480" y2="195" stroke="#e5e7eb" stroke-width="1"/>
+          <!-- Персонал → Стиль -->
+          <line x1="130" y1="225" x2="250" y2="248" stroke="#e5e7eb" stroke-width="1"/>
+          <!-- Системы → Стиль -->
+          <line x1="450" y1="225" x2="330" y2="248" stroke="#e5e7eb" stroke-width="1"/>
+        </svg>
+
+        <div class="web-grid">
+          <!-- Стратегия — верх-центр -->
+          <div class="s7-node n-strategy pos-top">
+            <div class="s7-icon">♟️</div>
+            <div class="s7-name">Стратегия</div>
+            <div class="s7-desc">План пути к победе. Задаёт направление и согласовывает приоритеты.</div>
+          </div>
+          <!-- Навыки — ср. левый -->
+          <div class="s7-node n-skills pos-ml">
+            <div class="s7-icon">🌟</div>
+            <div class="s7-name">Навыки</div>
+            <div class="s7-desc">Компетенции, обеспечивающие результат. Трудно масштабируются.</div>
+          </div>
+          <!-- Общие ценности — центр -->
+          <div class="s7-node n-values pos-center">
+            <div class="s7-icon">🤝</div>
+            <div class="s7-name">Общие ценности</div>
+            <div class="s7-desc">Убеждения, объединяющие культуру. Направляют каждое решение.</div>
+          </div>
+          <!-- Структура — ср. правый -->
+          <div class="s7-node n-structure pos-mr">
+            <div class="s7-icon">🏗️</div>
+            <div class="s7-name">Структура</div>
+            <div class="s7-desc">Способ организации работы. Роли чёткие, решения принимаются быстро.</div>
+          </div>
+          <!-- Персонал — нижний левый -->
+          <div class="s7-node n-staff pos-bl">
+            <div class="s7-icon">👥</div>
+            <div class="s7-name">Персонал</div>
+            <div class="s7-desc">Таланты, стоящие за успехом. Разделяют миссию и развивают бизнес.</div>
+          </div>
+          <!-- Стиль — нижний центр -->
+          <div class="s7-node n-style pos-bot">
+            <div class="s7-icon">🧭</div>
+            <div class="s7-name">Стиль</div>
+            <div class="s7-desc">Подход к лидерству. Строит доверие и задаёт культурный тон.</div>
+          </div>
+          <!-- Системы — нижний правый -->
+          <div class="s7-node n-systems pos-br">
+            <div class="s7-icon">⚙️</div>
+            <div class="s7-name">Системы</div>
+            <div class="s7-desc">Повторяемые процессы. Создают последовательность, снижают трение.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="schema-legend">
+        <div class="legend-item">
+          <div class="legend-dot" style="background:#fde8e8; border:1.5px solid #e07070;"></div>
+          Hard S (Стратегия, Структура, Системы)
+        </div>
+        <div class="legend-item">
+          <div class="legend-dot" style="background:#fde8cc; border:1.5px solid #e89c60;"></div>
+          Soft S (Навыки, Персонал, Стиль)
+        </div>
+        <div class="legend-item">
+          <div class="legend-dot" style="background:#fef3c7; border:1.5px solid #f59e0b;"></div>
+          Ядро
+        </div>
+      </div>
+    </div>
+
+    <!-- MAIN IDEA -->
+    <p class="main-idea">
+      Все 7 элементов взаимосвязаны: изменение одного неизбежно тянет за собой остальные. Несогласованность между ними — главная причина провала трансформаций.
+    </p>
+
+    <!-- DESCRIPTION -->
+    <p class="description">
+      Модель разработана в McKinsey &amp; Company Томом Питерсом и Робертом Уотерманом в 1980 году. Элементы делятся на <strong>Hard S</strong> — легко измеримые (<em>Стратегия, Структура, Системы</em>) — и <strong>Soft S</strong> — труднее поддающиеся изменениям (<em>Навыки, Персонал, Стиль</em>). В центре — <strong>Общие ценности</strong>: корпоративная культура, которая пронизывает все остальные элементы. Аудит проводится по шкале 1–10 по каждому S: разрывы в 3+ балла между оценками разных руководителей указывают на слепые зоны.
+    </p>
+
+    <!-- 6 СОВЕТОВ -->
+    <div>
+      <div class="tips-label">6 практических советов по внедрению модели 7S</div>
+      <div class="tips-grid">
+
+        <div class="tip-card">
+          <div class="tip-num">1</div>
+          <div class="tip-body">
+            <div class="tip-title">Начните с аудита 7S</div>
+            <div class="tip-text">Оцените организацию от 1 до 10 по каждому элементу. Попросите 3–5 ключевых руководителей сделать то же самостоятельно. Разрывы в 3+ балла — ваши главные слепые зоны.</div>
+          </div>
+        </div>
+
+        <div class="tip-card">
+          <div class="tip-num">2</div>
+          <div class="tip-body">
+            <div class="tip-title">Начните с общих ценностей</div>
+            <div class="tip-text">Если ценности не проживаются ежедневно, остальные 6 элементов не сработают. Определите 3–5 ключевых ценностей и проверяйте ими каждое важное решение.</div>
+          </div>
+        </div>
+
+        <div class="tip-card">
+          <div class="tip-num">3</div>
+          <div class="tip-body">
+            <div class="tip-title">Исправьте структуру до найма</div>
+            <div class="tip-text">Найм в сломанную структуру умножает проблемы. Определите права принятия решений, устраните дублирование ролей и уточните линии подчинения.</div>
+          </div>
+        </div>
+
+        <div class="tip-card">
+          <div class="tip-num">4</div>
+          <div class="tip-body">
+            <div class="tip-title">Согласуйте системы со стратегией</div>
+            <div class="tip-text">Планирование, бюджетирование и KPI должны поддерживать стратегию. Если нет — вы случайно поощряете неверное поведение.</div>
+          </div>
+        </div>
+
+        <div class="tip-card">
+          <div class="tip-num">5</div>
+          <div class="tip-body">
+            <div class="tip-title">Сделайте стиль измеримым</div>
+            <div class="tip-text">Определите, как выглядит «хорошее лидерство». Создайте поведенческие ориентиры и регулярно оценивайте их через 360-градусные ревью.</div>
+          </div>
+        </div>
+
+        <div class="tip-card">
+          <div class="tip-num">6</div>
+          <div class="tip-body">
+            <div class="tip-title">Пересматривайте все 7S ежеквартально</div>
+            <div class="tip-text">30 минут на квартальном совещании: «Что рассинхронизировано?» Мелкие несоответствия быстро становятся кризисами.</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- SEE ALSO -->
+    <div>
+      <div class="see-also-label">Смотрите также</div>
+      <div class="see-also-chips">
+        <span class="chip">SWOT-анализ</span>
+        <span class="chip">OKR</span>
+        <span class="chip">Balanced Scorecard</span>
+        <span class="chip">Модель OCAI</span>
+        <span class="chip">PESTLE</span>
+        <span class="chip">Спиральная динамика</span>
+      </div>
+    </div>
+
+  </div><!-- /card-body -->
+
+  <!-- TAGS -->
+  <div class="tags-row">
+    <span class="tag tag-portfolio">portfolio</span>
+    <span class="tag tag-product">product</span>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="card-footer">
+    <span>Модель McKinsey 7S · Tom Peters &amp; Robert Waterman · McKinsey &amp; Company, 1980</span>
+    <span>🏛️ 7S</span>
+  </div>
+
+</div>
+</body>
+</html>
