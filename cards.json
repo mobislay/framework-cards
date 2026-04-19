@@ -89,6 +89,14 @@
       "subtitle": "Минималистичная циклическая система управления проектами: 33 шага, 7 этапов, 4 документа",
       "category": "planning",
       "icon": "🚀"
+    },
+    {
+      "id": "impact-map",
+      "file": "ImpactMap.html",
+      "name": "Impact Map",
+      "subtitle": "Gojko Adzic · Why → Who → How → What",
+      "category": "planning",
+      "icon": "🗺️"
     }
   ],
   "categories": {
