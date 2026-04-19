@@ -76,11 +76,11 @@
     },
     {
       "id": "maturity-scale",
-      "file": "maturity_scale_card_redesign.html",
-      "name": "Шкала зрелости проблемы",
-      "subtitle": "Maturity Scale · Problem-Solving Framework",
-      "category": "research",
-      "icon": "🔬"
+      "file": "maturity_scale_card.html",
+      "name": "Шкала зрелости в решении задач",
+      "subtitle": "6 уровней зрелости: от «промолчать» к «взять ответственность»",
+      "category": "leadership",
+      "icon": "🎯"
     }
   ],
   "categories": {
