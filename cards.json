@@ -81,6 +81,14 @@
       "subtitle": "6 уровней зрелости: от «промолчать» к «взять ответственность»",
       "category": "leadership",
       "icon": "🎯"
+    },
+    {
+      "id": "p3express",
+      "file": "P3express_card.html",
+      "name": "P3.express",
+      "subtitle": "Минималистичная циклическая система управления проектами: 33 шага, 7 этапов, 4 документа",
+      "category": "planning",
+      "icon": "🚀"
     }
   ],
   "categories": {
