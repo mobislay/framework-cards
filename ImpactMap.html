@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="ru" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Impact Mapping — карточка фреймворка</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@700;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --accent:       #1e3a8a;
+    --accent-dark:  #1e2f6e;
+    --accent-light: #dbeafe;
+    --accent-mid:   #bfdbfe;
+    --purple:       #7c3aed;
+    --purple-bg:    #ede9fe;
+    --green:        #16a34a;
+    --green-bg:     #dcfce7;
+    --orange:       #ea580c;
+    --orange-bg:    #fff7ed;
+    --text-dark:    #111827;
+    --text-mid:     #374151;
+    --text-light:   #6b7280;
+    --border:       #e5e7eb;
+    --bg:           #ffffff;
+    --card-bg:      #f9fafb;
+    --font-head:    'Unbounded', sans-serif;
+    --font-body:    'Inter', sans-serif;
+    --r:            12px;
+  }
+
+  body {
+    font-family: var(--font-body);
+    background: #f3f4f6;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+  }
+
+  .card {
+    width: 640px;
+    background: var(--bg);
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 4px 32px rgba(0,0,0,0.10), 0 1px 4px rgba(0,0,0,0.06);
+  }
+
+  /* ── HEADER ── */
+  .card-header {
+    background: var(--accent);
+    padding: 32px 36px 28px;
+    position: relative;
+    overflow: hidden;
+  }
+  .card-header::before {
+    content: '';
+    position: absolute;
+    top: -40px; right: -40px;
+    width: 200px; height: 200px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.06);
+  }
+  .card-header::after {
+    content: '';
+    position: absolute;
+    bottom: -60px; right: 60px;
+    width: 150px; height: 150px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.04);
+  }
+
+  .category-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(255,255,255,0.18);
+    color: #fff;
+    font-family: var(--font-body);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 5px 12px;
+    border-radius: 100px;
+    margin-bottom: 16px;
+  }
+
+  .card-title {
+    font-family: var(--font-head);
+    font-size: 38px;
+    font-weight: 900;
+    color: #fff;
+    line-height: 1.05;
+    letter-spacing: -1px;
+    position: relative;
+    z-index: 1;
+  }
+  .card-title span {
+    display: block;
+    font-size: 13px;
+    font-family: var(--font-body);
+    font-weight: 500;
+    color: rgba(255,255,255,0.75);
+    letter-spacing: 0.04em;
+    margin-top: 8px;
+  }
+
+  .header-tags {
+    display: flex;
+    gap: 8px;
+    margin-top: 18px;
+    flex-wrap: wrap;
+  }
+  .htag {
+    font-size: 11px;
+    font-weight: 600;
+    padding: 3px 10px;
+    border-radius: 100px;
+    letter-spacing: 0.04em;
+    text-transform: lowercase;
+  }
+  .htag-portfolio { background: rgba(124,58,237,0.22); color: #c4b5fd; border: 1px solid rgba(196,181,253,0.3); }
+  .htag-product   { background: rgba(22,163,74,0.22);  color: #86efac; border: 1px solid rgba(134,239,172,0.3); }
+
+  /* ── BODY ── */
+  .card-body {
+    padding: 28px 36px;
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+  }
+
+  /* ── SCHEMA — Mind Map дерево ── */
+  .schema-block {
+    background: var(--card-bg);
+    border-radius: var(--r);
+    padding: 20px 20px 16px;
+    border: 1px solid var(--border);
+  }
+  .schema-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-light);
+    margin-bottom: 14px;
+  }
+
+  /* ── IMPACT MAP CHAIN ── */
+  .im-chain {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    flex-wrap: nowrap;
+  }
+
+  /* Узел цепочки */
+  .im-node {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    flex-shrink: 0;
+  }
+
+  .im-circle {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: var(--accent);
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    box-shadow: 0 2px 8px rgba(30,58,138,0.25);
+    flex-shrink: 0;
+  }
+
+  .im-pill {
+    border-radius: 8px;
+    padding: 8px 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2px;
+    min-width: 110px;
+    flex-shrink: 0;
+  }
+
+  .im-pill-q {
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    opacity: 0.65;
+  }
+
+  .im-pill-text {
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 1.3;
+  }
+
+  .im-pill.who  { background: #dbeafe; color: #1e3a8a; }
+  .im-pill.how  { background: #dcfce7; color: #14532d; }
+  .im-pill.what { background: #ffedd5; color: #9a3412; }
+
+  .im-node-label {
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--text-light);
+    letter-spacing: 0.04em;
+    text-align: center;
+  }
+
+  /* Стрелка-коннектор */
+  .im-arrow {
+    display: flex;
+    align-items: center;
+    padding-bottom: 18px;
+    flex-shrink: 0;
+    color: var(--accent-mid);
+  }
+
+  .im-arrow svg {
+    display: block;
+  }
+
+  /* ── MAIN IDEA ── */
+  .main-idea {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text-dark);
+    line-height: 1.55;
+    border-left: 3px solid var(--accent);
+    padding-left: 14px;
+  }
+
+  /* ── DESCRIPTION ── */
+  .description {
+    font-size: 13.5px;
+    line-height: 1.65;
+    color: var(--text-mid);
+  }
+
+  /* ── DETAILS GRID ── */
+  .details-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+  .detail-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: var(--r);
+    padding: 14px 16px;
+  }
+  .detail-card-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 6px;
+  }
+  .detail-icon {
+    width: 28px; height: 28px;
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px;
+    flex-shrink: 0;
+  }
+  .detail-title {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--text-dark);
+    letter-spacing: 0.02em;
+  }
+  .detail-text {
+    font-size: 11.5px;
+    color: var(--text-mid);
+    line-height: 1.55;
+  }
+
+  /* ── SEE ALSO ── */
+  .see-also-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-light);
+    margin-bottom: 8px;
+  }
+  .see-also-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+  }
+  .chip {
+    font-size: 12px;
+    font-weight: 500;
+    background: #f1f5f9;
+    color: #334155;
+    border: 1px solid #e2e8f0;
+    padding: 4px 12px;
+    border-radius: 100px;
+    transition: background 0.15s, color 0.15s;
+  }
+  .chip:hover { background: var(--accent-light); color: var(--accent); border-color: var(--accent); }
+
+  /* ── TAGS ROW ── */
+  .tags-row {
+    display: flex;
+    gap: 8px;
+    padding: 16px 36px;
+    border-top: 1px solid var(--border);
+    background: var(--card-bg);
+  }
+  .tag {
+    padding: 5px 14px;
+    border-radius: 100px;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: lowercase;
+  }
+  .tag-portfolio { background: var(--purple-bg); color: var(--purple); }
+  .tag-product   { background: var(--green-bg);  color: var(--green); }
+
+  /* ── FOOTER ── */
+  .card-footer {
+    padding: 10px 36px 14px;
+    background: var(--card-bg);
+    font-size: 10px;
+    color: var(--text-light);
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  @media print {
+    body { background: white; padding: 0; }
+    .card { box-shadow: none; width: 100%; border-radius: 0; }
+  }
+</style>
+</head>
+<body>
+
+<div class="card">
+
+  <!-- HEADER -->
+  <div class="card-header">
+    <div class="category-badge">🗺️ Стратегия и планирование</div>
+    <div class="card-title">
+      Impact Map
+      <span>Gojko Adzic · Why → Who → How → What</span>
+    </div>
+    <div class="header-tags">
+      <span class="htag htag-portfolio">portfolio</span>
+      <span class="htag htag-product">product</span>
+    </div>
+  </div>
+
+  <!-- BODY -->
+  <div class="card-body">
+
+    <!-- SCHEMA — Mind Map структура -->
+    <div class="schema-block">
+      <div class="schema-label">Визуальная схема — структура Impact Map</div>
+
+      <div class="im-chain">
+
+        <!-- WHY -->
+        <div class="im-node">
+          <div class="im-circle">🎯</div>
+          <div class="im-node-label">Why</div>
+        </div>
+
+        <!-- → -->
+        <div class="im-arrow">
+          <svg width="28" height="16" viewBox="0 0 28 16" fill="none">
+            <path d="M2 8h20M17 3l6 5-6 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+
+        <!-- WHO -->
+        <div class="im-node">
+          <div class="im-pill who">
+            <span class="im-pill-q">Who?</span>
+            <span class="im-pill-text">👤 Пользователи</span>
+          </div>
+          <div class="im-node-label">Актор</div>
+        </div>
+
+        <!-- → -->
+        <div class="im-arrow">
+          <svg width="28" height="16" viewBox="0 0 28 16" fill="none">
+            <path d="M2 8h20M17 3l6 5-6 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+
+        <!-- HOW -->
+        <div class="im-node">
+          <div class="im-pill how">
+            <span class="im-pill-q">How?</span>
+            <span class="im-pill-text">↑ Частота входа</span>
+          </div>
+          <div class="im-node-label">Изменение</div>
+        </div>
+
+        <!-- → -->
+        <div class="im-arrow">
+          <svg width="28" height="16" viewBox="0 0 28 16" fill="none">
+            <path d="M2 8h20M17 3l6 5-6 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+
+        <!-- WHAT -->
+        <div class="im-node">
+          <div class="im-pill what">
+            <span class="im-pill-q">What?</span>
+            <span class="im-pill-text">📧 Email-триггеры</span>
+          </div>
+          <div class="im-node-label">Deliverable</div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- MAIN IDEA -->
+    <p class="main-idea">
+      Impact Map связывает бизнес-цель с конкретными фичами через цепочку: <em>зачем → кто → как → что</em>. Любой deliverable, который нельзя связать с изменением поведения актора — кандидат на удаление.
+    </p>
+
+    <!-- DESCRIPTION -->
+    <p class="description">
+      Техника предложена Гойко Аджичем в 2012 году как способ бороться с feature-driven development — когда команды строят «фичи ради фич». Карта строится коллективно за 1–2 часа: формулируется одна измеримая <strong>SMART-цель</strong> (<em>Why</em>), затем перечисляются все акторы — не только пользователи, но и партнёры, внутренние команды и «антиакторы», которые могут помешать (<em>Who</em>). Для каждого актора описываются изменения поведения, необходимые для достижения цели (<em>How</em>). Только после этого команда определяет конкретные deliverables — фичи и активности (<em>What</em>). Карта пересматривается итеративно: ветки без связи с целью обрезаются.
+    </p>
+
+    <!-- DETAILS GRID -->
+    <div class="details-grid">
+
+      <div class="detail-card">
+        <div class="detail-card-header">
+          <div class="detail-icon" style="background:#dbeafe;">🎯</div>
+          <div class="detail-title">Goal (Why)</div>
+        </div>
+        <div class="detail-text">Одна SMART-цель на карту. Измеримый бизнес-результат, а не активность. Например: «+20% retention за Q3».</div>
+      </div>
+
+      <div class="detail-card">
+        <div class="detail-card-header">
+          <div class="detail-icon" style="background:#dcfce7;">👥</div>
+          <div class="detail-title">Actors (Who)</div>
+        </div>
+        <div class="detail-text">Все, кто влияет на цель: пользователи, стейкхолдеры, партнёры, внутренние команды. Включая тех, кто может помешать.</div>
+      </div>
+
+      <div class="detail-card">
+        <div class="detail-card-header">
+          <div class="detail-icon" style="background:#e0e7ff;">⚡</div>
+          <div class="detail-title">Impacts (How)</div>
+        </div>
+        <div class="detail-text">Изменения поведения акторов, необходимые для достижения цели. Не задачи — именно поведенческий сдвиг.</div>
+      </div>
+
+      <div class="detail-card">
+        <div class="detail-card-header">
+          <div class="detail-icon" style="background:#ffedd5;">📦</div>
+          <div class="detail-title">Deliverables (What)</div>
+        </div>
+        <div class="detail-text">Фичи, инструменты и активности, которые создают нужный impact. Каждый deliverable должен быть привязан к конкретному impact.</div>
+      </div>
+
+    </div>
+
+    <!-- SEE ALSO -->
+    <div>
+      <div class="see-also-label">Смотрите также</div>
+      <div class="see-also-chips">
+        <span class="chip">User Story Map</span>
+        <span class="chip">Opportunity Solution Tree</span>
+        <span class="chip">OKR</span>
+        <span class="chip">Jobs to be Done</span>
+        <span class="chip">Lean Analytics</span>
+        <span class="chip">Value Proposition Canvas</span>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- TAGS -->
+  <div class="tags-row">
+    <span class="tag tag-portfolio">portfolio</span>
+    <span class="tag tag-product">product</span>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="card-footer">
+    <span>Impact Mapping · Gojko Adzic · «Impact Mapping» (Provoking Thoughts, 2012)</span>
+    <span>🗺️ IM</span>
+  </div>
+
+</div>
+
+</body>
+</html>
