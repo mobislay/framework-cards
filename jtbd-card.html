@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="ru" data-theme="light">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Jobs to be Done — Карточка техники</title>
+<link href="https://api.fontshare.com/v2/css?f[]=satoshi@300,400,500,700,900&display=swap" rel="stylesheet"/>
+<style>
+:root,[data-theme="light"]{
+  --bg:#f4f4f4;--surface:#fff;--surface-2:#fafafa;--offset:#f0f0f0;--offset-2:#e8e8e8;
+  --divider:#ececec;--border:#e4e4e4;
+  --text:#0a0a0a;--muted:#6b6b6b;--faint:#a3a3a3;--inverse:#fff;
+  --blue:#2b6df6;--green:#22c55e;--amber:#f59e0b;--red:#ef4444;--violet:#8b5cf6;--teal:#14b8a6;--rose:#f43f5e;
+  --shadow-sm:0 1px 2px rgba(10,10,10,.04);
+  --shadow-md:0 4px 16px rgba(10,10,10,.07);
+  --shadow-lg:0 20px 48px rgba(10,10,10,.09);
+  --r-sm:.375rem;--r-md:.5rem;--r-lg:.75rem;--r-xl:1rem;--r-2xl:1.25rem;--r-full:9999px;
+  --s-1:.25rem;--s-2:.5rem;--s-3:.75rem;--s-4:1rem;--s-5:1.25rem;--s-6:1.5rem;
+  --s-8:2rem;--s-10:2.5rem;--s-12:3rem;--s-16:4rem;--s-20:5rem;
+  --t:180ms cubic-bezier(.16,1,.3,1);
+  --xs:clamp(.75rem,.7rem + .2vw,.8125rem);
+  --sm:clamp(.875rem,.82rem + .2vw,.9375rem);
+  --base:clamp(1rem,.95rem + .25vw,1.0625rem);
+  --lg:clamp(1.125rem,1rem + .5vw,1.375rem);
+  --xl:clamp(1.5rem,1.2rem + 1vw,2rem);
+  --2xl:clamp(2rem,1.2rem + 2vw,3rem);
+  --hero:clamp(3.5rem,1rem + 8vw,8rem);
+}
+[data-theme="dark"]{
+  --bg:#0a0a0a;--surface:#141414;--surface-2:#1a1a1a;--offset:#1f1f1f;--offset-2:#262626;
+  --divider:#262626;--border:#2d2d2d;
+  --text:#f4f4f4;--muted:#a3a3a3;--faint:#6b6b6b;--inverse:#0a0a0a;
+  --shadow-sm:0 1px 2px rgba(0,0,0,.3);--shadow-md:0 4px 16px rgba(0,0,0,.4);--shadow-lg:0 20px 48px rgba(0,0,0,.5);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased}
+body{font-family:'Satoshi','Inter',system-ui,sans-serif;font-size:var(--base);line-height:1.6;color:var(--text);background:var(--bg);min-height:100dvh;transition:background var(--t),color var(--t)}
+h1,h2,h3,h4{font-weight:700;letter-spacing:-.02em;line-height:1.15}
+p{color:var(--muted);max-width:72ch}
+button{font:inherit;cursor:pointer;background:none;border:none;color:inherit}
+svg{display:block}
+.container{max-width:1100px;margin-inline:auto;padding-inline:var(--s-6)}
+
+/* Header */
+.site-header{position:sticky;top:0;z-index:50;backdrop-filter:blur(14px);background:color-mix(in oklab,var(--bg) 80%,transparent);border-bottom:1px solid var(--divider)}
+.header-inner{display:flex;align-items:center;justify-content:space-between;padding-block:var(--s-4)}
+.brand{display:flex;align-items:center;gap:var(--s-2);font-weight:700}
+.brand-dot{width:8px;height:8px;border-radius:var(--r-full);background:var(--text)}
+.header-nav{display:flex;gap:var(--s-6);font-size:var(--sm);color:var(--muted)}
+.header-nav a{text-decoration:none;transition:color var(--t)}
+.header-nav a:hover{color:var(--text)}
+.theme-toggle{width:36px;height:36px;border-radius:var(--r-full);border:1px solid var(--border);display:grid;place-items:center;transition:all var(--t)}
+.theme-toggle:hover{background:var(--offset)}
+@media(max-width:720px){.header-nav{display:none}}
+
+/* Hero */
+.hero{padding-block:var(--s-20) var(--s-14);border-bottom:1px solid var(--divider)}
+.eyebrow{display:inline-flex;align-items:center;gap:var(--s-2);font-size:var(--xs);text-transform:uppercase;letter-spacing:.14em;color:var(--muted);margin-bottom:var(--s-6)}
+.eyebrow::before{content:'';width:6px;height:6px;border-radius:var(--r-full);background:var(--violet)}
+.hero h1{font-size:var(--hero);font-weight:900;letter-spacing:-.05em;margin-bottom:var(--s-5)}
+.hero-lede{font-size:var(--lg);max-width:58ch}
+.hero-meta{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:var(--s-6);margin-top:var(--s-10);padding-top:var(--s-8);border-top:1px solid var(--divider)}
+.hero-meta .k{font-size:var(--xs);color:var(--faint);text-transform:uppercase;letter-spacing:.12em;margin-bottom:var(--s-1)}
+.hero-meta .v{font-size:var(--base);font-weight:500}
+
+/* Section */
+.block{padding-block:var(--s-20);border-bottom:1px solid var(--divider)}
+.section-head{display:grid;grid-template-columns:180px 1fr;gap:var(--s-12);margin-bottom:var(--s-10)}
+@media(max-width:720px){.section-head{grid-template-columns:1fr;gap:var(--s-3)}}
+.section-index{font-size:var(--xs);color:var(--faint);letter-spacing:.16em;text-transform:uppercase}
+.section-title{font-size:var(--xl);margin-bottom:var(--s-3)}
+.section-desc{font-size:var(--base)}
+
+/* ═══════════════════════════════
+   THREE JOB DIMENSIONS
+═══════════════════════════════ */
+.dims{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--s-4)}
+@media(max-width:720px){.dims{grid-template-columns:1fr}}
+.dim-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-xl);padding:var(--s-8) var(--s-6);display:flex;flex-direction:column;gap:var(--s-4);box-shadow:var(--shadow-sm);transition:all var(--t)}
+.dim-card:hover{box-shadow:var(--shadow-md);transform:translateY(-2px)}
+.dim-letter{font-size:var(--2xl);font-weight:900;letter-spacing:-.04em;line-height:1}
+.dim-card h3{font-size:var(--lg);margin:0}
+.dim-card p{font-size:var(--sm);margin:0;flex:1}
+.dim-example{margin-top:auto;padding:var(--s-3) var(--s-4);background:var(--offset);border-radius:var(--r-lg);font-size:var(--xs);color:var(--muted);font-style:italic}
+
+/* ═══════════════════════════════
+   SWITCH FORCES — 2×2 diagram
+═══════════════════════════════ */
+.forces-wrap{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-xl);overflow:hidden}
+.forces-header{padding:var(--s-5) var(--s-6);border-bottom:1px solid var(--divider);display:flex;align-items:center;justify-content:space-between}
+.forces-header h3{font-size:var(--base);font-weight:600}
+.forces-diagram{display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:1px;background:var(--divider)}
+.force-cell{padding:var(--s-8) var(--s-6);background:var(--surface);transition:background var(--t)}
+.force-cell:hover{background:var(--surface-2)}
+.force-tag{display:inline-flex;align-items:center;gap:var(--s-2);font-size:var(--xs);text-transform:uppercase;letter-spacing:.12em;font-weight:600;margin-bottom:var(--s-3)}
+.force-dot{width:8px;height:8px;border-radius:var(--r-full);flex-shrink:0}
+.force-cell h4{font-size:var(--lg);margin-bottom:var(--s-2)}
+.force-cell p{font-size:var(--sm);margin:0}
+.force-arrow{font-size:var(--2xl);font-weight:900;color:var(--faint);margin-bottom:var(--s-2);line-height:1}
+.forces-axis{display:flex;align-items:center;justify-content:space-between;padding:var(--s-3) var(--s-6);background:var(--offset);border-top:1px solid var(--divider);font-size:var(--xs);color:var(--faint);text-transform:uppercase;letter-spacing:.1em}
+
+/* ═══════════════════════════════
+   JOB STATEMENT BUILDER
+═══════════════════════════════ */
+.stmt-wrap{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-xl);overflow:hidden}
+.stmt-header{padding:var(--s-5) var(--s-6);border-bottom:1px solid var(--divider)}
+.stmt-header h3{font-size:var(--base);font-weight:600}
+.stmt-parts{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--divider)}
+@media(max-width:640px){.stmt-parts{grid-template-columns:1fr}}
+.stmt-part{padding:var(--s-6);background:var(--surface)}
+.stmt-part-label{font-size:var(--xs);text-transform:uppercase;letter-spacing:.12em;font-weight:600;margin-bottom:var(--s-2)}
+.stmt-part-key{font-size:var(--xl);font-weight:900;margin-bottom:var(--s-2)}
+.stmt-part p{font-size:var(--sm);margin:0}
+.stmt-template{padding:var(--s-5) var(--s-6);background:var(--offset);border-top:1px solid var(--divider);font-size:var(--sm);color:var(--muted);line-height:1.7}
+.stmt-template em{color:var(--text);font-style:normal;font-weight:500}
+
+/* ═══════════════════════════════
+   JOB MAP 8 STEPS
+═══════════════════════════════ */
+.jobmap{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--s-3)}
+@media(max-width:720px){.jobmap{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:420px){.jobmap{grid-template-columns:1fr}}
+.jm-step{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-xl);padding:var(--s-5);transition:all var(--t);position:relative;overflow:hidden}
+.jm-step::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--step-color,var(--faint))}
+.jm-step:hover{box-shadow:var(--shadow-md)}
+.jm-num{font-family:'SF Mono',ui-monospace,monospace;font-size:var(--xs);color:var(--faint);margin-bottom:var(--s-2)}
+.jm-step h4{font-size:var(--base);font-weight:600;margin-bottom:var(--s-1)}
+.jm-step p{font-size:var(--xs);margin:0}
+
+/* ═══════════════════════════════
+   ODI FORMULA CALLOUT
+═══════════════════════════════ */
+.callout{background:var(--text);color:var(--inverse);border-radius:var(--r-2xl);padding:var(--s-12);display:grid;grid-template-columns:1fr 1fr;gap:var(--s-8);align-items:center}
+@media(max-width:720px){.callout{grid-template-columns:1fr;padding:var(--s-8)}}
+.callout-eyebrow{font-size:var(--xs);text-transform:uppercase;letter-spacing:.14em;color:color-mix(in oklab,var(--inverse) 50%,transparent);margin-bottom:var(--s-4)}
+.callout h2{font-size:var(--2xl);letter-spacing:-.03em;line-height:1.1}
+.callout p{color:color-mix(in oklab,var(--inverse) 65%,transparent);font-size:var(--base);margin-top:var(--s-4);max-width:44ch}
+.odi-formula{background:color-mix(in oklab,var(--inverse) 8%,transparent);border-radius:var(--r-xl);padding:var(--s-6)}
+.odi-label{font-size:var(--xs);text-transform:uppercase;letter-spacing:.12em;color:color-mix(in oklab,var(--inverse) 45%,transparent);margin-bottom:var(--s-4)}
+.odi-eq{font-size:var(--lg);font-weight:700;line-height:1.6}
+.odi-eq span{display:block;font-size:var(--xs);font-weight:400;color:color-mix(in oklab,var(--inverse) 50%,transparent);margin-top:var(--s-1)}
+
+/* ═══════════════════════════════
+   MISTAKES
+═══════════════════════════════ */
+.mistake-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:var(--s-4)}
+.mistake{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-xl);padding:var(--s-6);transition:all var(--t)}
+.mistake:hover{border-color:var(--text)}
+.mistake .num{font-family:'SF Mono',ui-monospace,monospace;font-size:var(--xs);color:var(--faint);margin-bottom:var(--s-3)}
+.mistake h3{font-size:var(--lg);margin-bottom:var(--s-2)}
+.mistake p{font-size:var(--sm)}
+
+/* SEE ALSO */
+.see-also{display:flex;flex-wrap:wrap;gap:var(--s-3)}
+.see-chip{display:inline-flex;align-items:center;gap:var(--s-2);padding:var(--s-2) var(--s-4);background:var(--surface);border:1px solid var(--border);border-radius:var(--r-full);font-size:var(--sm);transition:all var(--t)}
+.see-chip:hover{background:var(--offset);border-color:var(--text)}
+
+footer{padding-block:var(--s-12);font-size:var(--sm);color:var(--muted)}
+.footer-inner{display:flex;justify-content:space-between;flex-wrap:wrap;gap:var(--s-4)}
+.fade-up{opacity:0;transform:translateY(10px);transition:opacity .6s ease,transform .6s ease}
+.fade-up.in{opacity:1;transform:none}
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container header-inner">
+    <div class="brand"><span class="brand-dot"></span> JTBD</div>
+    <nav class="header-nav">
+      <a href="#dims">Измерения</a>
+      <a href="#forces">4 силы</a>
+      <a href="#statement">Job Statement</a>
+      <a href="#jobmap">Job Map</a>
+    </nav>
+    <button class="theme-toggle" data-theme-toggle aria-label="Переключить тему">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+    </button>
+  </div>
+</header>
+
+<!-- Hero -->
+<section class="hero">
+  <div class="container">
+    <div class="eyebrow">Technique Card · Clayton Christensen · Tony Ulwick · Research</div>
+    <h1>Jobs to<br/>be Done.</h1>
+    <p class="hero-lede">Люди не покупают продукт — они нанимают его выполнить работу. JTBD сдвигает фокус с «кто покупает» на «зачем покупают», раскрывая истинную мотивацию через контекст и обстоятельства.</p>
+    <div class="hero-meta">
+      <div><div class="k">Измерений работы</div><div class="v">3</div></div>
+      <div><div class="k">Сил переключения</div><div class="v">4</div></div>
+      <div><div class="k">Шагов Job Map</div><div class="v">8</div></div>
+      <div><div class="k">Авторы</div><div class="v">Christensen · Ulwick</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- Three dimensions -->
+<section class="block" id="dims">
+  <div class="container">
+    <div class="section-head">
+      <div class="section-index">01 — Dimensions</div>
+      <div>
+        <h2 class="section-title">Три измерения работы</h2>
+        <p class="section-desc">Каждая «работа» существует одновременно в трёх плоскостях. Функциональная — очевидна, эмоциональная и социальная — скрыты, но часто важнее для решения о переключении.</p>
+      </div>
+    </div>
+
+    <div class="dims">
+      <div class="dim-card">
+        <div class="dim-letter" style="color:var(--blue)">F</div>
+        <h3>Функциональная</h3>
+        <p>Практическая задача, которую нужно выполнить. Рациональный, измеримый уровень. Именно про неё обычно говорят в фичах и требованиях.</p>
+        <div class="dim-example">«Добраться из А в Б быстрее 30 минут»</div>
+      </div>
+      <div class="dim-card">
+        <div class="dim-letter" style="color:var(--violet)">Э</div>
+        <h3>Эмоциональная</h3>
+        <p>Как человек хочет себя чувствовать при выполнении работы. Уверенность, спокойствие, удовольствие — часто решают больше, чем функция.</p>
+        <div class="dim-example">«Чувствовать себя организованным, а не хаотичным»</div>
+      </div>
+      <div class="dim-card">
+        <div class="dim-letter" style="color:var(--teal)">С</div>
+        <h3>Социальная</h3>
+        <p>Как человек хочет выглядеть в глазах других — коллег, друзей, общества. Зачастую не осознаётся, но влияет на выбор бренда и продукта.</p>
+        <div class="dim-example">«Выглядеть экспертом, которому можно доверять»</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 4 Switch Forces -->
+<section class="block" id="forces">
+  <div class="container">
+    <div class="section-head">
+      <div class="section-index">02 — Switch Forces</div>
+      <div>
+        <h2 class="section-title">4 силы переключения</h2>
+        <p class="section-desc">Модель Боба Моэсты. Переключение с одного решения на другое — это не мгновенный выбор, а результат борьбы четырёх сил. Две толкают вперёд, две удерживают.</p>
+      </div>
+    </div>
+
+    <div class="forces-wrap">
+      <div class="forces-header">
+        <h3>The Switch — четыре силы момента</h3>
+        <span style="font-size:var(--xs);color:var(--faint)">Bob Moesta · Switch Interview</span>
+      </div>
+      <div class="forces-diagram">
+        <!-- Push — top left -->
+        <div class="force-cell">
+          <div class="force-arrow" style="color:var(--green)">↑</div>
+          <div class="force-tag" style="color:var(--green)"><span class="force-dot" style="background:var(--green)"></span>Push — Толчок</div>
+          <h4>Тянет от старого</h4>
+          <p>Неудовлетворённость текущим решением открывает к переменам. «Это больше не работает для меня».</p>
+        </div>
+        <!-- Pull — top right -->
+        <div class="force-cell">
+          <div class="force-arrow" style="color:var(--blue)">→</div>
+          <div class="force-tag" style="color:var(--blue)"><span class="force-dot" style="background:var(--blue)"></span>Pull — Притяжение</div>
+          <h4>Тянет к новому</h4>
+          <p>Привлекательность нового решения заставляет попробовать. «Это именно то, что мне нужно».</p>
+        </div>
+        <!-- Anxiety — bottom left -->
+        <div class="force-cell">
+          <div class="force-arrow" style="color:var(--amber)">⚡</div>
+          <div class="force-tag" style="color:var(--amber)"><span class="force-dot" style="background:var(--amber)"></span>Anxiety — Тревога</div>
+          <h4>Страх нового</h4>
+          <p>Страх неизвестного тормозит переход. «А вдруг новое окажется хуже, и я потеряю время?»</p>
+        </div>
+        <!-- Habit — bottom right -->
+        <div class="force-cell">
+          <div class="force-arrow" style="color:var(--rose)">↩</div>
+          <div class="force-tag" style="color:var(--rose)"><span class="force-dot" style="background:var(--rose)"></span>Habit — Привычка</div>
+          <h4>Комфорт старого</h4>
+          <p>Существующая привычка удерживает. «Я уже знаю, как это работает — зачем меняться?»</p>
+        </div>
+      </div>
+      <div class="forces-axis">
+        <span>↑ → Силы, продвигающие переключение</span>
+        <span>⚡ ↩ Силы, удерживающие от переключения</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Job Statement -->
+<section class="block" id="statement">
+  <div class="container">
+    <div class="section-head">
+      <div class="section-index">03 — Job Statement</div>
+      <div>
+        <h2 class="section-title">Формат Job Statement</h2>
+        <p class="section-desc">Структурированный шаблон фиксирует работу точно и без интерпретаций. Три части — ситуация, мотивация, ожидаемый результат.</p>
+      </div>
+    </div>
+
+    <div class="stmt-wrap">
+      <div class="stmt-header">
+        <h3>«Когда [ситуация] → я хочу [мотивация] → чтобы [результат]»</h3>
+      </div>
+      <div class="stmt-parts">
+        <div class="stmt-part">
+          <div class="stmt-part-label" style="color:var(--blue)">Ситуация</div>
+          <div class="stmt-part-key">Когда…</div>
+          <p>Контекст и триггер: что происходит прямо сейчас, что запускает потребность. Это самая важная часть — без контекста работа теряет смысл.</p>
+        </div>
+        <div class="stmt-part">
+          <div class="stmt-part-label" style="color:var(--violet)">Мотивация</div>
+          <div class="stmt-part-key">я хочу…</div>
+          <p>Действие, которое хочет совершить пользователь. Не финальный результат, а намерение — оно раскрывает глубинную логику выбора.</p>
+        </div>
+        <div class="stmt-part">
+          <div class="stmt-part-label" style="color:var(--green)">Результат</div>
+          <div class="stmt-part-key">чтобы…</div>
+          <p>Желаемый исход — функциональный, эмоциональный или социальный. Именно здесь видно, как три измерения работы переплетаются.</p>
+        </div>
+      </div>
+      <div class="stmt-template">
+        <strong style="color:var(--text)">Пример:</strong> «Когда я <em>готовлюсь к презентации совету директоров</em>, я хочу <em>быстро найти достоверную статистику по рынку</em>, чтобы <em>выглядеть экспертом и не попасть в просак перед топами</em>.»
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Job Map -->
+<section class="block" id="jobmap">
+  <div class="container">
+    <div class="section-head">
+      <div class="section-index">04 — Job Map</div>
+      <div>
+        <h2 class="section-title">Job Map — 8 шагов</h2>
+        <p class="section-desc">Декомпозирует работу на универсальные шаги, обнажая незакрытые потребности. Метод Tony Ulwick из Outcome-Driven Innovation.</p>
+      </div>
+    </div>
+
+    <div class="jobmap">
+      <div class="jm-step" style="--step-color:var(--blue)">
+        <div class="jm-num">01</div>
+        <h4>Define</h4>
+        <p>Определить цели и параметры работы</p>
+      </div>
+      <div class="jm-step" style="--step-color:var(--blue)">
+        <div class="jm-num">02</div>
+        <h4>Locate</h4>
+        <p>Найти нужные ресурсы и информацию</p>
+      </div>
+      <div class="jm-step" style="--step-color:var(--violet)">
+        <div class="jm-num">03</div>
+        <h4>Prepare</h4>
+        <p>Подготовить окружение и инструменты</p>
+      </div>
+      <div class="jm-step" style="--step-color:var(--violet)">
+        <div class="jm-num">04</div>
+        <h4>Confirm</h4>
+        <p>Убедиться в готовности к выполнению</p>
+      </div>
+      <div class="jm-step" style="--step-color:var(--green)">
+        <div class="jm-num">05</div>
+        <h4>Execute</h4>
+        <p>Выполнить ключевую задачу</p>
+      </div>
+      <div class="jm-step" style="--step-color:var(--green)">
+        <div class="jm-num">06</div>
+        <h4>Monitor</h4>
+        <p>Отслеживать процесс и результаты</p>
+      </div>
+      <div class="jm-step" style="--step-color:var(--amber)">
+        <div class="jm-num">07</div>
+        <h4>Modify</h4>
+        <p>Корректировать по ходу выполнения</p>
+      </div>
+      <div class="jm-step" style="--step-color:var(--amber)">
+        <div class="jm-num">08</div>
+        <h4>Conclude</h4>
+        <p>Завершить и зафиксировать результат</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ODI Callout -->
+<section class="block">
+  <div class="container">
+    <div class="callout">
+      <div>
+        <div class="callout-eyebrow">Outcome-Driven Innovation · Tony Ulwick</div>
+        <h2>Количественная приоритизация возможностей.</h2>
+        <p>ODI добавляет к JTBD математику: формула возможности показывает, где продукт недовыполняет важные для пользователя задачи. Высокая важность + низкая удовлетворённость = точка роста.</p>
+      </div>
+      <div class="odi-formula">
+        <div class="odi-label">Формула возможности (Opportunity Score)</div>
+        <div class="odi-eq">
+          Opportunity
+          <span>= Importance + max(Importance − Satisfaction, 0)</span>
+        </div>
+        <div style="height:var(--s-4)"></div>
+        <div style="font-size:var(--xs);color:color-mix(in oklab,var(--inverse) 45%,transparent);line-height:1.8">
+          <div>Importance ≥ 8, Satisfaction ≤ 4 → приоритет</div>
+          <div>Importance &lt; 6 → неважная работа</div>
+          <div>Satisfaction ≥ Importance → перенасыщение</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Mistakes -->
+<section class="block">
+  <div class="container">
+    <div class="section-head">
+      <div class="section-index">05 — Mistakes</div>
+      <div>
+        <h2 class="section-title">Типичные ошибки</h2>
+        <p class="section-desc">Большинство ошибок — в подмене работы решением и игнорировании контекста переключения.</p>
+      </div>
+    </div>
+
+    <div class="mistake-grid">
+      <div class="mistake">
+        <div class="num">ERR 01</div>
+        <h3>«Работа» — это фича</h3>
+        <p>«Я хочу дашборд» — это не работа, это решение. Работа — это «я хочу быстро понять, всё ли идёт по плану, чтобы не беспокоиться в нерабочее время».</p>
+      </div>
+      <div class="mistake">
+        <div class="num">ERR 02</div>
+        <h3>Игнорировать контекст ситуации</h3>
+        <p>Job Statement без «Когда…» — это просто желание, а не работа. Контекст определяет, какое решение будет «нанято». Одна и та же потребность в разном контексте требует разных продуктов.</p>
+      </div>
+      <div class="mistake">
+        <div class="num">ERR 03</div>
+        <h3>Только функциональное измерение</h3>
+        <p>Игнорирование эмоционального и социального измерения оставляет вас с неполной картиной. Часто именно они — настоящая причина переключения или отказа.</p>
+      </div>
+      <div class="mistake">
+        <div class="num">ERR 04</div>
+        <h3>Switch Interview без хронологии</h3>
+        <p>Switch Interview — это реконструкция конкретного события покупки/переключения. Если интервью не восстанавливает хронологию момента, вы получаете мнения, а не данные.</p>
+      </div>
+      <div class="mistake">
+        <div class="num">ERR 05</div>
+        <h3>ODI без достаточной выборки</h3>
+        <p>Формула возможности работает на количественных данных. Расставить оценки важности и удовлетворённости вместе с командой за 30 минут — не ODI, это имитация приоритизации.</p>
+      </div>
+      <div class="mistake">
+        <div class="num">ERR 06</div>
+        <h3>JTBD как замена персонам</h3>
+        <p>JTBD не отменяет персоны — он дополняет их. Персоны отвечают «кто», JTBD — «зачем». Вместе они дают полную картину для дизайна продукта.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- See also -->
+<section class="block" style="border-bottom:none">
+  <div class="container">
+    <div class="section-head">
+      <div class="section-index">See Also</div>
+      <div>
+        <h2 class="section-title">Смотрите также</h2>
+        <p class="section-desc">Инструменты, которые используются вместе с JTBD или дополняют его.</p>
+      </div>
+    </div>
+    <div class="see-also">
+      <div class="see-chip">Outcome-Driven Innovation</div>
+      <div class="see-chip">Customer Journey Map</div>
+      <div class="see-chip">Value Proposition Canvas</div>
+      <div class="see-chip">Switch Interview</div>
+      <div class="see-chip">Empathy Map</div>
+      <div class="see-chip">Job Map (8 шагов)</div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container footer-inner">
+    <div>© 2026 · JTBD Card · Arrange Styleguide</div>
+    <div>Functional · Emotional · Social</div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  const t=document.querySelector('[data-theme-toggle]'),r=document.documentElement;
+  let d=matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light';
+  r.setAttribute('data-theme',d);
+  t&&t.addEventListener('click',()=>{
+    d=d==='dark'?'light':'dark';
+    r.setAttribute('data-theme',d);
+    t.innerHTML=d==='dark'
+      ?'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>'
+      :'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>';
+  });
+  const io=new IntersectionObserver(es=>es.forEach(e=>e.isIntersecting&&e.target.classList.add('in')),{threshold:.08});
+  document.querySelectorAll('.block,.hero').forEach(el=>{el.classList.add('fade-up');io.observe(el);});
+})();
+</script>
+</body>
+</html>
