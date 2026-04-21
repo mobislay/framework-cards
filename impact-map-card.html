@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="ru" data-theme="light">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Impact Map — Карточка техники</title>
+<link href="https://api.fontshare.com/v2/css?f[]=satoshi@300,400,500,700,900&display=swap" rel="stylesheet"/>
+<style>
+:root,[data-theme="light"]{
+  --bg:#f4f4f4;--surface:#fff;--surface-2:#fafafa;--offset:#f0f0f0;--offset-2:#e8e8e8;
+  --divider:#ececec;--border:#e4e4e4;
+  --text:#0a0a0a;--muted:#6b6b6b;--faint:#a3a3a3;--inverse:#fff;
+  --blue:#2b6df6;--green:#22c55e;--amber:#f59e0b;--red:#ef4444;--violet:#8b5cf6;
+  --shadow-sm:0 1px 2px rgba(10,10,10,.04);
+  --shadow-md:0 4px 16px rgba(10,10,10,.07);
+  --shadow-lg:0 20px 48px rgba(10,10,10,.09);
+  --r-sm:.375rem;--r-md:.5rem;--r-lg:.75rem;--r-xl:1rem;--r-2xl:1.25rem;--r-full:9999px;
+  --s-1:.25rem;--s-2:.5rem;--s-3:.75rem;--s-4:1rem;--s-5:1.25rem;--s-6:1.5rem;
+  --s-8:2rem;--s-10:2.5rem;--s-12:3rem;--s-16:4rem;--s-20:5rem;--s-24:6rem;
+  --t:180ms cubic-bezier(.16,1,.3,1);
+  --xs:clamp(.75rem,.7rem + .2vw,.8125rem);
+  --sm:clamp(.875rem,.82rem + .2vw,.9375rem);
+  --base:clamp(1rem,.95rem + .25vw,1.0625rem);
+  --lg:clamp(1.125rem,1rem + .5vw,1.375rem);
+  --xl:clamp(1.5rem,1.2rem + 1vw,2rem);
+  --2xl:clamp(2rem,1.2rem + 2vw,3rem);
+  --hero:clamp(3rem,1rem + 7vw,7rem);
+}
+[data-theme="dark"]{
+  --bg:#0a0a0a;--surface:#141414;--surface-2:#1a1a1a;--offset:#1f1f1f;--offset-2:#262626;
+  --divider:#262626;--border:#2d2d2d;
+  --text:#f4f4f4;--muted:#a3a3a3;--faint:#6b6b6b;--inverse:#0a0a0a;
+  --shadow-sm:0 1px 2px rgba(0,0,0,.3);--shadow-md:0 4px 16px rgba(0,0,0,.4);--shadow-lg:0 20px 48px rgba(0,0,0,.5);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased}
+body{font-family:'Satoshi','Inter',system-ui,sans-serif;font-size:var(--base);line-height:1.6;color:var(--text);background:var(--bg);min-height:100dvh;transition:background var(--t),color var(--t)}
+h1,h2,h3,h4{font-weight:700;letter-spacing:-.02em;line-height:1.1}
+p{color:var(--muted);max-width:72ch}
+button{font:inherit;cursor:pointer;background:none;border:none;color:inherit}
+svg{display:block}
+.container{max-width:1100px;margin-inline:auto;padding-inline:var(--s-6)}
+
+/* ── Header ── */
+.site-header{position:sticky;top:0;z-index:50;backdrop-filter:blur(14px);background:color-mix(in oklab,var(--bg) 80%,transparent);border-bottom:1px solid var(--divider)}
+.header-inner{display:flex;align-items:center;justify-content:space-between;padding-block:var(--s-4)}
+.brand{display:flex;align-items:center;gap:var(--s-2);font-weight:700}
+.brand-dot{width:8px;height:8px;border-radius:var(--r-full);background:var(--text)}
+.header-nav{display:flex;gap:var(--s-6);font-size:var(--sm);color:var(--muted)}
+.header-nav a{text-decoration:none;transition:color var(--t)}
+.header-nav a:hover{color:var(--text)}
+.theme-toggle{width:36px;height:36px;border-radius:var(--r-full);border:1px solid var(--border);display:grid;place-items:center;transition:all var(--t)}
+.theme-toggle:hover{background:var(--offset)}
+@media(max-width:720px){.header-nav{display:none}}
+
+/* ── Hero ── */
+.hero{padding-block:var(--s-20) var(--s-14);border-bottom:1px solid var(--divider)}
+.eyebrow{display:inline-flex;align-items:center;gap:var(--s-2);font-size:var(--xs);text-transform:uppercase;letter-spacing:.14em;color:var(--muted);margin-bottom:var(--s-6)}
+.eyebrow::before{content:'';width:6px;height:6px;border-radius:var(--r-full);background:var(--blue)}
+.hero h1{font-size:var(--hero);font-weight:900;letter-spacing:-.05em;margin-bottom:var(--s-5)}
+.hero-lede{font-size:var(--lg);max-width:58ch}
+.hero-meta{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:var(--s-6);margin-top:var(--s-10);padding-top:var(--s-8);border-top:1px solid var(--divider)}
+.hero-meta .k{font-size:var(--xs);color:var(--faint);text-transform:uppercase;letter-spacing:.12em;margin-bottom:var(--s-1)}
+.hero-meta .v{font-size:var(--base);font-weight:500}
+
+/* ── Section ── */
+.block{padding-block:var(--s-20);border-bottom:1px solid var(--divider)}
+.section-head{display:grid;grid-template-columns:180px 1fr;gap:var(--s-12);margin-bottom:var(--s-10)}
+@media(max-width:720px){.section-head{grid-template-columns:1fr;gap:var(--s-3)}}
+.section-index{font-size:var(--xs);color:var(--faint);letter-spacing:.16em;text-transform:uppercase}
+.section-title{font-size:var(--xl);margin-bottom:var(--s-3)}
+.section-desc{font-size:var(--base)}
+
+/* ── WHY · WHO · HOW · WHAT cards ── */
+.chain{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--s-3)}
+@media(max-width:900px){.chain{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:500px){.chain{grid-template-columns:1fr}}
+.chain-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-xl);padding:var(--s-6);box-shadow:var(--shadow-sm);transition:all var(--t);display:flex;flex-direction:column;gap:var(--s-3)}
+.chain-card:hover{box-shadow:var(--shadow-md);transform:translateY(-2px)}
+.chain-head{display:flex;justify-content:space-between;align-items:flex-start}
+.chain-letter{font-size:var(--2xl);font-weight:900;letter-spacing:-.04em;line-height:1}
+.chain-num{font-family:'SF Mono',ui-monospace,monospace;font-size:var(--xs);color:var(--faint)}
+.chain-label{font-size:var(--xs);text-transform:uppercase;letter-spacing:.12em;font-weight:500;margin-top:var(--s-1)}
+.chain-title{font-size:var(--lg);font-weight:700}
+.chain-body{font-size:var(--sm);color:var(--muted);flex:1}
+.chain-badge{display:inline-flex;align-items:center;gap:var(--s-2);padding:var(--s-1) var(--s-3);border-radius:var(--r-full);font-size:var(--xs);font-weight:500;background:var(--offset);color:var(--text);margin-top:auto;align-self:flex-start}
+.chain-badge-dot{width:6px;height:6px;border-radius:var(--r-full)}
+
+/* connector arrow between cards */
+.chain-arrow{display:flex;align-items:center;justify-content:center;color:var(--faint);flex-shrink:0}
+@media(max-width:900px){.chain-arrow{display:none}}
+
+/* ── CHAIN FLOW (visual) ── */
+.flow{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-xl);padding:var(--s-6) var(--s-8);display:flex;align-items:center;gap:var(--s-4);flex-wrap:wrap;margin-top:var(--s-6)}
+.flow-step{display:flex;flex-direction:column;align-items:center;gap:var(--s-2);flex:1;min-width:80px}
+.flow-icon{width:44px;height:44px;border-radius:var(--r-lg);background:var(--offset);display:grid;place-items:center;color:var(--text)}
+.flow-word{font-size:var(--sm);font-weight:600;letter-spacing:-.01em}
+.flow-sub{font-size:var(--xs);color:var(--faint)}
+.flow-sep{color:var(--faint);flex-shrink:0}
+
+/* ── ACTORS ── */
+.actors-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:var(--s-4)}
+.actor{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-xl);padding:var(--s-5);box-shadow:var(--shadow-sm);transition:all var(--t)}
+.actor:hover{border-color:var(--text);box-shadow:var(--shadow-md)}
+.actor-head{display:flex;align-items:center;gap:var(--s-3);margin-bottom:var(--s-3)}
+.actor-dot{width:10px;height:10px;border-radius:var(--r-full);flex-shrink:0}
+.actor-type{font-size:var(--xs);color:var(--faint);text-transform:uppercase;letter-spacing:.1em}
+.actor-name{font-size:var(--lg);font-weight:700}
+.actor-body{font-size:var(--sm);color:var(--muted)}
+
+/* ── MAP TREE (visual example) ── */
+.tree{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-xl);overflow:hidden}
+.tree-header{padding:var(--s-5) var(--s-6);border-bottom:1px solid var(--divider);display:flex;align-items:center;justify-content:space-between}
+.tree-header h3{font-size:var(--base);font-weight:600}
+.tree-tag{font-size:var(--xs);color:var(--faint);text-transform:uppercase;letter-spacing:.1em}
+.tree-body{padding:var(--s-6);display:grid;gap:var(--s-3)}
+/* Level rows */
+.tree-row{display:grid;grid-template-columns:90px 1fr;gap:var(--s-4);align-items:start}
+.tree-row-label{font-size:var(--xs);color:var(--faint);text-transform:uppercase;letter-spacing:.1em;padding-top:.3rem}
+.tree-items{display:flex;gap:var(--s-2);flex-wrap:wrap}
+.tree-chip{padding:var(--s-2) var(--s-4);background:var(--offset);border-radius:var(--r-full);font-size:var(--sm);font-weight:500;transition:all var(--t)}
+.tree-chip:hover{background:var(--offset-2)}
+.tree-chip.why{background:color-mix(in oklab,var(--blue) 12%,var(--offset));color:var(--blue)}
+.tree-chip.who{background:color-mix(in oklab,var(--violet) 12%,var(--offset));color:var(--violet)}
+.tree-chip.how{background:color-mix(in oklab,var(--amber) 12%,var(--offset));color:var(--amber)}
+.tree-chip.what{background:color-mix(in oklab,var(--green) 12%,var(--offset));color:var(--green)}
+.tree-connector{width:1px;background:var(--divider);margin-inline:44px;height:var(--s-3)}
+
+/* ── CALLOUT ── */
+.callout{background:var(--text);color:var(--inverse);border-radius:var(--r-2xl);padding:var(--s-12);display:grid;grid-template-columns:1fr 1fr;gap:var(--s-8);align-items:center}
+@media(max-width:720px){.callout{grid-template-columns:1fr;padding:var(--s-8)}}
+.callout h2{font-size:var(--2xl);letter-spacing:-.03em;line-height:1.1}
+.callout p{color:color-mix(in oklab,var(--inverse) 70%,transparent);font-size:var(--base);margin-top:var(--s-4);max-width:40ch}
+.callout-eyebrow{font-size:var(--xs);text-transform:uppercase;letter-spacing:.14em;color:color-mix(in oklab,var(--inverse) 55%,transparent);margin-bottom:var(--s-4)}
+.callout-stat .big{font-size:var(--hero);font-weight:900;letter-spacing:-.05em;line-height:1}
+.callout-stat .cap{font-size:var(--sm);color:color-mix(in oklab,var(--inverse) 55%,transparent);margin-top:var(--s-2);text-transform:uppercase;letter-spacing:.12em}
+
+/* ── HOW TO BUILD ── */
+.steps-list{display:grid;gap:var(--s-3)}
+.step-row{display:grid;grid-template-columns:48px 1fr;gap:var(--s-5);align-items:start;padding:var(--s-5) var(--s-6);background:var(--surface);border:1px solid var(--border);border-radius:var(--r-xl);transition:all var(--t)}
+.step-row:hover{border-color:var(--text);box-shadow:var(--shadow-sm)}
+.step-row-num{font-family:'SF Mono',ui-monospace,monospace;font-size:var(--sm);color:var(--faint);padding-top:.2rem}
+.step-row h4{font-size:var(--base);font-weight:600;margin-bottom:var(--s-1)}
+.step-row p{font-size:var(--sm);margin:0}
+
+/* ── MISTAKES ── */
+.mistake-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:var(--s-4)}
+.mistake{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-xl);padding:var(--s-6);transition:all var(--t)}
+.mistake:hover{border-color:var(--text)}
+.mistake .num{font-family:'SF Mono',ui-monospace,monospace;font-size:var(--xs);color:var(--faint);margin-bottom:var(--s-3)}
+.mistake h3{font-size:var(--lg);margin-bottom:var(--s-2)}
+.mistake p{font-size:var(--sm)}
+
+/* Footer */
+footer{padding-block:var(--s-12);font-size:var(--sm);color:var(--muted)}
+.footer-inner{display:flex;justify-content:space-between;flex-wrap:wrap;gap:var(--s-4)}
+
+/* Animate */
+.fade-up{opacity:0;transform:translateY(10px);transition:opacity .6s ease,transform .6s ease}
+.fade-up.in{opacity:1;transform:none}
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container header-inner">
+    <div class="brand"><span class="brand-dot"></span> Impact Map</div>
+    <nav class="header-nav">
+      <a href="#chain">4 уровня</a>
+      <a href="#actors">Акторы</a>
+      <a href="#build">Построить</a>
+      <a href="#mistakes">Ошибки</a>
+    </nav>
+    <button class="theme-toggle" data-theme-toggle aria-label="Переключить тему">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+    </button>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="container">
+    <div class="eyebrow">Technique Card · Гойко Аджич · 2012</div>
+    <h1>Impact<br/>Map.</h1>
+    <p class="hero-lede">Связывает бизнес-цель с конкретными фичами через цепочку <em>зачем → кто → как → что</em>. Любой deliverable, который нельзя связать с изменением поведения актора — кандидат на удаление.</p>
+    <div class="hero-meta">
+      <div><div class="k">Уровней</div><div class="v">4</div></div>
+      <div><div class="k">Время сессии</div><div class="v">1–2 часа</div></div>
+      <div><div class="k">Формат</div><div class="v">Коллективно</div></div>
+      <div><div class="k">Против</div><div class="v">Feature-driven dev</div></div>
+    </div>
+  </div>
+</section>
+
+<section class="block" id="chain">
+  <div class="container">
+    <div class="section-head">
+      <div class="section-index">01 — Chain</div>
+      <div>
+        <h2 class="section-title">Четыре уровня карты</h2>
+        <p class="section-desc">Карта строится слева направо — от цели к фиче. Нельзя переходить к следующему уровню, не завершив предыдущий.</p>
+      </div>
+    </div>
+
+    <div class="chain">
+      <div class="chain-card">
+        <div class="chain-head">
+          <div class="chain-letter" style="color:var(--blue)">W</div>
+          <div class="chain-num">01</div>
+        </div>
+        <div class="chain-label" style="color:var(--blue)">Why</div>
+        <div class="chain-title">Цель</div>
+        <p class="chain-body">Одна измеримая SMART-цель: бизнес-результат, который нужно достичь. Должна быть сформулирована как изменение метрики, а не как список работ.</p>
+        <div class="chain-badge"><span class="chain-badge-dot" style="background:var(--blue)"></span> SMART-метрика</div>
+      </div>
+
+      <div class="chain-card">
+        <div class="chain-head">
+          <div class="chain-letter" style="color:var(--violet)">W</div>
+          <div class="chain-num">02</div>
+        </div>
+        <div class="chain-label" style="color:var(--violet)">Who</div>
+        <div class="chain-title">Акторы</div>
+        <p class="chain-body">Все, кто может помочь или помешать: пользователи, партнёры, внутренние команды, регуляторы, «антиакторы». Чем шире список — тем меньше слепых пятен.</p>
+        <div class="chain-badge"><span class="chain-badge-dot" style="background:var(--violet)"></span> Все стороны</div>
+      </div>
+
+      <div class="chain-card">
+        <div class="chain-head">
+          <div class="chain-letter" style="color:var(--amber)">H</div>
+          <div class="chain-num">03</div>
+        </div>
+        <div class="chain-label" style="color:var(--amber)">How</div>
+        <div class="chain-title">Импакт</div>
+        <p class="chain-body">Изменения поведения акторов, которые необходимы для достижения цели. Это не задачи команды, а конкретные сдвиги в действиях каждой стороны.</p>
+        <div class="chain-badge"><span class="chain-badge-dot" style="background:var(--amber)"></span> Поведение</div>
+      </div>
+
+      <div class="chain-card">
+        <div class="chain-head">
+          <div class="chain-letter" style="color:var(--green)">W</div>
+          <div class="chain-num">04</div>
+        </div>
+        <div class="chain-label" style="color:var(--green)">What</div>
+        <div class="chain-title">Deliverables</div>
+        <p class="chain-body">Конкретные фичи, контент, сервисы и активности, которые создаёт команда. Каждый deliverable должен быть привязан к конкретному импакту — иначе его нет в карте.</p>
+        <div class="chain-badge"><span class="chain-badge-dot" style="background:var(--green)"></span> Фичи / активности</div>
+      </div>
+    </div>
+
+    <!-- Flow visual -->
+    <div class="flow">
+      <div class="flow-step">
+        <div class="flow-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><circle cx="12" cy="12" r="9"/><path d="M12 8v4l3 2"/></svg>
+        </div>
+        <div class="flow-word">Why</div>
+        <div class="flow-sub">Цель</div>
+      </div>
+      <div class="flow-sep"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 12h14M13 5l7 7-7 7"/></svg></div>
+      <div class="flow-step">
+        <div class="flow-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0116 0"/></svg>
+        </div>
+        <div class="flow-word">Who</div>
+        <div class="flow-sub">Акторы</div>
+      </div>
+      <div class="flow-sep"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 12h14M13 5l7 7-7 7"/></svg></div>
+      <div class="flow-step">
+        <div class="flow-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+        </div>
+        <div class="flow-word">How</div>
+        <div class="flow-sub">Импакт</div>
+      </div>
+      <div class="flow-sep"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 12h14M13 5l7 7-7 7"/></svg></div>
+      <div class="flow-step">
+        <div class="flow-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M12 2l9 5-9 5-9-5 9-5zM3 12l9 5 9-5"/></svg>
+        </div>
+        <div class="flow-word">What</div>
+        <div class="flow-sub">Deliverables</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="block" id="actors">
+  <div class="container">
+    <div class="section-head">
+      <div class="section-index">02 — Actors</div>
+      <div>
+        <h2 class="section-title">Типы акторов</h2>
+        <p class="section-desc">Не только пользователи. Карта становится сильнее, когда в неё включают всех, кто влияет на достижение цели — в том числе тех, кто может помешать.</p>
+      </div>
+    </div>
+
+    <div class="actors-grid">
+      <div class="actor">
+        <div class="actor-head"><span class="actor-dot" style="background:var(--blue)"></span><span class="actor-type">Прямые</span></div>
+        <div class="actor-name">Пользователи</div>
+        <p class="actor-body">Те, кто непосредственно взаимодействует с продуктом. Их поведение влияет на метрику напрямую.</p>
+      </div>
+      <div class="actor">
+        <div class="actor-head"><span class="actor-dot" style="background:var(--violet)"></span><span class="actor-type">Косвенные</span></div>
+        <div class="actor-name">Партнёры</div>
+        <p class="actor-body">Внешние организации или команды, чья поддержка или бездействие влияет на результат.</p>
+      </div>
+      <div class="actor">
+        <div class="actor-head"><span class="actor-dot" style="background:var(--amber)"></span><span class="actor-type">Внутренние</span></div>
+        <div class="actor-name">Смежные команды</div>
+        <p class="actor-body">Маркетинг, поддержка, продажи — те, кто создаёт контекст, в котором работает продукт.</p>
+      </div>
+      <div class="actor">
+        <div class="actor-head"><span class="actor-dot" style="background:var(--red)"></span><span class="actor-type">Негативные</span></div>
+        <div class="actor-name">Антиакторы</div>
+        <p class="actor-body">Те, чьи действия могут помешать цели: конкуренты, регуляторы, скептики внутри компании.</p>
+      </div>
+    </div>
+
+    <!-- Example map tree -->
+    <div class="tree" style="margin-top:var(--s-10)">
+      <div class="tree-header">
+        <h3>Пример карты — Запуск мобильного приложения</h3>
+        <span class="tree-tag">Схема</span>
+      </div>
+      <div class="tree-body">
+        <div class="tree-row">
+          <div class="tree-row-label">Why</div>
+          <div class="tree-items"><span class="tree-chip why">+20% активных пользователей за квартал</span></div>
+        </div>
+        <div class="tree-row">
+          <div class="tree-row-label">Who</div>
+          <div class="tree-items">
+            <span class="tree-chip who">Новые пользователи</span>
+            <span class="tree-chip who">Возвратные</span>
+            <span class="tree-chip who">App Store / Google Play</span>
+            <span class="tree-chip who">Маркетинг</span>
+          </div>
+        </div>
+        <div class="tree-row">
+          <div class="tree-row-label">How</div>
+          <div class="tree-items">
+            <span class="tree-chip how">Скачивают приложение</span>
+            <span class="tree-chip how">Возвращаются 3+ раза/нед</span>
+            <span class="tree-chip how">Делятся с друзьями</span>
+          </div>
+        </div>
+        <div class="tree-row">
+          <div class="tree-row-label">What</div>
+          <div class="tree-items">
+            <span class="tree-chip what">Онбординг-флоу</span>
+            <span class="tree-chip what">Push-уведомления</span>
+            <span class="tree-chip what">Реферальная программа</span>
+            <span class="tree-chip what">Виджет для главного экрана</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="block">
+  <div class="container">
+    <div class="callout">
+      <div>
+        <div class="callout-eyebrow">Главный принцип</div>
+        <h2>Фича без связи с импактом — кандидат на удаление.</h2>
+        <p>Если deliverable нельзя проследить до изменения поведения актора, которое влияет на цель — он лишний. Карта — это фильтр, а не список пожеланий.</p>
+      </div>
+      <div class="callout-stat">
+        <div class="big">→→→→</div>
+        <div class="cap">Why · Who · How · What</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="block" id="build">
+  <div class="container">
+    <div class="section-head">
+      <div class="section-index">03 — How to build</div>
+      <div>
+        <h2 class="section-title">Как построить карту</h2>
+        <p class="section-desc">Сессия занимает 1–2 часа. Участвуют продукт, бизнес и разработка. Карта строится по шагам — нельзя перепрыгнуть уровень.</p>
+      </div>
+    </div>
+
+    <div class="steps-list">
+      <div class="step-row">
+        <div class="step-row-num">01</div>
+        <div>
+          <h4>Сформулировать цель (Why)</h4>
+          <p>Одна измеримая SMART-цель: не «сделать мобильное приложение», а «увеличить конверсию в покупку на 15% за Q3».</p>
+        </div>
+      </div>
+      <div class="step-row">
+        <div class="step-row-num">02</div>
+        <div>
+          <h4>Перечислить всех акторов (Who)</h4>
+          <p>Не только пользователи — все стороны, включая внутренние команды и антиакторов. Чем шире список, тем меньше слепых пятен.</p>
+        </div>
+      </div>
+      <div class="step-row">
+        <div class="step-row-num">03</div>
+        <div>
+          <h4>Описать нужные сдвиги поведения (How)</h4>
+          <p>Для каждого актора: какое конкретное изменение его поведения помогает достичь цели? Это не задачи, а наблюдаемые действия.</p>
+        </div>
+      </div>
+      <div class="step-row">
+        <div class="step-row-num">04</div>
+        <div>
+          <h4>Определить deliverables (What)</h4>
+          <p>Только после шагов 1–3. Каждая фича должна быть привязана к конкретному импакту. Всё остальное — за борт.</p>
+        </div>
+      </div>
+      <div class="step-row">
+        <div class="step-row-num">05</div>
+        <div>
+          <h4>Пересматривать итеративно</h4>
+          <p>Карта — живой документ. Ветки без связи с целью обрезаются при каждом пересмотре. Цель меняется — карта меняется.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="block" id="mistakes">
+  <div class="container">
+    <div class="section-head">
+      <div class="section-index">04 — Mistakes</div>
+      <div>
+        <h2 class="section-title">Типичные ошибки</h2>
+        <p class="section-desc">Большинство проблем возникают ещё на этапе формулировки цели или при попытке пропустить уровень Who.</p>
+      </div>
+    </div>
+
+    <div class="mistake-grid">
+      <div class="mistake">
+        <div class="num">ERR 01</div>
+        <h3>Цель как список задач</h3>
+        <p>«Выпустить мобильное приложение» — это не Why, это What. Цель должна быть бизнес-результатом с метрикой.</p>
+      </div>
+      <div class="mistake">
+        <div class="num">ERR 02</div>
+        <h3>Только пользователи в Who</h3>
+        <p>Карта без партнёров, антиакторов и внутренних команд — половина картины. Упускаешь тех, кто может заблокировать цель.</p>
+      </div>
+      <div class="mistake">
+        <div class="num">ERR 03</div>
+        <h3>How как список фичей</h3>
+        <p>«Нажать кнопку купить» — это не импакт, это шаг воронки. Импакт — «покупатели возвращаются ежемесячно».</p>
+      </div>
+      <div class="mistake">
+        <div class="num">ERR 04</div>
+        <h3>Карта как бэклог</h3>
+        <p>Impact Map — инструмент расстановки приоритетов, а не список всего, что хочется построить. Без обрезки веток ценность теряется.</p>
+      </div>
+      <div class="mistake">
+        <div class="num">ERR 05</div>
+        <h3>Карта один раз</h3>
+        <p>Строят один раз — и забывают. Карта работает только тогда, когда её пересматривают при каждом значимом изменении контекста.</p>
+      </div>
+      <div class="mistake">
+        <div class="num">ERR 06</div>
+        <h3>Без участия бизнеса</h3>
+        <p>Карта, построенная только командой продукта, не имеет веса. Why должен исходить от бизнес-стейкхолдеров.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container footer-inner">
+    <div>© 2026 · Impact Map Card · Arrange Styleguide</div>
+    <div>Why · Who · How · What</div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  const t=document.querySelector('[data-theme-toggle]'),r=document.documentElement;
+  let d=matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light';
+  r.setAttribute('data-theme',d);
+  t&&t.addEventListener('click',()=>{
+    d=d==='dark'?'light':'dark';
+    r.setAttribute('data-theme',d);
+    t.innerHTML=d==='dark'
+      ?'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>'
+      :'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>';
+  });
+  const io=new IntersectionObserver(es=>es.forEach(e=>e.isIntersecting&&e.target.classList.add('in')),{threshold:.08});
+  document.querySelectorAll('.block,.hero').forEach(el=>{el.classList.add('fade-up');io.observe(el);});
+})();
+</script>
+</body>
+</html>
