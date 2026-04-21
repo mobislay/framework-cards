@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="ru" data-theme="light">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Шкала зрелости вопроса</title>
+<link href="https://api.fontshare.com/v2/css?f[]=satoshi@300,400,500,700,900&display=swap" rel="stylesheet"/>
+<style>
+:root,[data-theme="light"]{
+  --bg:#f4f4f4;--surface:#fff;--surface-2:#fafafa;--offset:#f0f0f0;--offset-2:#e8e8e8;
+  --divider:#ececec;--border:#e4e4e4;
+  --text:#0a0a0a;--muted:#6b6b6b;--faint:#a3a3a3;--inverse:#fff;
+  --red:#ef4444;--amber:#f59e0b;--yellow:#eab308;--lime:#84cc16;--green:#22c55e;--emerald:#10b981;
+  --shadow-sm:0 1px 2px rgba(10,10,10,.04);
+  --shadow-md:0 4px 16px rgba(10,10,10,.06);
+  --shadow-lg:0 20px 48px rgba(10,10,10,.09);
+  --r-sm:.375rem;--r-md:.5rem;--r-lg:.75rem;--r-xl:1rem;--r-2xl:1.25rem;--r-full:9999px;
+  --s-1:.25rem;--s-2:.5rem;--s-3:.75rem;--s-4:1rem;--s-5:1.25rem;--s-6:1.5rem;
+  --s-8:2rem;--s-10:2.5rem;--s-12:3rem;--s-16:4rem;--s-20:5rem;--s-24:6rem;
+  --t:180ms cubic-bezier(.16,1,.3,1);
+  --xs:clamp(.75rem,.7rem + .2vw,.8125rem);
+  --sm:clamp(.875rem,.82rem + .2vw,.9375rem);
+  --base:clamp(1rem,.95rem + .25vw,1.0625rem);
+  --lg:clamp(1.125rem,1rem + .5vw,1.375rem);
+  --xl:clamp(1.5rem,1.2rem + 1vw,2rem);
+  --2xl:clamp(2rem,1.2rem + 2vw,3rem);
+  --hero:clamp(3rem,1rem + 7vw,7rem);
+}
+[data-theme="dark"]{
+  --bg:#0a0a0a;--surface:#141414;--surface-2:#1a1a1a;--offset:#1f1f1f;--offset-2:#262626;
+  --divider:#262626;--border:#2d2d2d;
+  --text:#f4f4f4;--muted:#a3a3a3;--faint:#6b6b6b;--inverse:#0a0a0a;
+  --shadow-sm:0 1px 2px rgba(0,0,0,.3);--shadow-md:0 4px 16px rgba(0,0,0,.4);--shadow-lg:0 20px 48px rgba(0,0,0,.5);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased}
+body{font-family:'Satoshi','Inter',system-ui,sans-serif;font-size:var(--base);line-height:1.6;color:var(--text);background:var(--bg);min-height:100dvh;transition:background var(--t),color var(--t)}
+h1,h2,h3,h4{font-weight:700;letter-spacing:-.02em;line-height:1.1}
+p{color:var(--muted);max-width:72ch}
+button{font:inherit;cursor:pointer;background:none;border:none;color:inherit}
+svg{display:block}
+.container{max-width:1080px;margin-inline:auto;padding-inline:var(--s-6)}
+
+/* Header */
+.site-header{position:sticky;top:0;z-index:50;backdrop-filter:blur(14px);background:color-mix(in oklab,var(--bg) 80%,transparent);border-bottom:1px solid var(--divider)}
+.header-inner{display:flex;align-items:center;justify-content:space-between;padding-block:var(--s-4)}
+.brand{display:flex;align-items:center;gap:var(--s-2);font-weight:700;font-size:var(--base)}
+.brand-dot{width:8px;height:8px;border-radius:var(--r-full);background:var(--text)}
+.theme-toggle{width:36px;height:36px;border-radius:var(--r-full);border:1px solid var(--border);display:grid;place-items:center;transition:all var(--t)}
+.theme-toggle:hover{background:var(--offset)}
+
+/* Hero */
+.hero{padding-block:var(--s-20) var(--s-14);border-bottom:1px solid var(--divider)}
+.eyebrow{display:inline-flex;align-items:center;gap:var(--s-2);font-size:var(--xs);text-transform:uppercase;letter-spacing:.14em;color:var(--muted);margin-bottom:var(--s-6)}
+.eyebrow::before{content:'';width:6px;height:6px;border-radius:var(--r-full);background:var(--emerald)}
+.hero h1{font-size:var(--hero);font-weight:900;letter-spacing:-.05em;margin-bottom:var(--s-5)}
+.hero-lede{font-size:var(--lg);max-width:56ch}
+.hero-meta{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:var(--s-6);margin-top:var(--s-10);padding-top:var(--s-8);border-top:1px solid var(--divider)}
+.hero-meta .k{font-size:var(--xs);color:var(--faint);text-transform:uppercase;letter-spacing:.12em;margin-bottom:var(--s-1)}
+.hero-meta .v{font-size:var(--base);font-weight:500}
+
+/* Section */
+.block{padding-block:var(--s-20);border-bottom:1px solid var(--divider)}
+.section-head{display:grid;grid-template-columns:180px 1fr;gap:var(--s-12);margin-bottom:var(--s-10)}
+@media(max-width:720px){.section-head{grid-template-columns:1fr;gap:var(--s-3)}}
+.section-index{font-size:var(--xs);color:var(--faint);letter-spacing:.16em;text-transform:uppercase}
+.section-title{font-size:var(--xl);margin-bottom:var(--s-3)}
+.section-desc{font-size:var(--base)}
+
+/* ── SCALE LEVELS ── */
+.scale{display:grid;gap:var(--s-3)}
+.level{
+  display:grid;
+  grid-template-columns:52px 1fr auto;
+  align-items:start;
+  gap:var(--s-5);
+  padding:var(--s-5) var(--s-6);
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:var(--r-xl);
+  box-shadow:var(--shadow-sm);
+  transition:all var(--t);
+  cursor:default;
+}
+.level:hover{box-shadow:var(--shadow-md);transform:translateX(4px)}
+@media(max-width:600px){.level{grid-template-columns:40px 1fr;}.level-badge{display:none}}
+.level-num{
+  width:44px;height:44px;border-radius:var(--r-full);
+  display:grid;place-items:center;
+  font-size:var(--lg);font-weight:900;letter-spacing:-.02em;
+  flex-shrink:0;margin-top:2px;
+}
+.level-body{}
+.level-title{font-size:var(--lg);font-weight:700;margin-bottom:var(--s-2)}
+.level-quote{font-size:var(--sm);color:var(--muted);font-style:italic;border-left:2px solid var(--border);padding-left:var(--s-4);margin-top:var(--s-2)}
+.level-badge{
+  display:inline-flex;align-items:center;gap:var(--s-2);
+  padding:var(--s-1) var(--s-3);border-radius:var(--r-full);
+  font-size:var(--xs);font-weight:500;white-space:nowrap;
+  align-self:start;margin-top:4px;
+}
+
+/* Level colours — backgrounds for number circle */
+.l1 .level-num{background:color-mix(in oklab,var(--red) 12%,var(--surface));color:var(--red)}
+.l2 .level-num{background:color-mix(in oklab,var(--amber) 12%,var(--surface));color:var(--amber)}
+.l3 .level-num{background:color-mix(in oklab,var(--yellow) 12%,var(--surface));color:var(--yellow)}
+.l4 .level-num{background:color-mix(in oklab,var(--lime) 12%,var(--surface));color:var(--lime)}
+.l5 .level-num{background:color-mix(in oklab,var(--green) 12%,var(--surface));color:var(--green)}
+.l6 .level-num{background:color-mix(in oklab,var(--emerald) 12%,var(--surface));color:var(--emerald)}
+
+.l1 .level-badge{background:color-mix(in oklab,var(--red) 10%,var(--offset));color:var(--red)}
+.l2 .level-badge{background:color-mix(in oklab,var(--amber) 10%,var(--offset));color:var(--amber)}
+.l3 .level-badge{background:color-mix(in oklab,var(--yellow) 10%,var(--offset));color:var(--yellow)}
+.l4 .level-badge{background:color-mix(in oklab,var(--lime) 10%,var(--offset));color:var(--lime)}
+.l5 .level-badge{background:color-mix(in oklab,var(--green) 10%,var(--offset));color:var(--green)}
+.l6 .level-badge{background:color-mix(in oklab,var(--emerald) 10%,var(--offset));color:var(--emerald)}
+
+/* ── PROGRESS BAR ── */
+.progress-wrap{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-xl);padding:var(--s-6);margin-top:var(--s-10)}
+.progress-label{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:var(--s-4)}
+.progress-label span{font-size:var(--xs);color:var(--faint);text-transform:uppercase;letter-spacing:.12em}
+.progress-track{height:8px;background:var(--offset);border-radius:var(--r-full);overflow:hidden;margin-bottom:var(--s-4)}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--red) 0%,var(--amber) 20%,var(--yellow) 40%,var(--lime) 60%,var(--green) 80%,var(--emerald) 100%);border-radius:var(--r-full)}
+.progress-ticks{display:grid;grid-template-columns:repeat(6,1fr)}
+.tick{font-size:var(--xs);color:var(--faint);text-align:center}
+
+/* ── CALLOUT ── */
+.callout{background:var(--text);color:var(--inverse);border-radius:var(--r-2xl);padding:var(--s-12);display:grid;grid-template-columns:1fr 1fr;gap:var(--s-8);align-items:center}
+@media(max-width:720px){.callout{grid-template-columns:1fr;padding:var(--s-8)}}
+.callout h2{font-size:var(--2xl);letter-spacing:-.03em;line-height:1.1}
+.callout p{color:color-mix(in oklab,var(--inverse) 70%,transparent);font-size:var(--base);margin-top:var(--s-4);max-width:40ch}
+.callout-stat{text-align:right}
+@media(max-width:720px){.callout-stat{text-align:left}}
+.callout-stat .big{font-size:var(--hero);font-weight:900;letter-spacing:-.05em;line-height:1}
+.callout-stat .caption{font-size:var(--sm);color:color-mix(in oklab,var(--inverse) 55%,transparent);margin-top:var(--s-2);text-transform:uppercase;letter-spacing:.12em}
+.target-range{display:inline-flex;align-items:center;gap:var(--s-2);background:color-mix(in oklab,var(--inverse) 10%,transparent);border-radius:var(--r-full);padding:var(--s-2) var(--s-4);font-size:var(--sm);margin-top:var(--s-5)}
+.target-dot{width:8px;height:8px;border-radius:var(--r-full);background:var(--emerald)}
+
+/* ── QUESTION FORMAT ── */
+.questions{display:grid;gap:var(--s-3)}
+.q-row{display:grid;grid-template-columns:40px 1fr;gap:var(--s-4);align-items:start;padding:var(--s-5) var(--s-6);background:var(--surface);border:1px solid var(--border);border-radius:var(--r-xl);transition:all var(--t)}
+.q-row:hover{border-color:var(--text);box-shadow:var(--shadow-sm)}
+.q-num{font-family:'SF Mono',ui-monospace,monospace;font-size:var(--xs);color:var(--faint);padding-top:.2rem}
+.q-text{font-size:var(--base);font-weight:500}
+
+/* ── FORMULA ── */
+.formula{display:flex;align-items:center;gap:var(--s-3);flex-wrap:wrap;padding:var(--s-8);background:var(--surface);border:1px solid var(--border);border-radius:var(--r-xl)}
+.formula-part{display:flex;flex-direction:column;gap:var(--s-1)}
+.formula-part .word{font-size:var(--lg);font-weight:700}
+.formula-part .sub{font-size:var(--xs);color:var(--faint);text-transform:uppercase;letter-spacing:.1em}
+.formula-sep{font-size:var(--xl);color:var(--faint);font-weight:300;margin-top:-4px}
+
+/* Footer */
+footer{padding-block:var(--s-12);font-size:var(--sm);color:var(--muted)}
+.footer-inner{display:flex;justify-content:space-between;flex-wrap:wrap;gap:var(--s-4)}
+
+/* Animate */
+.fade-up{opacity:0;transform:translateY(10px);transition:opacity .6s ease,transform .6s ease}
+.fade-up.in{opacity:1;transform:none}
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container header-inner">
+    <div class="brand"><span class="brand-dot"></span> Шкала зрелости</div>
+    <button class="theme-toggle" data-theme-toggle aria-label="Переключить тему">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+    </button>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="container">
+    <div class="eyebrow">Framework Card · Зрелость вопроса · 2026</div>
+    <h1>Уровни<br/>зрелости.</h1>
+    <p class="hero-lede">Насколько самостоятельно сотрудник приходит с вопросом — от «замолчал проблему» до «уже решаю». Чем выше уровень, тем меньше менеджерского времени требует каждый запрос.</p>
+    <div class="hero-meta">
+      <div><div class="k">Уровней</div><div class="v">6</div></div>
+      <div><div class="k">Целевой диапазон</div><div class="v">4 – 6</div></div>
+      <div><div class="k">Вопросов в формуле</div><div class="v">5</div></div>
+      <div><div class="k">Для кого</div><div class="v">Команды и менеджеры</div></div>
+    </div>
+  </div>
+</section>
+
+<section class="block" id="levels">
+  <div class="container">
+    <div class="section-head">
+      <div class="section-index">01 — Scale</div>
+      <div>
+        <h2 class="section-title">6 уровней зрелости</h2>
+        <p class="section-desc">Каждый уровень — это то, сколько контекста и самостоятельности сотрудник приносит вместе с вопросом. Шкала идёт от полного молчания до самостоятельного действия.</p>
+      </div>
+    </div>
+
+    <div class="scale">
+      <div class="level l1">
+        <div class="level-num">1</div>
+        <div class="level-body">
+          <div class="level-title">Проблема замолчана</div>
+          <div class="level-quote">Вопрос не поднят, срок сорван, последствия проявились позже.</div>
+        </div>
+        <div class="level-badge">Критично</div>
+      </div>
+
+      <div class="level l2">
+        <div class="level-num">2</div>
+        <div class="level-body">
+          <div class="level-title">Проблема только обозначена</div>
+          <div class="level-quote">«Есть сложность / не получается / нужна помощь».</div>
+        </div>
+        <div class="level-badge">Слабо</div>
+      </div>
+
+      <div class="level l3">
+        <div class="level-num">3</div>
+        <div class="level-body">
+          <div class="level-title">Проблема проанализирована</div>
+          <div class="level-quote">«Есть проблема, причины такие-то, вижу варианты X, Y, Z».</div>
+        </div>
+        <div class="level-badge">Минимум</div>
+      </div>
+
+      <div class="level l4">
+        <div class="level-num">4</div>
+        <div class="level-body">
+          <div class="level-title">Есть рекомендация</div>
+          <div class="level-quote">«Предлагаю вариант X как наиболее подходящий».</div>
+        </div>
+        <div class="level-badge">Целевой ↑</div>
+      </div>
+
+      <div class="level l5">
+        <div class="level-num">5</div>
+        <div class="level-body">
+          <div class="level-title">Есть обоснование</div>
+          <div class="level-quote">«Предлагаю X, потому что он быстрее / дешевле / безопаснее / меньше влияет на сроки».</div>
+        </div>
+        <div class="level-badge">Отлично</div>
+      </div>
+
+      <div class="level l6">
+        <div class="level-num">6</div>
+        <div class="level-body">
+          <div class="level-title">Есть ответственность за решение</div>
+          <div class="level-quote">«Я уже начал(а) решать вопрос вариантом X в рамках своих полномочий, держу в курсе».</div>
+        </div>
+        <div class="level-badge">Максимум</div>
+      </div>
+    </div>
+
+    <div class="progress-wrap">
+      <div class="progress-label">
+        <span>Зона роста · 1–3</span>
+        <span>Целевая зона · 4–6</span>
+      </div>
+      <div class="progress-track"><div class="progress-fill" style="width:100%"></div></div>
+      <div class="progress-ticks">
+        <div class="tick">1</div>
+        <div class="tick">2</div>
+        <div class="tick">3</div>
+        <div class="tick" style="color:var(--text);font-weight:600">4</div>
+        <div class="tick" style="color:var(--text);font-weight:600">5</div>
+        <div class="tick" style="color:var(--text);font-weight:600">6</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="block">
+  <div class="container">
+    <div class="callout">
+      <div>
+        <div class="eyebrow" style="color:color-mix(in oklab,var(--inverse) 55%,transparent);margin-bottom:var(--s-4)">Цель команды</div>
+        <h2>Приходи с решением, а не только с проблемой.</h2>
+        <p>Чем выше уровень зрелости — тем больше контекста и самостоятельности ты приносишь вместе с вопросом, тем меньше менеджерского времени требует каждый запрос.</p>
+        <div class="target-range"><span class="target-dot"></span> Работать на уровнях 4–6</div>
+      </div>
+      <div class="callout-stat">
+        <div class="big">4–6</div>
+        <div class="caption">целевой диапазон</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="block" id="format">
+  <div class="container">
+    <div class="section-head">
+      <div class="section-index">02 — Question format</div>
+      <div>
+        <h2 class="section-title">Как приходить с вопросом</h2>
+        <p class="section-desc">Пять вопросов, которые нужно проработать перед тем, как идти к менеджеру. Ответы на все пять — это уровень 5–6.</p>
+      </div>
+    </div>
+
+    <div class="questions">
+      <div class="q-row"><div class="q-num">01</div><div class="q-text">В чём суть проблемы?</div></div>
+      <div class="q-row"><div class="q-num">02</div><div class="q-text">Что уже проверено / сделано?</div></div>
+      <div class="q-row"><div class="q-num">03</div><div class="q-text">Какие варианты решения есть?</div></div>
+      <div class="q-row"><div class="q-num">04</div><div class="q-text">Что рекомендуете?</div></div>
+      <div class="q-row"><div class="q-num">05</div><div class="q-text">Какая помощь нужна?</div></div>
+    </div>
+  </div>
+</section>
+
+<section class="block" id="formula">
+  <div class="container">
+    <div class="section-head">
+      <div class="section-index">03 — Formula</div>
+      <div>
+        <h2 class="section-title">Формула сильного вопроса</h2>
+        <p class="section-desc">Минимальная структура, которая переводит вопрос с уровня 2 на уровень 4–5 за одно предложение.</p>
+      </div>
+    </div>
+
+    <div class="formula">
+      <div class="formula-part">
+        <span class="word">Есть проблема</span>
+        <span class="sub">Факт</span>
+      </div>
+      <div class="formula-sep">+</div>
+      <div class="formula-part">
+        <span class="word">есть варианты</span>
+        <span class="sub">Анализ</span>
+      </div>
+      <div class="formula-sep">+</div>
+      <div class="formula-part">
+        <span class="word">рекомендую</span>
+        <span class="sub">Решение</span>
+      </div>
+      <div class="formula-sep">=</div>
+      <div class="formula-part">
+        <span class="word" style="color:var(--emerald)">Уровень 4–5</span>
+        <span class="sub">Целевой</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container footer-inner">
+    <div>© 2026 · Шкала зрелости вопроса · Arrange Styleguide</div>
+    <div>От молчания к самостоятельности</div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  const t=document.querySelector('[data-theme-toggle]'),r=document.documentElement;
+  let d=matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light';
+  r.setAttribute('data-theme',d);
+  t&&t.addEventListener('click',()=>{
+    d=d==='dark'?'light':'dark';
+    r.setAttribute('data-theme',d);
+    t.innerHTML=d==='dark'
+      ?'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>'
+      :'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>';
+  });
+  const io=new IntersectionObserver(es=>es.forEach(e=>e.isIntersecting&&e.target.classList.add('in')),{threshold:.08});
+  document.querySelectorAll('.block,.hero').forEach(el=>{el.classList.add('fade-up');io.observe(el);});
+})();
+</script>
+</body>
+</html>
