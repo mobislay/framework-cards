@@ -2,95 +2,95 @@
   "title": "Framework Cards",
   "subtitle": "Каталог обучающих карточек по фреймворкам",
   "categories": [
-    {"key": "research", "label": "Research"},
-    {"key": "strategy", "label": "Strategy"},
-    {"key": "planning", "label": "Planning"},
-    {"key": "analysis", "label": "Analysis"},
-    {"key": "productivity", "label": "Productivity"},
-    {"key": "leadership", "label": "Leadership"},
-    {"key": "operations", "label": "Operations"}
+    {
+      "key": "research",
+      "label": "Research"
+    },
+    {
+      "key": "strategy",
+      "label": "Strategy"
+    },
+    {
+      "key": "planning",
+      "label": "Planning"
+    },
+    {
+      "key": "analysis",
+      "label": "Analysis"
+    },
+    {
+      "key": "productivity",
+      "label": "Productivity"
+    },
+    {
+      "key": "leadership",
+      "label": "Leadership"
+    },
+    {
+      "key": "operations",
+      "label": "Operations"
+    }
   ],
   "cards": [
     {
-      "id": "core",
-      "file": "CORE_card.html",
-      "name": "CORE",
-      "subtitle": "Capture · Organize · Review · Engage",
-      "category": "productivity"
-    },
-    {
       "id": "jtbd",
-      "file": "JTBD_card.html",
+      "file": "jtbd-card.html",
       "name": "JTBD",
       "subtitle": "Jobs to be Done",
       "category": "research"
     },
     {
       "id": "sipoc",
-      "file": "SIPOC_card.html",
+      "file": "sipoc-card.html",
       "name": "SIPOC",
       "subtitle": "Suppliers · Inputs · Process · Outputs · Customers",
       "category": "analysis"
     },
     {
       "id": "okr",
-      "file": "OKR_card.html",
+      "file": "okr-card.html",
       "name": "OKR",
       "subtitle": "Objectives and Key Results",
       "category": "planning"
     },
     {
       "id": "usm",
-      "file": "USM_card.html",
+      "file": "usm-card.html",
       "name": "User Story Map",
       "subtitle": "Jeff Patton — двумерный бэклог",
       "category": "planning"
     },
     {
-      "id": "rumelt",
-      "file": "Rumelt_Kernel_card.html",
-      "name": "Ядро стратегии",
-      "subtitle": "Richard Rumelt — Kernel of Strategy",
-      "category": "strategy"
-    },
-    {
       "id": "tripleDiamond",
-      "file": "TripleDiamond_card.html",
+      "file": "triple-diamond-card.html",
       "name": "Triple Diamond",
       "subtitle": "Discover · Define · Design · Deliver",
       "category": "research"
     },
     {
       "id": "mintzberg",
-      "file": "mintzberg_safari_card.html",
+      "file": "mintzberg-safari-card.html",
       "name": "Стратегическое сафари",
       "subtitle": "Генри Минцберг — 10 школ стратегии",
       "category": "strategy"
     },
     {
       "id": "maturity-scale",
-      "file": "maturity_scale_card.html",
+      "file": "maturity-card.html",
       "name": "Шкала зрелости в решении задач",
       "subtitle": "6 уровней зрелости: от «промолчать» к «взять ответственность»",
       "category": "operations"
     },
     {
-      "id": "p3express",
-      "file": "P3express_card.html",
-      "name": "P3.express",
-      "subtitle": "Минималистичная циклическая система управления проектами: 33 шага, 7 этапов, 4 документа",
-      "category": "planning"
-    },
-    {
       "id": "impact-map",
-      "file": "ImpactMap.html",
+      "file": "impact-map-card.html",
       "name": "Impact Map",
       "subtitle": "Gojko Adzic · Why → Who → How → What",
       "category": "planning"
     },
     {
       "id": "mckinsey7s",
-      "file": "McKinsey7S.html",
+      "file": "mckinsey7s-card.html",
       "name": "Модель McKinsey 7S",
       "subtitle": "7 стратегических рычагов высокоэффективных компаний",
       "category": "leadership"
