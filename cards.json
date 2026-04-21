@@ -1,139 +1,99 @@
 {
   "title": "Framework Cards",
   "subtitle": "Каталог обучающих карточек по фреймворкам",
+  "categories": [
+    {"key": "research", "label": "Research"},
+    {"key": "strategy", "label": "Strategy"},
+    {"key": "planning", "label": "Planning"},
+    {"key": "analysis", "label": "Analysis"},
+    {"key": "productivity", "label": "Productivity"},
+    {"key": "leadership", "label": "Leadership"},
+    {"key": "operations", "label": "Operations"}
+  ],
   "cards": [
     {
       "id": "core",
       "file": "CORE_card.html",
       "name": "CORE",
       "subtitle": "Capture · Organize · Review · Engage",
-      "category": "productivity",
-      "icon": "⚡"
+      "category": "productivity"
     },
     {
       "id": "jtbd",
       "file": "JTBD_card.html",
       "name": "JTBD",
       "subtitle": "Jobs to be Done",
-      "category": "research",
-      "icon": "🔬"
+      "category": "research"
     },
     {
       "id": "sipoc",
       "file": "SIPOC_card.html",
       "name": "SIPOC",
       "subtitle": "Suppliers · Inputs · Process · Outputs · Customers",
-      "category": "analysis",
-      "icon": "📊"
+      "category": "analysis"
     },
     {
       "id": "okr",
       "file": "OKR_card.html",
       "name": "OKR",
       "subtitle": "Objectives and Key Results",
-      "category": "planning",
-      "icon": "🎯"
+      "category": "planning"
     },
     {
       "id": "usm",
       "file": "USM_card.html",
       "name": "User Story Map",
       "subtitle": "Jeff Patton — двумерный бэклог",
-      "category": "planning",
-      "icon": "🗺️"
+      "category": "planning"
     },
     {
       "id": "rumelt",
       "file": "Rumelt_Kernel_card.html",
       "name": "Ядро стратегии",
       "subtitle": "Richard Rumelt — Kernel of Strategy",
-      "category": "strategy",
-      "icon": "🏛️"
+      "category": "strategy"
     },
     {
       "id": "tripleDiamond",
       "file": "TripleDiamond_card.html",
       "name": "Triple Diamond",
       "subtitle": "Discover · Define · Design · Deliver",
-      "category": "research",
-      "icon": "💎"
+      "category": "research"
     },
     {
       "id": "mintzberg",
       "file": "mintzberg_safari_card.html",
       "name": "Стратегическое сафари",
       "subtitle": "Генри Минцберг — 10 школ стратегии",
-      "category": "strategy",
-      "icon": "🏛️"
+      "category": "strategy"
     },
     {
       "id": "maturity-scale",
       "file": "maturity_scale_card.html",
       "name": "Шкала зрелости в решении задач",
       "subtitle": "6 уровней зрелости: от «промолчать» к «взять ответственность»",
-      "category": "leadership",
-      "icon": "🎯"
+      "category": "operations"
     },
     {
       "id": "p3express",
       "file": "P3express_card.html",
       "name": "P3.express",
       "subtitle": "Минималистичная циклическая система управления проектами: 33 шага, 7 этапов, 4 документа",
-      "category": "planning",
-      "icon": "🚀"
+      "category": "planning"
     },
     {
       "id": "impact-map",
       "file": "ImpactMap.html",
       "name": "Impact Map",
       "subtitle": "Gojko Adzic · Why → Who → How → What",
-      "category": "planning",
-      "icon": "🗺️"
+      "category": "planning"
     },
     {
       "id": "mckinsey7s",
       "file": "McKinsey7S.html",
       "name": "Модель McKinsey 7S",
-      "subtitle": "7 Стратегических рычагов высокоэффективных компаний",
-      "category": "leadership",
-      "icon": "🏛️"
+      "subtitle": "7 стратегических рычагов высокоэффективных компаний",
+      "category": "leadership"
     }
-  ],
-  "categories": {
-    "strategy": {
-      "name": "Стратегия и бизнес",
-      "icon": "🏛️",
-      "color": "#1e3a8a"
-    },
-    "research": {
-      "name": "Исследование и проектирование",
-      "icon": "🔬",
-      "color": "#6d28d9"
-    },
-    "planning": {
-      "name": "Планирование и управление",
-      "icon": "🎯",
-      "color": "#3730a3"
-    },
-    "analysis": {
-      "name": "Анализ и данные",
-      "icon": "📊",
-      "color": "#334155"
-    },
-    "leadership": {
-      "name": "Лидерство и HR",
-      "icon": "👥",
-      "color": "#3730a3"
-    },
-    "productivity": {
-      "name": "Продуктивность",
-      "icon": "⚡",
-      "color": "#006e6b"
-    },
-    "operations": {
-      "name": "Процессы и операции",
-      "icon": "⚙️",
-      "color": "#0f4c54"
-    }
-  }
+  ]
 }
