@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="ru" data-theme="light">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>SIPOC — Карточка инструмента</title>
+<link href="https://api.fontshare.com/v2/css?f[]=satoshi@300,400,500,700,900&display=swap" rel="stylesheet"/>
+<style>
+:root,[data-theme="light"]{
+  --bg:#f4f4f4;--surface:#fff;--surface-2:#fafafa;--offset:#f0f0f0;--offset-2:#e8e8e8;
+  --divider:#ececec;--border:#e4e4e4;
+  --text:#0a0a0a;--muted:#6b6b6b;--faint:#a3a3a3;--inverse:#fff;
+  --blue:#2b6df6;--green:#22c55e;--amber:#f59e0b;--red:#ef4444;--violet:#8b5cf6;--teal:#14b8a6;
+  --shadow-sm:0 1px 2px rgba(10,10,10,.04);
+  --shadow-md:0 4px 16px rgba(10,10,10,.07);
+  --shadow-lg:0 20px 48px rgba(10,10,10,.09);
+  --r-sm:.375rem;--r-md:.5rem;--r-lg:.75rem;--r-xl:1rem;--r-2xl:1.25rem;--r-full:9999px;
+  --s-1:.25rem;--s-2:.5rem;--s-3:.75rem;--s-4:1rem;--s-5:1.25rem;--s-6:1.5rem;
+  --s-8:2rem;--s-10:2.5rem;--s-12:3rem;--s-16:4rem;--s-20:5rem;--s-24:6rem;
+  --t:180ms cubic-bezier(.16,1,.3,1);
+  --xs:clamp(.75rem,.7rem + .2vw,.8125rem);
+  --sm:clamp(.875rem,.82rem + .2vw,.9375rem);
+  --base:clamp(1rem,.95rem + .25vw,1.0625rem);
+  --lg:clamp(1.125rem,1rem + .5vw,1.375rem);
+  --xl:clamp(1.5rem,1.2rem + 1vw,2rem);
+  --2xl:clamp(2rem,1.2rem + 2vw,3rem);
+  --hero:clamp(3.5rem,1rem + 8vw,8rem);
+}
+[data-theme="dark"]{
+  --bg:#0a0a0a;--surface:#141414;--surface-2:#1a1a1a;--offset:#1f1f1f;--offset-2:#262626;
+  --divider:#262626;--border:#2d2d2d;
+  --text:#f4f4f4;--muted:#a3a3a3;--faint:#6b6b6b;--inverse:#0a0a0a;
+  --shadow-sm:0 1px 2px rgba(0,0,0,.3);--shadow-md:0 4px 16px rgba(0,0,0,.4);--shadow-lg:0 20px 48px rgba(0,0,0,.5);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased}
+body{font-family:'Satoshi','Inter',system-ui,sans-serif;font-size:var(--base);line-height:1.6;color:var(--text);background:var(--bg);min-height:100dvh;transition:background var(--t),color var(--t)}
+h1,h2,h3,h4{font-weight:700;letter-spacing:-.02em;line-height:1.1}
+p{color:var(--muted);max-width:72ch}
+button{font:inherit;cursor:pointer;background:none;border:none;color:inherit}
+svg{display:block}
+.container{max-width:1100px;margin-inline:auto;padding-inline:var(--s-6)}
+
+/* ── Header ── */
+.site-header{position:sticky;top:0;z-index:50;backdrop-filter:blur(14px);background:color-mix(in oklab,var(--bg) 80%,transparent);border-bottom:1px solid var(--divider)}
+.header-inner{display:flex;align-items:center;justify-content:space-between;padding-block:var(--s-4)}
+.brand{display:flex;align-items:center;gap:var(--s-2);font-weight:700}
+.brand-dot{width:8px;height:8px;border-radius:var(--r-full);background:var(--text)}
+.header-nav{display:flex;gap:var(--s-6);font-size:var(--sm);color:var(--muted)}
+.header-nav a{text-decoration:none;transition:color var(--t)}
+.header-nav a:hover{color:var(--text)}
+.theme-toggle{width:36px;height:36px;border-radius:var(--r-full);border:1px solid var(--border);display:grid;place-items:center;transition:all var(--t)}
+.theme-toggle:hover{background:var(--offset)}
+@media(max-width:720px){.header-nav{display:none}}
+
+/* ── Hero ── */
+.hero{padding-block:var(--s-20) var(--s-14);border-bottom:1px solid var(--divider)}
+.eyebrow{display:inline-flex;align-items:center;gap:var(--s-2);font-size:var(--xs);text-transform:uppercase;letter-spacing:.14em;color:var(--muted);margin-bottom:var(--s-6)}
+.eyebrow::before{content:'';width:6px;height:6px;border-radius:var(--r-full);background:var(--teal)}
+.hero h1{font-size:var(--hero);font-weight:900;letter-spacing:-.05em;margin-bottom:var(--s-5)}
+.hero-lede{font-size:var(--lg);max-width:58ch}
+.hero-meta{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:var(--s-6);margin-top:var(--s-10);padding-top:var(--s-8);border-top:1px solid var(--divider)}
+.hero-meta .k{font-size:var(--xs);color:var(--faint);text-transform:uppercase;letter-spacing:.12em;margin-bottom:var(--s-1)}
+.hero-meta .v{font-size:var(--base);font-weight:500}
+
+/* ── Section ── */
+.block{padding-block:var(--s-20);border-bottom:1px solid var(--divider)}
+.section-head{display:grid;grid-template-columns:180px 1fr;gap:var(--s-12);margin-bottom:var(--s-10)}
+@media(max-width:720px){.section-head{grid-template-columns:1fr;gap:var(--s-3)}}
+.section-index{font-size:var(--xs);color:var(--faint);letter-spacing:.16em;text-transform:uppercase}
+.section-title{font-size:var(--xl);margin-bottom:var(--s-3)}
+.section-desc{font-size:var(--base)}
+
+/* ── SIPOC Five Columns ── */
+.sipoc-cols{display:grid;grid-template-columns:repeat(5,1fr);gap:0;border:1px solid var(--border);border-radius:var(--r-xl);overflow:hidden;background:var(--surface)}
+@media(max-width:860px){.sipoc-cols{grid-template-columns:1fr 1fr;}}
+@media(max-width:500px){.sipoc-cols{grid-template-columns:1fr;}}
+.sipoc-col{border-right:1px solid var(--border);display:flex;flex-direction:column}
+.sipoc-col:last-child{border-right:0}
+.sipoc-col-head{padding:var(--s-5) var(--s-5) var(--s-4);border-bottom:1px solid var(--border)}
+.sipoc-letter{font-size:var(--2xl);font-weight:900;letter-spacing:-.04em;line-height:1;margin-bottom:var(--s-1)}
+.sipoc-col-label{font-size:var(--xs);text-transform:uppercase;letter-spacing:.12em;font-weight:600}
+.sipoc-col-sub{font-size:var(--xs);color:var(--faint);margin-top:2px}
+.sipoc-col-body{padding:var(--s-4) var(--s-5);flex:1;display:grid;gap:var(--s-2)}
+.sipoc-item{padding:var(--s-2) var(--s-3);background:var(--offset);border-radius:var(--r-md);font-size:var(--sm);transition:background var(--t)}
+.sipoc-item:hover{background:var(--offset-2)}
+
+/* column accent tints */
+.sipoc-col:nth-child(1) .sipoc-col-head{background:color-mix(in oklab,var(--violet) 6%,var(--surface))}
+.sipoc-col:nth-child(1) .sipoc-letter{color:var(--violet)}
+.sipoc-col:nth-child(1) .sipoc-col-label{color:var(--violet)}
+.sipoc-col:nth-child(2) .sipoc-col-head{background:color-mix(in oklab,var(--blue) 6%,var(--surface))}
+.sipoc-col:nth-child(2) .sipoc-letter{color:var(--blue)}
+.sipoc-col:nth-child(2) .sipoc-col-label{color:var(--blue)}
+.sipoc-col:nth-child(3) .sipoc-col-head{background:color-mix(in oklab,var(--amber) 6%,var(--surface))}
+.sipoc-col:nth-child(3) .sipoc-letter{color:var(--amber)}
+.sipoc-col:nth-child(3) .sipoc-col-label{color:var(--amber)}
+.sipoc-col:nth-child(4) .sipoc-col-head{background:color-mix(in oklab,var(--teal) 6%,var(--surface))}
+.sipoc-col:nth-child(4) .sipoc-letter{color:var(--teal)}
+.sipoc-col:nth-child(4) .sipoc-col-label{color:var(--teal)}
+.sipoc-col:nth-child(5) .sipoc-col-head{background:color-mix(in oklab,var(--green) 6%,var(--surface))}
+.sipoc-col:nth-child(5) .sipoc-letter{color:var(--green)}
+.sipoc-col:nth-child(5) .sipoc-col-label{color:var(--green)}
+
+/* flow arrows between cols */
+.sipoc-flow{display:flex;align-items:center;justify-content:center;gap:0;margin-top:var(--s-4);padding:var(--s-4) var(--s-6);background:var(--surface);border:1px solid var(--border);border-radius:var(--r-xl)}
+.sipoc-flow-step{display:flex;flex-direction:column;align-items:center;gap:var(--s-1);flex:1;text-align:center}
+.sipoc-flow-dot{width:10px;height:10px;border-radius:var(--r-full);flex-shrink:0}
+.sipoc-flow-label{font-size:var(--xs);font-weight:600;text-transform:uppercase;letter-spacing:.1em}
+.sipoc-flow-sub{font-size:var(--xs);color:var(--faint)}
+.sipoc-flow-arr{color:var(--faint);flex-shrink:0;padding-inline:var(--s-2)}
+
+/* ── Build order (COPIS) ── */
+.build-steps{display:grid;gap:var(--s-3)}
+.build-row{display:grid;grid-template-columns:56px 1fr;gap:var(--s-5);align-items:start;padding:var(--s-5) var(--s-6);background:var(--surface);border:1px solid var(--border);border-radius:var(--r-xl);transition:all var(--t)}
+.build-row:hover{border-color:var(--text);box-shadow:var(--shadow-sm)}
+.build-step-num{font-family:'SF Mono',ui-monospace,monospace;font-size:var(--sm);color:var(--faint);padding-top:.2rem}
+.build-row h4{font-size:var(--base);font-weight:600;margin-bottom:var(--s-1)}
+.build-row p{font-size:var(--sm);margin:0}
+.build-tag{display:inline-flex;align-items:center;gap:var(--s-2);padding:var(--s-1) var(--s-3);border-radius:var(--r-full);font-size:var(--xs);font-weight:600;background:var(--offset);margin-top:var(--s-2)}
+
+/* ── Example SIPOC table ── */
+.ex-table{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-xl);overflow:hidden;margin-top:var(--s-6)}
+.ex-table-header{padding:var(--s-5) var(--s-6);border-bottom:1px solid var(--divider);display:flex;align-items:center;justify-content:space-between}
+.ex-table-header h3{font-size:var(--base);font-weight:600}
+.ex-tag{font-size:var(--xs);color:var(--faint);text-transform:uppercase;letter-spacing:.1em}
+.ex-table table{width:100%;border-collapse:collapse}
+.ex-table th{padding:var(--s-3) var(--s-5);font-size:var(--xs);text-transform:uppercase;letter-spacing:.1em;font-weight:600;text-align:left;border-bottom:1px solid var(--divider);background:var(--offset)}
+.ex-table td{padding:var(--s-3) var(--s-5);font-size:var(--sm);color:var(--muted);border-bottom:1px solid var(--divider);vertical-align:top}
+.ex-table tr:last-child td{border-bottom:0}
+.ex-table th:not(:last-child),.ex-table td:not(:last-child){border-right:1px solid var(--divider)}
+
+/* ── Use-when / not-for grid ── */
+.when-grid{display:grid;grid-template-columns:1fr 1fr;gap:var(--s-4)}
+@media(max-width:640px){.when-grid{grid-template-columns:1fr}}
+.when-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-xl);padding:var(--s-6)}
+.when-card .head{font-size:var(--xs);text-transform:uppercase;letter-spacing:.12em;font-weight:600;margin-bottom:var(--s-4)}
+.when-list{display:grid;gap:var(--s-2)}
+.when-item{display:grid;grid-template-columns:20px 1fr;gap:var(--s-3);align-items:start;font-size:var(--sm);color:var(--muted)}
+.when-dot{width:6px;height:6px;border-radius:var(--r-full);margin-top:.45rem;flex-shrink:0}
+
+/* ── Callout ── */
+.callout{background:var(--text);color:var(--inverse);border-radius:var(--r-2xl);padding:var(--s-12);display:grid;grid-template-columns:1fr 1fr;gap:var(--s-8);align-items:center}
+@media(max-width:720px){.callout{grid-template-columns:1fr;padding:var(--s-8)}}
+.callout-eyebrow{font-size:var(--xs);text-transform:uppercase;letter-spacing:.14em;color:color-mix(in oklab,var(--inverse) 55%,transparent);margin-bottom:var(--s-4)}
+.callout h2{font-size:var(--2xl);letter-spacing:-.03em;line-height:1.1}
+.callout p{color:color-mix(in oklab,var(--inverse) 70%,transparent);font-size:var(--base);margin-top:var(--s-4);max-width:44ch}
+.callout-acronym{display:flex;flex-direction:column;gap:var(--s-3)}
+.callout-ac-row{display:flex;align-items:baseline;gap:var(--s-3)}
+.callout-ac-l{font-size:var(--2xl);font-weight:900;letter-spacing:-.04em;line-height:1;width:52px;flex-shrink:0}
+.callout-ac-rest{font-size:var(--base);color:color-mix(in oklab,var(--inverse) 65%,transparent)}
+
+/* ── Mistakes ── */
+.mistake-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:var(--s-4)}
+.mistake{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-xl);padding:var(--s-6);transition:all var(--t)}
+.mistake:hover{border-color:var(--text)}
+.mistake .num{font-family:'SF Mono',ui-monospace,monospace;font-size:var(--xs);color:var(--faint);margin-bottom:var(--s-3)}
+.mistake h3{font-size:var(--lg);margin-bottom:var(--s-2)}
+.mistake p{font-size:var(--sm)}
+
+/* Footer */
+footer{padding-block:var(--s-12);font-size:var(--sm);color:var(--muted)}
+.footer-inner{display:flex;justify-content:space-between;flex-wrap:wrap;gap:var(--s-4)}
+
+.fade-up{opacity:0;transform:translateY(10px);transition:opacity .6s ease,transform .6s ease}
+.fade-up.in{opacity:1;transform:none}
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container header-inner">
+    <div class="brand"><span class="brand-dot"></span> SIPOC</div>
+    <nav class="header-nav">
+      <a href="#columns">5 колонок</a>
+      <a href="#build">Как строить</a>
+      <a href="#when">Когда применять</a>
+      <a href="#mistakes">Ошибки</a>
+    </nav>
+    <button class="theme-toggle" data-theme-toggle aria-label="Переключить тему">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+    </button>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="container">
+    <div class="eyebrow">Tool Card · Six Sigma · DMAIC Define</div>
+    <h1>SIPOC.</h1>
+    <p class="hero-lede">Одностраничная карта процесса, которая фиксирует его границы и ключевых участников ещё до детального анализа. Строится справа налево — от заказчика к поставщику.</p>
+    <div class="hero-meta">
+      <div><div class="k">Колонок</div><div class="v">5</div></div>
+      <div><div class="k">Этап</div><div class="v">DMAIC Define</div></div>
+      <div><div class="k">Время сессии</div><div class="v">1–2 часа</div></div>
+      <div><div class="k">Порядок построения</div><div class="v">Справа налево</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- Callout -->
+<section class="block">
+  <div class="container">
+    <div class="callout">
+      <div>
+        <div class="callout-eyebrow">Ключевой принцип</div>
+        <h2>Выход одного шага — вход следующего.</h2>
+        <p>Принцип «клиент–поставщик»: цепочка SIPOC замкнута. Любой разрыв в ней означает потерю ценности или источник дефекта.</p>
+      </div>
+      <div class="callout-acronym">
+        <div class="callout-ac-row"><div class="callout-ac-l" style="color:color-mix(in oklab,var(--violet) 80%,var(--inverse))">S</div><div class="callout-ac-rest">Suppliers — Поставщики</div></div>
+        <div class="callout-ac-row"><div class="callout-ac-l" style="color:color-mix(in oklab,var(--blue) 80%,var(--inverse))">I</div><div class="callout-ac-rest">Inputs — Входы</div></div>
+        <div class="callout-ac-row"><div class="callout-ac-l" style="color:color-mix(in oklab,var(--amber) 80%,var(--inverse))">P</div><div class="callout-ac-rest">Process — Шаги процесса</div></div>
+        <div class="callout-ac-row"><div class="callout-ac-l" style="color:color-mix(in oklab,var(--teal) 80%,var(--inverse))">O</div><div class="callout-ac-rest">Outputs — Выходы / результаты</div></div>
+        <div class="callout-ac-row"><div class="callout-ac-l" style="color:color-mix(in oklab,var(--green) 80%,var(--inverse))">C</div><div class="callout-ac-rest">Customers — Заказчики</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="block" id="columns">
+  <div class="container">
+    <div class="section-head">
+      <div class="section-index">01 — Structure</div>
+      <div>
+        <h2 class="section-title">Пять колонок карты</h2>
+        <p class="section-desc">Каждая колонка отвечает на один вопрос о процессе. Колонки читаются слева направо, но заполняются справа налево — начиная с Customers.</p>
+      </div>
+    </div>
+
+    <div class="sipoc-cols">
+      <div class="sipoc-col">
+        <div class="sipoc-col-head">
+          <div class="sipoc-letter">S</div>
+          <div class="sipoc-col-label">Suppliers</div>
+          <div class="sipoc-col-sub">Поставщики</div>
+        </div>
+        <div class="sipoc-col-body">
+          <div class="sipoc-item">Внешние поставщики</div>
+          <div class="sipoc-item">Внутренние команды</div>
+          <div class="sipoc-item">Системы / ИТ</div>
+          <div class="sipoc-item">Регуляторы</div>
+          <div class="sipoc-item">Другие процессы</div>
+        </div>
+      </div>
+      <div class="sipoc-col">
+        <div class="sipoc-col-head">
+          <div class="sipoc-letter">I</div>
+          <div class="sipoc-col-label">Inputs</div>
+          <div class="sipoc-col-sub">Входы</div>
+        </div>
+        <div class="sipoc-col-body">
+          <div class="sipoc-item">Материалы</div>
+          <div class="sipoc-item">Данные / информация</div>
+          <div class="sipoc-item">Люди / компетенции</div>
+          <div class="sipoc-item">Оборудование</div>
+          <div class="sipoc-item">Деньги / ресурсы</div>
+        </div>
+      </div>
+      <div class="sipoc-col">
+        <div class="sipoc-col-head">
+          <div class="sipoc-letter">P</div>
+          <div class="sipoc-col-label">Process</div>
+          <div class="sipoc-col-sub">Шаги</div>
+        </div>
+        <div class="sipoc-col-body">
+          <div class="sipoc-item">4–7 укрупнённых шагов</div>
+          <div class="sipoc-item">Глаголы действия</div>
+          <div class="sipoc-item">Без лишней детализации</div>
+          <div class="sipoc-item">Начало и конец чётко зафиксированы</div>
+        </div>
+      </div>
+      <div class="sipoc-col">
+        <div class="sipoc-col-head">
+          <div class="sipoc-letter">O</div>
+          <div class="sipoc-col-label">Outputs</div>
+          <div class="sipoc-col-sub">Выходы</div>
+        </div>
+        <div class="sipoc-col-body">
+          <div class="sipoc-item">Продукты / услуги</div>
+          <div class="sipoc-item">Документы / отчёты</div>
+          <div class="sipoc-item">Данные / решения</div>
+          <div class="sipoc-item">Изменения состояния</div>
+        </div>
+      </div>
+      <div class="sipoc-col">
+        <div class="sipoc-col-head">
+          <div class="sipoc-letter">C</div>
+          <div class="sipoc-col-label">Customers</div>
+          <div class="sipoc-col-sub">Заказчики</div>
+        </div>
+        <div class="sipoc-col-body">
+          <div class="sipoc-item">Конечные клиенты</div>
+          <div class="sipoc-item">Внутренние команды</div>
+          <div class="sipoc-item">Следующий шаг процесса</div>
+          <div class="sipoc-item">Регуляторы</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Flow visual -->
+    <div class="sipoc-flow">
+      <div class="sipoc-flow-step">
+        <div class="sipoc-flow-dot" style="background:var(--violet)"></div>
+        <div class="sipoc-flow-label" style="color:var(--violet)">S</div>
+        <div class="sipoc-flow-sub">Suppliers</div>
+      </div>
+      <div class="sipoc-flow-arr"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 12h14M13 5l7 7-7 7"/></svg></div>
+      <div class="sipoc-flow-step">
+        <div class="sipoc-flow-dot" style="background:var(--blue)"></div>
+        <div class="sipoc-flow-label" style="color:var(--blue)">I</div>
+        <div class="sipoc-flow-sub">Inputs</div>
+      </div>
+      <div class="sipoc-flow-arr"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 12h14M13 5l7 7-7 7"/></svg></div>
+      <div class="sipoc-flow-step">
+        <div class="sipoc-flow-dot" style="background:var(--amber)"></div>
+        <div class="sipoc-flow-label" style="color:var(--amber)">P</div>
+        <div class="sipoc-flow-sub">Process</div>
+      </div>
+      <div class="sipoc-flow-arr"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 12h14M13 5l7 7-7 7"/></svg></div>
+      <div class="sipoc-flow-step">
+        <div class="sipoc-flow-dot" style="background:var(--teal)"></div>
+        <div class="sipoc-flow-label" style="color:var(--teal)">O</div>
+        <div class="sipoc-flow-sub">Outputs</div>
+      </div>
+      <div class="sipoc-flow-arr"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 12h14M13 5l7 7-7 7"/></svg></div>
+      <div class="sipoc-flow-step">
+        <div class="sipoc-flow-dot" style="background:var(--green)"></div>
+        <div class="sipoc-flow-label" style="color:var(--green)">C</div>
+        <div class="sipoc-flow-sub">Customers</div>
+      </div>
+    </div>
+
+    <!-- Example table -->
+    <div class="ex-table">
+      <div class="ex-table-header">
+        <h3>Пример — Процесс обработки клиентского запроса</h3>
+        <span class="ex-tag">Образец</span>
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <th style="color:var(--violet)">S · Suppliers</th>
+            <th style="color:var(--blue)">I · Inputs</th>
+            <th style="color:var(--amber)">P · Process</th>
+            <th style="color:var(--teal)">O · Outputs</th>
+            <th style="color:var(--green)">C · Customers</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Клиент</td>
+            <td>Заявка / письмо</td>
+            <td>1. Получить запрос</td>
+            <td>Подтверждение получения</td>
+            <td>Клиент</td>
+          </tr>
+          <tr>
+            <td>CRM-система</td>
+            <td>История клиента</td>
+            <td>2. Квалифицировать</td>
+            <td>Категория запроса</td>
+            <td>Команда поддержки</td>
+          </tr>
+          <tr>
+            <td>База знаний</td>
+            <td>Шаблоны ответов</td>
+            <td>3. Подготовить ответ</td>
+            <td>Черновик решения</td>
+            <td>Менеджер (на согласование)</td>
+          </tr>
+          <tr>
+            <td>Менеджер</td>
+            <td>Согласование</td>
+            <td>4. Отправить ответ</td>
+            <td>Закрытый тикет</td>
+            <td>Клиент + отчётность</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<section class="block" id="build">
+  <div class="container">
+    <div class="section-head">
+      <div class="section-index">02 — Build</div>
+      <div>
+        <h2 class="section-title">Порядок построения: COPIS</h2>
+        <p class="section-desc">Карта строится справа налево — от Customers к Suppliers. Это гарантирует фокус на ценности для клиента, а не на удобстве поставщика.</p>
+      </div>
+    </div>
+
+    <div class="build-steps">
+      <div class="build-row">
+        <div class="build-step-num"><span style="color:var(--green);font-weight:700">C</span> 01</div>
+        <div>
+          <h4>Customers — Кто получает результат?</h4>
+          <p>Назовите всех, кто получает выход процесса: внешние клиенты, внутренние команды, следующий шаг в цепочке. Включите «неочевидных» заказчиков — регуляторов, аудиторов, смежные процессы.</p>
+          <div class="build-tag" style="color:var(--green)">Начинать отсюда</div>
+        </div>
+      </div>
+      <div class="build-row">
+        <div class="build-step-num"><span style="color:var(--teal);font-weight:700">O</span> 02</div>
+        <div>
+          <h4>Outputs — Что получают заказчики?</h4>
+          <p>Конкретные результаты процесса: продукты, услуги, отчёты, решения, изменения состояния. Только то, что действительно ценно для Customer — не промежуточные артефакты.</p>
+        </div>
+      </div>
+      <div class="build-row">
+        <div class="build-step-num"><span style="color:var(--amber);font-weight:700">P</span> 03</div>
+        <div>
+          <h4>Process — Как происходит преобразование?</h4>
+          <p>4–7 укрупнённых шагов на уровне «глагол + объект». Не детальный флоучарт — только ключевые преобразования. Чётко зафиксируйте начало и конец процесса.</p>
+        </div>
+      </div>
+      <div class="build-row">
+        <div class="build-step-num"><span style="color:var(--blue);font-weight:700">I</span> 04</div>
+        <div>
+          <h4>Inputs — Что нужно для процесса?</h4>
+          <p>Материалы, данные, людей, оборудование, деньги — всё, что «потребляет» процесс. Вход одного шага — выход предыдущего. Ищите разрывы в цепочке.</p>
+        </div>
+      </div>
+      <div class="build-row">
+        <div class="build-step-num"><span style="color:var(--violet);font-weight:700">S</span> 05</div>
+        <div>
+          <h4>Suppliers — Кто поставляет входы?</h4>
+          <p>Поставщики каждого входа: внешние партнёры, внутренние системы, другие процессы. Один поставщик может поставлять несколько входов — и наоборот.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="block" id="when">
+  <div class="container">
+    <div class="section-head">
+      <div class="section-index">03 — When</div>
+      <div>
+        <h2 class="section-title">Когда применять</h2>
+        <p class="section-desc">SIPOC — инструмент начала проекта, а не детального анализа. Его сила в скорости и согласовании границ.</p>
+      </div>
+    </div>
+
+    <div class="when-grid">
+      <div class="when-card">
+        <div class="head" style="color:var(--green)">✓ Применять</div>
+        <div class="when-list">
+          <div class="when-item"><span class="when-dot" style="background:var(--green)"></span><span>Старт Lean / Six Sigma проекта — этап Define</span></div>
+          <div class="when-item"><span class="when-dot" style="background:var(--green)"></span><span>Команда не договорилась о границах процесса</span></div>
+          <div class="when-item"><span class="when-dot" style="background:var(--green)"></span><span>Нужно быстро показать стейкхолдерам «о чём этот процесс»</span></div>
+          <div class="when-item"><span class="when-dot" style="background:var(--green)"></span><span>Выявить узкие места на уровне «откуда берётся вход»</span></div>
+          <div class="when-item"><span class="when-dot" style="background:var(--green)"></span><span>Kaizen, BPM, Agile — для синхронизации команды перед детальным анализом</span></div>
+        </div>
+      </div>
+      <div class="when-card">
+        <div class="head" style="color:var(--red)">✗ Не заменяет</div>
+        <div class="when-list">
+          <div class="when-item"><span class="when-dot" style="background:var(--red)"></span><span>Детальную карту процесса (Value Stream Map, BPMN-флоучарт)</span></div>
+          <div class="when-item"><span class="when-dot" style="background:var(--red)"></span><span>Анализ причин дефектов (Fishbone, 5 Whys)</span></div>
+          <div class="when-item"><span class="when-dot" style="background:var(--red)"></span><span>Количественный анализ данных (этап Measure и Analyze)</span></div>
+          <div class="when-item"><span class="when-dot" style="background:var(--red)"></span><span>Документацию SOP или рабочих инструкций</span></div>
+          <div class="when-item"><span class="when-dot" style="background:var(--red)"></span><span>Инструмент планирования задач или управления бэклогом</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="block" id="mistakes">
+  <div class="container">
+    <div class="section-head">
+      <div class="section-index">04 — Mistakes</div>
+      <div>
+        <h2 class="section-title">Типичные ошибки</h2>
+        <p class="section-desc">Большинство проблем — в детализации Process и игнорировании внутренних Customers.</p>
+      </div>
+    </div>
+
+    <div class="mistake-grid">
+      <div class="mistake">
+        <div class="num">ERR 01</div>
+        <h3>Слишком детальный Process</h3>
+        <p>SIPOC — это не флоучарт. 4–7 укрупнённых шагов достаточно. Детализация убивает скорость и смещает фокус с границ на исполнение.</p>
+      </div>
+      <div class="mistake">
+        <div class="num">ERR 02</div>
+        <h3>Только внешние клиенты</h3>
+        <p>Внутренние команды и следующие шаги процесса — тоже Customers. Пропуская их, теряете разрывы внутри цепочки.</p>
+      </div>
+      <div class="mistake">
+        <div class="num">ERR 03</div>
+        <h3>Строить слева направо</h3>
+        <p>Начинать с Suppliers вместо Customers — значит фокусироваться на возможностях поставщика, а не на ценности для клиента. COPIS, не SIPOC.</p>
+      </div>
+      <div class="mistake">
+        <div class="num">ERR 04</div>
+        <h3>Нечёткие границы процесса</h3>
+        <p>Без явного начала и конца процесса команда будет бесконечно расширять карту. Договоритесь о границах до заполнения колонок.</p>
+      </div>
+      <div class="mistake">
+        <div class="num">ERR 05</div>
+        <h3>Путать Inputs и Process</h3>
+        <p>Входы — это то, что потребляет процесс, а не его шаги. «Согласование менеджера» — это Input, а не Step.</p>
+      </div>
+      <div class="mistake">
+        <div class="num">ERR 06</div>
+        <h3>SIPOC как финальный документ</h3>
+        <p>Карта — стартовая точка, а не результат. Если SIPOC не ведёт к следующему шагу анализа, он бесполезен.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container footer-inner">
+    <div>© 2026 · SIPOC Card · Arrange Styleguide</div>
+    <div>Suppliers · Inputs · Process · Outputs · Customers</div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  const t=document.querySelector('[data-theme-toggle]'),r=document.documentElement;
+  let d=matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light';
+  r.setAttribute('data-theme',d);
+  t&&t.addEventListener('click',()=>{
+    d=d==='dark'?'light':'dark';
+    r.setAttribute('data-theme',d);
+    t.innerHTML=d==='dark'
+      ?'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>'
+      :'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>';
+  });
+  const io=new IntersectionObserver(es=>es.forEach(e=>e.isIntersecting&&e.target.classList.add('in')),{threshold:.08});
+  document.querySelectorAll('.block,.hero').forEach(el=>{el.classList.add('fade-up');io.observe(el);});
+})();
+</script>
+</body>
+</html>
