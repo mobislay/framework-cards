@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="ru" data-theme="light">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Triple Diamond — Карточка фреймворка</title>
+<link href="https://api.fontshare.com/v2/css?f[]=satoshi@300,400,500,700,900&display=swap" rel="stylesheet"/>
+<style>
+:root,[data-theme="light"]{
+  --bg:#f4f4f4;--surface:#fff;--surface-2:#fafafa;--offset:#f0f0f0;--offset-2:#e8e8e8;
+  --divider:#ececec;--border:#e4e4e4;
+  --text:#0a0a0a;--muted:#6b6b6b;--faint:#a3a3a3;--inverse:#fff;
+  --blue:#2b6df6;--green:#22c55e;--amber:#f59e0b;--red:#ef4444;--violet:#8b5cf6;--teal:#14b8a6;--rose:#f43f5e;
+  --shadow-sm:0 1px 2px rgba(10,10,10,.04);
+  --shadow-md:0 4px 16px rgba(10,10,10,.07);
+  --shadow-lg:0 20px 48px rgba(10,10,10,.09);
+  --r-sm:.375rem;--r-md:.5rem;--r-lg:.75rem;--r-xl:1rem;--r-2xl:1.25rem;--r-full:9999px;
+  --s-1:.25rem;--s-2:.5rem;--s-3:.75rem;--s-4:1rem;--s-5:1.25rem;--s-6:1.5rem;
+  --s-8:2rem;--s-10:2.5rem;--s-12:3rem;--s-16:4rem;--s-20:5rem;--s-24:6rem;
+  --t:180ms cubic-bezier(.16,1,.3,1);
+  --xs:clamp(.75rem,.7rem + .2vw,.8125rem);
+  --sm:clamp(.875rem,.82rem + .2vw,.9375rem);
+  --base:clamp(1rem,.95rem + .25vw,1.0625rem);
+  --lg:clamp(1.125rem,1rem + .5vw,1.375rem);
+  --xl:clamp(1.5rem,1.2rem + 1vw,2rem);
+  --2xl:clamp(2rem,1.2rem + 2vw,3rem);
+  --hero:clamp(3.5rem,1rem + 8vw,8rem);
+}
+[data-theme="dark"]{
+  --bg:#0a0a0a;--surface:#141414;--surface-2:#1a1a1a;--offset:#1f1f1f;--offset-2:#262626;
+  --divider:#262626;--border:#2d2d2d;
+  --text:#f4f4f4;--muted:#a3a3a3;--faint:#6b6b6b;--inverse:#0a0a0a;
+  --shadow-sm:0 1px 2px rgba(0,0,0,.3);--shadow-md:0 4px 16px rgba(0,0,0,.4);--shadow-lg:0 20px 48px rgba(0,0,0,.5);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased}
+body{font-family:'Satoshi','Inter',system-ui,sans-serif;font-size:var(--base);line-height:1.6;color:var(--text);background:var(--bg);min-height:100dvh;transition:background var(--t),color var(--t)}
+h1,h2,h3,h4{font-weight:700;letter-spacing:-.02em;line-height:1.1}
+p{color:var(--muted);max-width:72ch}
+button{font:inherit;cursor:pointer;background:none;border:none;color:inherit}
+svg{display:block}
+.container{max-width:1100px;margin-inline:auto;padding-inline:var(--s-6)}
+
+/* ── Header ── */
+.site-header{position:sticky;top:0;z-index:50;backdrop-filter:blur(14px);background:color-mix(in oklab,var(--bg) 80%,transparent);border-bottom:1px solid var(--divider)}
+.header-inner{display:flex;align-items:center;justify-content:space-between;padding-block:var(--s-4)}
+.brand{display:flex;align-items:center;gap:var(--s-2);font-weight:700}
+.brand-dot{width:8px;height:8px;border-radius:var(--r-full);background:var(--text)}
+.header-nav{display:flex;gap:var(--s-6);font-size:var(--sm);color:var(--muted)}
+.header-nav a{text-decoration:none;transition:color var(--t)}
+.header-nav a:hover{color:var(--text)}
+.theme-toggle{width:36px;height:36px;border-radius:var(--r-full);border:1px solid var(--border);display:grid;place-items:center;transition:all var(--t)}
+.theme-toggle:hover{background:var(--offset)}
+@media(max-width:720px){.header-nav{display:none}}
+
+/* ── Hero ── */
+.hero{padding-block:var(--s-20) var(--s-14);border-bottom:1px solid var(--divider)}
+.eyebrow{display:inline-flex;align-items:center;gap:var(--s-2);font-size:var(--xs);text-transform:uppercase;letter-spacing:.14em;color:var(--muted);margin-bottom:var(--s-6)}
+.eyebrow::before{content:'';width:6px;height:6px;border-radius:var(--r-full);background:var(--blue)}
+.hero h1{font-size:var(--hero);font-weight:900;letter-spacing:-.05em;margin-bottom:var(--s-5)}
+.hero-lede{font-size:var(--lg);max-width:58ch}
+.hero-meta{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:var(--s-6);margin-top:var(--s-10);padding-top:var(--s-8);border-top:1px solid var(--divider)}
+.hero-meta .k{font-size:var(--xs);color:var(--faint);text-transform:uppercase;letter-spacing:.12em;margin-bottom:var(--s-1)}
+.hero-meta .v{font-size:var(--base);font-weight:500}
+
+/* ── Section ── */
+.block{padding-block:var(--s-20);border-bottom:1px solid var(--divider)}
+.section-head{display:grid;grid-template-columns:180px 1fr;gap:var(--s-12);margin-bottom:var(--s-10)}
+@media(max-width:720px){.section-head{grid-template-columns:1fr;gap:var(--s-3)}}
+.section-index{font-size:var(--xs);color:var(--faint);letter-spacing:.16em;text-transform:uppercase}
+.section-title{font-size:var(--xl);margin-bottom:var(--s-3)}
+.section-desc{font-size:var(--base)}
+
+/* ═══════════════════════════════════════
+   TRIPLE DIAMOND SVG DIAGRAM
+═══════════════════════════════════════ */
+.td-diagram-wrap{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-xl);padding:var(--s-8) var(--s-6);overflow-x:auto}
+.td-diagram-wrap svg{min-width:680px;display:block;margin:0 auto}
+
+/* ── Phase cards ── */
+.phases{display:grid;gap:var(--s-4)}
+.phase-row{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-xl);overflow:hidden;transition:all var(--t)}
+.phase-row:hover{box-shadow:var(--shadow-md)}
+.phase-header{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:var(--s-5);padding:var(--s-5) var(--s-6);cursor:pointer;user-select:none}
+.phase-diamond{width:36px;height:36px;border-radius:var(--r-md);display:grid;place-items:center;flex-shrink:0}
+.phase-diamond svg{width:20px;height:20px}
+.phase-meta h3{font-size:var(--base);font-weight:600;margin-bottom:2px}
+.phase-meta .sub{font-size:var(--xs);color:var(--faint)}
+.phase-chevron{color:var(--faint);transition:transform var(--t)}
+.phase-row.open .phase-chevron{transform:rotate(180deg)}
+.phase-body{display:none;padding:0 var(--s-6) var(--s-6);border-top:1px solid var(--divider)}
+.phase-row.open .phase-body{display:block}
+
+.sub-phases{display:grid;grid-template-columns:1fr 1fr;gap:var(--s-3);margin-top:var(--s-5)}
+@media(max-width:640px){.sub-phases{grid-template-columns:1fr}}
+.sub-phase{padding:var(--s-4) var(--s-5);background:var(--offset);border-radius:var(--r-lg)}
+.sub-phase-badge{display:inline-flex;align-items:center;gap:var(--s-2);font-size:var(--xs);text-transform:uppercase;letter-spacing:.1em;font-weight:600;margin-bottom:var(--s-2)}
+.sub-phase-dot{width:6px;height:6px;border-radius:var(--r-full)}
+.sub-phase h4{font-size:var(--sm);font-weight:600;margin-bottom:var(--s-1)}
+.sub-phase p{font-size:var(--xs);margin:0}
+
+.tools-row{display:flex;flex-wrap:wrap;gap:var(--s-2);margin-top:var(--s-4)}
+.tool-chip{padding:var(--s-1) var(--s-3);background:var(--offset-2);border-radius:var(--r-full);font-size:var(--xs);font-weight:500;transition:background var(--t)}
+.tool-chip:hover{background:var(--border)}
+
+/* ── Diverge / Converge explainer ── */
+.dc-split{display:grid;grid-template-columns:1fr 1fr;gap:var(--s-4)}
+@media(max-width:640px){.dc-split{grid-template-columns:1fr}}
+.dc-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-xl);padding:var(--s-6)}
+.dc-icon{width:48px;height:48px;margin-bottom:var(--s-4)}
+.dc-card h3{font-size:var(--lg);margin-bottom:var(--s-2)}
+.dc-list{display:grid;gap:var(--s-2);margin-top:var(--s-4)}
+.dc-item{display:grid;grid-template-columns:16px 1fr;gap:var(--s-3);font-size:var(--sm);color:var(--muted)}
+.dc-dot{width:6px;height:6px;border-radius:var(--r-full);margin-top:.45rem;flex-shrink:0}
+
+/* ── vs Double Diamond ── */
+.compare{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-xl);overflow:hidden}
+.compare-head{padding:var(--s-5) var(--s-6);border-bottom:1px solid var(--divider);display:flex;align-items:center;justify-content:space-between}
+.compare-head h3{font-size:var(--base);font-weight:600}
+.compare table{width:100%;border-collapse:collapse}
+.compare th{padding:var(--s-3) var(--s-5);font-size:var(--xs);text-transform:uppercase;letter-spacing:.1em;font-weight:600;text-align:left;border-bottom:1px solid var(--divider);background:var(--offset)}
+.compare td{padding:var(--s-3) var(--s-5);font-size:var(--sm);color:var(--muted);border-bottom:1px solid var(--divider)}
+.compare tr:last-child td{border-bottom:0}
+.compare th:not(:last-child),.compare td:not(:last-child){border-right:1px solid var(--divider)}
+.compare .highlight{color:var(--text);font-weight:500}
+
+/* ── Callout ── */
+.callout{background:var(--text);color:var(--inverse);border-radius:var(--r-2xl);padding:var(--s-12);display:grid;grid-template-columns:1fr 1fr;gap:var(--s-8);align-items:center}
+@media(max-width:720px){.callout{grid-template-columns:1fr;padding:var(--s-8)}}
+.callout-eyebrow{font-size:var(--xs);text-transform:uppercase;letter-spacing:.14em;color:color-mix(in oklab,var(--inverse) 55%,transparent);margin-bottom:var(--s-4)}
+.callout h2{font-size:var(--2xl);letter-spacing:-.03em;line-height:1.1}
+.callout p{color:color-mix(in oklab,var(--inverse) 70%,transparent);font-size:var(--base);margin-top:var(--s-4);max-width:44ch}
+.callout-stat .big{font-size:var(--hero);font-weight:900;letter-spacing:-.05em;line-height:1}
+.callout-stat .cap{font-size:var(--sm);color:color-mix(in oklab,var(--inverse) 55%,transparent);margin-top:var(--s-2);text-transform:uppercase;letter-spacing:.12em}
+
+/* ── Mistakes ── */
+.mistake-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:var(--s-4)}
+.mistake{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-xl);padding:var(--s-6);transition:all var(--t)}
+.mistake:hover{border-color:var(--text)}
+.mistake .num{font-family:'SF Mono',ui-monospace,monospace;font-size:var(--xs);color:var(--faint);margin-bottom:var(--s-3)}
+.mistake h3{font-size:var(--lg);margin-bottom:var(--s-2)}
+.mistake p{font-size:var(--sm)}
+
+footer{padding-block:var(--s-12);font-size:var(--sm);color:var(--muted)}
+.footer-inner{display:flex;justify-content:space-between;flex-wrap:wrap;gap:var(--s-4)}
+.fade-up{opacity:0;transform:translateY(10px);transition:opacity .6s ease,transform .6s ease}
+.fade-up.in{opacity:1;transform:none}
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container header-inner">
+    <div class="brand"><span class="brand-dot"></span> Triple Diamond</div>
+    <nav class="header-nav">
+      <a href="#diagram">Диаграмма</a>
+      <a href="#phases">Фазы</a>
+      <a href="#vs">vs Double</a>
+      <a href="#mistakes">Ошибки</a>
+    </nav>
+    <button class="theme-toggle" data-theme-toggle aria-label="Переключить тему">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+    </button>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="container">
+    <div class="eyebrow">Framework Card · Zendesk · Chen · Lenox · Chang · 2005 base</div>
+    <h1>Triple<br/>Diamond.</h1>
+    <p class="hero-lede">Расширяет Double Diamond, добавляя третью итеративную фазу — разработку и выкатку. Каждый ромб — цикл расходящегося и сходящегося мышления: сначала расширяем поле возможностей, потом принимаем решение.</p>
+    <div class="hero-meta">
+      <div><div class="k">Ромбов</div><div class="v">3</div></div>
+      <div><div class="k">Фаз</div><div class="v">6</div></div>
+      <div><div class="k">Основа</div><div class="v">Double Diamond</div></div>
+      <div><div class="k">3-й ромб</div><div class="v">Итеративный, не замкнут</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- Diagram -->
+<section class="block" id="diagram">
+  <div class="container">
+    <div class="section-head">
+      <div class="section-index">01 — Diagram</div>
+      <div>
+        <h2 class="section-title">Три ромба — шесть фаз</h2>
+        <p class="section-desc">Первые два ромба — классическая Double Diamond: проблема и решение. Третий — намеренно не замкнут: отражает реальность итеративной разработки.</p>
+      </div>
+    </div>
+
+    <div class="td-diagram-wrap">
+      <svg viewBox="0 0 860 220" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto">
+        <defs>
+          <style>
+            .dg-label{font-family:'Satoshi','Inter',sans-serif;font-size:11px;fill:var(--faint);text-anchor:middle;text-transform:uppercase;letter-spacing:.08em}
+            .dg-sub{font-family:'Satoshi','Inter',sans-serif;font-size:9px;fill:var(--faint);text-anchor:middle}
+            .dg-phase{font-family:'Satoshi','Inter',sans-serif;font-size:13px;font-weight:700;text-anchor:middle}
+            .dg-divider{stroke:var(--divider);stroke-width:1;stroke-dasharray:4 3}
+          </style>
+        </defs>
+
+        <!-- ── Diamond 1: Problem Space ── -->
+        <!-- diverge -->
+        <polygon points="60,110 170,40 170,180" fill="none" stroke="var(--blue)" stroke-width="1.5" opacity=".35"/>
+        <polygon points="60,110 170,40 170,180" fill="var(--blue)" opacity=".05"/>
+        <!-- converge -->
+        <polygon points="170,40 280,110 170,180" fill="none" stroke="var(--blue)" stroke-width="1.5" opacity=".35"/>
+        <polygon points="170,40 280,110 170,180" fill="var(--blue)" opacity=".08"/>
+
+        <!-- labels d1 -->
+        <text class="dg-phase" x="115" y="120" fill="var(--blue)" opacity=".7">Problem</text>
+        <text class="dg-sub"   x="115" y="134" fill="var(--blue)" opacity=".5">Discovery</text>
+        <text class="dg-phase" x="225" y="120" fill="var(--blue)" opacity=".7">Problem</text>
+        <text class="dg-sub"   x="225" y="134" fill="var(--blue)" opacity=".5">Definition</text>
+
+        <!-- divider 1 -->
+        <line class="dg-divider" x1="280" y1="20" x2="280" y2="200"/>
+
+        <!-- ── Diamond 2: Solution Space ── -->
+        <polygon points="280,110 390,40 390,180" fill="none" stroke="var(--violet)" stroke-width="1.5" opacity=".35"/>
+        <polygon points="280,110 390,40 390,180" fill="var(--violet)" opacity=".05"/>
+        <polygon points="390,40 500,110 390,180" fill="none" stroke="var(--violet)" stroke-width="1.5" opacity=".35"/>
+        <polygon points="390,40 500,110 390,180" fill="var(--violet)" opacity=".08"/>
+
+        <text class="dg-phase" x="335" y="120" fill="var(--violet)" opacity=".7">Solution</text>
+        <text class="dg-sub"   x="335" y="134" fill="var(--violet)" opacity=".5">Discovery</text>
+        <text class="dg-phase" x="445" y="120" fill="var(--violet)" opacity=".7">Concept</text>
+        <text class="dg-sub"   x="445" y="134" fill="var(--violet)" opacity=".5">Validation</text>
+
+        <!-- divider 2 -->
+        <line class="dg-divider" x1="500" y1="20" x2="500" y2="200"/>
+
+        <!-- ── Diamond 3: Development (open) ── -->
+        <!-- left half only — open ended -->
+        <polygon points="500,110 610,40 610,180" fill="none" stroke="var(--green)" stroke-width="1.5" opacity=".35"/>
+        <polygon points="500,110 610,40 610,180" fill="var(--green)" opacity=".05"/>
+
+        <!-- wavy line inside d3 = iteration -->
+        <path d="M615,70 Q625,90 635,70 Q645,50 655,70 Q665,90 675,70 Q685,50 695,70 Q705,90 715,70"
+              fill="none" stroke="var(--green)" stroke-width="1.5" opacity=".4" stroke-linecap="round"/>
+        <path d="M615,150 Q625,130 635,150 Q645,170 655,150 Q665,130 675,150 Q685,170 695,150 Q705,130 715,150"
+              fill="none" stroke="var(--green)" stroke-width="1.5" opacity=".4" stroke-linecap="round"/>
+
+        <!-- open arrow at end -->
+        <path d="M715,40 L800,110 L715,180" fill="none" stroke="var(--green)" stroke-width="1.5" opacity=".35" stroke-dasharray="6 4"/>
+        <line x1="800" y1="110" x2="840" y2="110" stroke="var(--green)" stroke-width="1.5" opacity=".5"/>
+        <path d="M830,100 L842,110 L830,120" fill="none" stroke="var(--green)" stroke-width="1.5" opacity=".5"/>
+
+        <text class="dg-phase" x="555" y="120" fill="var(--green)" opacity=".7">Dev &amp;</text>
+        <text class="dg-sub"   x="555" y="134" fill="var(--green)" opacity=".5">Build</text>
+        <text class="dg-phase" x="665" y="120" fill="var(--green)" opacity=".7">Validate</text>
+        <text class="dg-sub"   x="665" y="134" fill="var(--green)" opacity=".5">+ Rollout</text>
+
+        <!-- Bottom phase labels -->
+        <text class="dg-label" x="170" y="205">◆ Diamond 1 — Problem</text>
+        <text class="dg-label" x="390" y="205">◆ Diamond 2 — Solution</text>
+        <text class="dg-label" x="620" y="205">◇ Diamond 3 — Development</text>
+
+        <!-- Start dot -->
+        <circle cx="60" cy="110" r="5" fill="var(--text)" opacity=".6"/>
+        <text class="dg-sub" x="60" y="98" fill="var(--faint)">Start</text>
+
+        <!-- Diverge / Converge labels top -->
+        <text class="dg-sub" x="115" y="28" fill="var(--faint)">Diverge</text>
+        <text class="dg-sub" x="225" y="28" fill="var(--faint)">Converge</text>
+        <text class="dg-sub" x="335" y="28" fill="var(--faint)">Diverge</text>
+        <text class="dg-sub" x="445" y="28" fill="var(--faint)">Converge</text>
+        <text class="dg-sub" x="555" y="28" fill="var(--faint)">Diverge</text>
+        <text class="dg-sub" x="680" y="28" fill="var(--faint)">Iterate →</text>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<!-- Phases accordion -->
+<section class="block" id="phases">
+  <div class="container">
+    <div class="section-head">
+      <div class="section-index">02 — Phases</div>
+      <div>
+        <h2 class="section-title">Шесть фаз подробно</h2>
+        <p class="section-desc">Каждый ромб содержит две фазы: расходящуюся (исследование) и сходящуюся (решение). Третий ромб — открытый: итерация не имеет финального конца.</p>
+      </div>
+    </div>
+
+    <div class="phases">
+
+      <!-- Diamond 1 -->
+      <div class="phase-row open" data-phase>
+        <div class="phase-header">
+          <div class="phase-diamond" style="background:color-mix(in oklab,var(--blue) 10%,var(--offset))">
+            <svg viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2"><path d="M12 2l9 9-9 9-9-9z"/></svg>
+          </div>
+          <div class="phase-meta">
+            <h3 style="color:var(--blue)">Diamond 1 — Problem Space</h3>
+            <div class="sub">Problem Discovery → Problem Definition</div>
+          </div>
+          <svg class="phase-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+        </div>
+        <div class="phase-body">
+          <p style="font-size:var(--sm);margin-top:var(--s-1)">Команда исследует проблемное пространство: что болит у пользователей, почему это происходит, какие предположения нужно проверить. Цель — прийти к чёткой формулировке задачи.</p>
+          <div class="sub-phases">
+            <div class="sub-phase">
+              <div class="sub-phase-badge" style="color:var(--blue)"><span class="sub-phase-dot" style="background:var(--blue)"></span>Diverge · Problem Discovery</div>
+              <h4>Исследование проблемы</h4>
+              <p>Широкое исследование: интервью, наблюдение, количественный анализ. Цель — увидеть проблему без предвзятостей и собрать максимум контекста.</p>
+            </div>
+            <div class="sub-phase">
+              <div class="sub-phase-badge" style="color:var(--blue)"><span class="sub-phase-dot" style="background:var(--blue)"></span>Converge · Problem Definition</div>
+              <h4>Формулировка задачи</h4>
+              <p>Синтез данных в чёткую постановку. How Might We, Jobs To Be Done, точная формулировка проблемы — до перехода ко второму ромбу.</p>
+            </div>
+          </div>
+          <div class="tools-row">
+            <span class="tool-chip">User Interviews</span><span class="tool-chip">Observation</span><span class="tool-chip">Surveys</span><span class="tool-chip">Affinity Mapping</span><span class="tool-chip">JTBD</span><span class="tool-chip">How Might We</span><span class="tool-chip">Problem Statement</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Diamond 2 -->
+      <div class="phase-row" data-phase>
+        <div class="phase-header">
+          <div class="phase-diamond" style="background:color-mix(in oklab,var(--violet) 10%,var(--offset))">
+            <svg viewBox="0 0 24 24" fill="none" stroke="var(--violet)" stroke-width="2"><path d="M12 2l9 9-9 9-9-9z"/></svg>
+          </div>
+          <div class="phase-meta">
+            <h3 style="color:var(--violet)">Diamond 2 — Solution Space</h3>
+            <div class="sub">Solution Discovery → Concept Validation</div>
+          </div>
+          <svg class="phase-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+        </div>
+        <div class="phase-body">
+          <p style="font-size:var(--sm);margin-top:var(--s-1)">Второй ромб отвечает на вопрос «как решить?». Команда генерирует широкий спектр идей, затем проверяет концепт на реальных пользователях и принимает решение о разработке.</p>
+          <div class="sub-phases">
+            <div class="sub-phase">
+              <div class="sub-phase-badge" style="color:var(--violet)"><span class="sub-phase-dot" style="background:var(--violet)"></span>Diverge · Solution Discovery</div>
+              <h4>Генерация идей</h4>
+              <p>Брейнштормы, Crazy 8, дизайн-спринты. Цель — получить как можно больше концепций до любой фильтрации. Количество важнее качества.</p>
+            </div>
+            <div class="sub-phase">
+              <div class="sub-phase-badge" style="color:var(--violet)"><span class="sub-phase-dot" style="background:var(--violet)"></span>Converge · Concept Validation</div>
+              <h4>Проверка концепта</h4>
+              <p>Прототипирование и тестирование: от paper mockup до кликабельного прототипа. Цель — валидировать ключевые гипотезы до написания кода.</p>
+            </div>
+          </div>
+          <div class="tools-row">
+            <span class="tool-chip">Brainstorming</span><span class="tool-chip">Crazy 8</span><span class="tool-chip">Design Sprint</span><span class="tool-chip">Wireframes</span><span class="tool-chip">Prototype</span><span class="tool-chip">Usability Testing</span><span class="tool-chip">A/B Concept</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Diamond 3 -->
+      <div class="phase-row" data-phase>
+        <div class="phase-header">
+          <div class="phase-diamond" style="background:color-mix(in oklab,var(--green) 10%,var(--offset))">
+            <svg viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2"><path d="M12 2l9 9-9 9-9-9z" stroke-dasharray="4 2"/></svg>
+          </div>
+          <div class="phase-meta">
+            <h3 style="color:var(--green)">Diamond 3 — Development (Open)</h3>
+            <div class="sub">Build & Iterate → Validation → Rollout</div>
+          </div>
+          <svg class="phase-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+        </div>
+        <div class="phase-body">
+          <p style="font-size:var(--sm);margin-top:var(--s-1)">Третий ромб намеренно не замкнут: итеративная разработка не имеет финальной точки. Волновая линия внутри символизирует постоянное уточнение. Validation и Rollout — это Early Access и коммерческий запуск.</p>
+          <div class="sub-phases">
+            <div class="sub-phase">
+              <div class="sub-phase-badge" style="color:var(--green)"><span class="sub-phase-dot" style="background:var(--green)"></span>Build & Iterate</div>
+              <h4>Разработка и итерации</h4>
+              <p>Спринты, инкрементальные релизы, постоянный сбор обратной связи. Каждый цикл уточняет решение на основе реальных данных.</p>
+            </div>
+            <div class="sub-phase">
+              <div class="sub-phase-badge" style="color:var(--green)"><span class="sub-phase-dot" style="background:var(--green)"></span>Validation + Rollout</div>
+              <h4>Early Access → Launch</h4>
+              <p>Early Access: ограниченная группа пользователей, финальная валидация. Rollout: поэтапный коммерческий запуск с мониторингом метрик.</p>
+            </div>
+          </div>
+          <div class="tools-row">
+            <span class="tool-chip">Sprints</span><span class="tool-chip">Feature Flags</span><span class="tool-chip">Beta Testing</span><span class="tool-chip">Analytics</span><span class="tool-chip">Early Access</span><span class="tool-chip">Staged Rollout</span><span class="tool-chip">Monitoring</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- Diverge / Converge -->
+<section class="block">
+  <div class="container">
+    <div class="section-head">
+      <div class="section-index">03 — Mindset</div>
+      <div>
+        <h2 class="section-title">Расходящееся и сходящееся мышление</h2>
+        <p class="section-desc">Каждый ромб — это чередование двух режимов. Смешивать их нельзя: в фазе расширения нет места критике, в фазе сужения — нет места новым идеям.</p>
+      </div>
+    </div>
+
+    <div class="dc-split">
+      <div class="dc-card">
+        <svg class="dc-icon" viewBox="0 0 48 48" fill="none" stroke="var(--blue)" stroke-width="1.5">
+          <path d="M24 8 L8 40 L40 40 Z" opacity=".3" fill="var(--blue)"/>
+          <path d="M24 8 L8 40 L40 40 Z"/>
+        </svg>
+        <h3>Diverge — Расширение</h3>
+        <p>Режим исследования и генерации. Цель — максимально расширить поле возможных ответов, не фильтруя и не оценивая.</p>
+        <div class="dc-list">
+          <div class="dc-item"><span class="dc-dot" style="background:var(--blue)"></span><span>Нет «плохих» идей или вопросов</span></div>
+          <div class="dc-item"><span class="dc-dot" style="background:var(--blue)"></span><span>Количество важнее качества</span></div>
+          <div class="dc-item"><span class="dc-dot" style="background:var(--blue)"></span><span>Активное слушание без интерпретации</span></div>
+          <div class="dc-item"><span class="dc-dot" style="background:var(--blue)"></span><span>Откладывать суждения и решения</span></div>
+        </div>
+      </div>
+      <div class="dc-card">
+        <svg class="dc-icon" viewBox="0 0 48 48" fill="none" stroke="var(--violet)" stroke-width="1.5">
+          <path d="M8 8 L40 8 L24 40 Z" opacity=".3" fill="var(--violet)"/>
+          <path d="M8 8 L40 8 L24 40 Z"/>
+        </svg>
+        <h3>Converge — Сужение</h3>
+        <p>Режим синтеза и принятия решений. Цель — из широкого поля вариантов выбрать один чёткий путь вперёд.</p>
+        <div class="dc-list">
+          <div class="dc-item"><span class="dc-dot" style="background:var(--violet)"></span><span>Критическое мышление и фильтрация</span></div>
+          <div class="dc-item"><span class="dc-dot" style="background:var(--violet)"></span><span>Приоритизация по критериям</span></div>
+          <div class="dc-item"><span class="dc-dot" style="background:var(--violet)"></span><span>Синтез инсайтов в решения</span></div>
+          <div class="dc-item"><span class="dc-dot" style="background:var(--violet)"></span><span>Чёткая точка принятия решения</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Callout -->
+<section class="block">
+  <div class="container">
+    <div class="callout">
+      <div>
+        <div class="callout-eyebrow">Ключевое правило</div>
+        <h2>Нельзя перепрыгнуть ромб — каждый отвечает на свой вопрос.</h2>
+        <p>Diamond 1 — правильная проблема. Diamond 2 — правильное решение. Diamond 3 — правильная реализация. Пропуск любого ромба означает строить что-то на непроверенных предположениях.</p>
+      </div>
+      <div class="callout-stat">
+        <div class="big">◆◆◇</div>
+        <div class="cap">Проблема · Решение · Разработка</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- vs Double Diamond -->
+<section class="block" id="vs">
+  <div class="container">
+    <div class="section-head">
+      <div class="section-index">04 — Comparison</div>
+      <div>
+        <h2 class="section-title">Triple vs Double Diamond</h2>
+        <p class="section-desc">Double Diamond — классика Design Council 2005 года. Triple добавляет третий ромб для разработки, делая фреймворк применимым к полному продуктовому циклу.</p>
+      </div>
+    </div>
+
+    <div class="compare">
+      <div class="compare-head">
+        <h3>Сравнение моделей</h3>
+        <span style="font-size:var(--xs);color:var(--faint);text-transform:uppercase;letter-spacing:.1em">Таблица</span>
+      </div>
+      <table>
+        <thead>
+          <tr><th>Параметр</th><th>Double Diamond</th><th>Triple Diamond</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Ромбов</td><td>2</td><td class="highlight">3</td></tr>
+          <tr><td>Охват</td><td>Исследование + дизайн</td><td class="highlight">+ Разработка и запуск</td></tr>
+          <tr><td>Третий ромб</td><td>Отсутствует</td><td class="highlight">Открытый, итеративный</td></tr>
+          <tr><td>Подходит для</td><td>Дизайн-процесс, UX</td><td class="highlight">Полный продуктовый цикл</td></tr>
+          <tr><td>Авторство</td><td>Design Council (2005)</td><td class="highlight">Zendesk — Chen, Lenox, Chang</td></tr>
+          <tr><td>Итерации</td><td>Внутри ромбов</td><td class="highlight">Явно зафиксированы в D3</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- Mistakes -->
+<section class="block" id="mistakes">
+  <div class="container">
+    <div class="section-head">
+      <div class="section-index">05 — Mistakes</div>
+      <div>
+        <h2 class="section-title">Типичные ошибки</h2>
+        <p class="section-desc">Большинство проблем — в перескакивании ромбов и смешении режимов Diverge/Converge в одной сессии.</p>
+      </div>
+    </div>
+
+    <div class="mistake-grid">
+      <div class="mistake">
+        <div class="num">ERR 01</div>
+        <h3>Начинать с решения</h3>
+        <p>Пропустить Diamond 1 и сразу идти в Diamond 2 — значит решать придуманную проблему. Без Problem Definition есть риск построить идеальное решение для несуществующего запроса.</p>
+      </div>
+      <div class="mistake">
+        <div class="num">ERR 02</div>
+        <h3>Смешивать Diverge и Converge</h3>
+        <p>Критиковать идеи во время брейншторма или генерировать новые варианты в момент принятия решения — уничтожает оба режима. Они требуют разных установок и разных людей в роли ведущего.</p>
+      </div>
+      <div class="mistake">
+        <div class="num">ERR 03</div>
+        <h3>Прототип без пользователей</h3>
+        <p>Concept Validation без реального тестирования — это не валидация. Прототип должен получить обратную связь от тех, для кого он создаётся, иначе это просто артефакт.</p>
+      </div>
+      <div class="mistake">
+        <div class="num">ERR 04</div>
+        <h3>Закрытый третий ромб</h3>
+        <p>Попытка «завершить» разработку — категорически неправильное понимание D3. Открытость ромба символизирует, что продукт всегда можно улучшить. Rollout — это не конец.</p>
+      </div>
+      <div class="mistake">
+        <div class="num">ERR 05</div>
+        <h3>Фреймворк как жёсткий процесс</h3>
+        <p>Triple Diamond — ориентир, не обязательная последовательность. В реальных проектах ромбы перекрываются, команда может вернуться назад. Это норма, а не ошибка.</p>
+      </div>
+      <div class="mistake">
+        <div class="num">ERR 06</div>
+        <h3>Отсутствие точки решения</h3>
+        <p>Без явной «точки схождения» после каждого ромба команда застрянет в бесконечном исследовании или генерации. Каждый ромб должен заканчиваться чётким артефактом-решением.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container footer-inner">
+    <div>© 2026 · Triple Diamond Card · Arrange Styleguide</div>
+    <div>Problem · Solution · Development</div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  // Theme toggle
+  const t=document.querySelector('[data-theme-toggle]'),r=document.documentElement;
+  let d=matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light';
+  r.setAttribute('data-theme',d);
+  t&&t.addEventListener('click',()=>{
+    d=d==='dark'?'light':'dark';
+    r.setAttribute('data-theme',d);
+    t.innerHTML=d==='dark'
+      ?'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>'
+      :'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>';
+  });
+
+  // Accordion
+  document.querySelectorAll('[data-phase]').forEach(row=>{
+    row.querySelector('.phase-header').addEventListener('click',()=>{
+      const wasOpen=row.classList.contains('open');
+      document.querySelectorAll('[data-phase]').forEach(r=>r.classList.remove('open'));
+      if(!wasOpen) row.classList.add('open');
+    });
+  });
+
+  // Scroll animations
+  const io=new IntersectionObserver(es=>es.forEach(e=>e.isIntersecting&&e.target.classList.add('in')),{threshold:.08});
+  document.querySelectorAll('.block,.hero').forEach(el=>{el.classList.add('fade-up');io.observe(el);});
+})();
+</script>
+</body>
+</html>
