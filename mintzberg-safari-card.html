@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="ru" data-theme="light">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Стратегическое Сафари — Минцберг</title>
+<link href="https://api.fontshare.com/v2/css?f[]=satoshi@300,400,500,700,900&display=swap" rel="stylesheet"/>
+<style>
+:root,[data-theme="light"]{
+  --bg:#f4f4f4;--surface:#fff;--surface-2:#fafafa;--offset:#f0f0f0;--offset-2:#e8e8e8;
+  --divider:#ececec;--border:#e4e4e4;
+  --text:#0a0a0a;--muted:#6b6b6b;--faint:#a3a3a3;--inverse:#fff;
+  --blue:#2b6df6;--green:#22c55e;--amber:#f59e0b;--red:#ef4444;--violet:#8b5cf6;--teal:#14b8a6;--rose:#f43f5e;--orange:#f97316;--sky:#0ea5e9;--lime:#84cc16;
+  --shadow-sm:0 1px 2px rgba(10,10,10,.04);
+  --shadow-md:0 4px 16px rgba(10,10,10,.07);
+  --shadow-lg:0 20px 48px rgba(10,10,10,.09);
+  --r-sm:.375rem;--r-md:.5rem;--r-lg:.75rem;--r-xl:1rem;--r-2xl:1.25rem;--r-full:9999px;
+  --s-1:.25rem;--s-2:.5rem;--s-3:.75rem;--s-4:1rem;--s-5:1.25rem;--s-6:1.5rem;
+  --s-8:2rem;--s-10:2.5rem;--s-12:3rem;--s-16:4rem;--s-20:5rem;
+  --t:180ms cubic-bezier(.16,1,.3,1);
+  --xs:clamp(.75rem,.7rem + .2vw,.8125rem);
+  --sm:clamp(.875rem,.82rem + .2vw,.9375rem);
+  --base:clamp(1rem,.95rem + .25vw,1.0625rem);
+  --lg:clamp(1.125rem,1rem + .5vw,1.375rem);
+  --xl:clamp(1.5rem,1.2rem + 1vw,2rem);
+  --2xl:clamp(2rem,1.2rem + 2vw,3rem);
+  --hero:clamp(3rem,1rem + 7vw,7rem);
+}
+[data-theme="dark"]{
+  --bg:#0a0a0a;--surface:#141414;--surface-2:#1a1a1a;--offset:#1f1f1f;--offset-2:#262626;
+  --divider:#262626;--border:#2d2d2d;
+  --text:#f4f4f4;--muted:#a3a3a3;--faint:#6b6b6b;--inverse:#0a0a0a;
+  --shadow-sm:0 1px 2px rgba(0,0,0,.3);--shadow-md:0 4px 16px rgba(0,0,0,.4);--shadow-lg:0 20px 48px rgba(0,0,0,.5);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased}
+body{font-family:'Satoshi','Inter',system-ui,sans-serif;font-size:var(--base);line-height:1.6;color:var(--text);background:var(--bg);min-height:100dvh;transition:background var(--t),color var(--t)}
+h1,h2,h3,h4{font-weight:700;letter-spacing:-.02em;line-height:1.15}
+p{color:var(--muted);max-width:72ch}
+button{font:inherit;cursor:pointer;background:none;border:none;color:inherit}
+svg{display:block}
+.container{max-width:1100px;margin-inline:auto;padding-inline:var(--s-6)}
+
+/* ── Header ── */
+.site-header{position:sticky;top:0;z-index:50;backdrop-filter:blur(14px);background:color-mix(in oklab,var(--bg) 80%,transparent);border-bottom:1px solid var(--divider)}
+.header-inner{display:flex;align-items:center;justify-content:space-between;padding-block:var(--s-4)}
+.brand{display:flex;align-items:center;gap:var(--s-2);font-weight:700}
+.brand-dot{width:8px;height:8px;border-radius:var(--r-full);background:var(--text)}
+.header-nav{display:flex;gap:var(--s-6);font-size:var(--sm);color:var(--muted)}
+.header-nav a{text-decoration:none;transition:color var(--t)}
+.header-nav a:hover{color:var(--text)}
+.theme-toggle{width:36px;height:36px;border-radius:var(--r-full);border:1px solid var(--border);display:grid;place-items:center;transition:all var(--t)}
+.theme-toggle:hover{background:var(--offset)}
+@media(max-width:720px){.header-nav{display:none}}
+
+/* ── Hero ── */
+.hero{padding-block:var(--s-20) var(--s-14);border-bottom:1px solid var(--divider)}
+.eyebrow{display:inline-flex;align-items:center;gap:var(--s-2);font-size:var(--xs);text-transform:uppercase;letter-spacing:.14em;color:var(--muted);margin-bottom:var(--s-6)}
+.eyebrow::before{content:'';width:6px;height:6px;border-radius:var(--r-full);background:var(--text)}
+.hero h1{font-size:var(--hero);font-weight:900;letter-spacing:-.05em;margin-bottom:var(--s-5)}
+.hero-lede{font-size:var(--lg);max-width:58ch}
+.hero-meta{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:var(--s-6);margin-top:var(--s-10);padding-top:var(--s-8);border-top:1px solid var(--divider)}
+.hero-meta .k{font-size:var(--xs);color:var(--faint);text-transform:uppercase;letter-spacing:.12em;margin-bottom:var(--s-1)}
+.hero-meta .v{font-size:var(--base);font-weight:500}
+
+/* ── Section ── */
+.block{padding-block:var(--s-20);border-bottom:1px solid var(--divider)}
+.section-head{display:grid;grid-template-columns:180px 1fr;gap:var(--s-12);margin-bottom:var(--s-10)}
+@media(max-width:720px){.section-head{grid-template-columns:1fr;gap:var(--s-3)}}
+.section-index{font-size:var(--xs);color:var(--faint);letter-spacing:.16em;text-transform:uppercase}
+.section-title{font-size:var(--xl);margin-bottom:var(--s-3)}
+.section-desc{font-size:var(--base)}
+
+/* ══════════════════════════════════════
+   SCHOOLS GRID — 10 cards
+══════════════════════════════════════ */
+/* group tabs */
+.school-tabs{display:flex;gap:var(--s-2);flex-wrap:wrap;margin-bottom:var(--s-6)}
+.stab{padding:var(--s-2) var(--s-4);border-radius:var(--r-full);font-size:var(--xs);font-weight:500;border:1px solid var(--border);background:var(--surface);cursor:pointer;transition:all var(--t)}
+.stab.active,.stab:hover{background:var(--text);color:var(--inverse);border-color:var(--text)}
+
+.schools-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:var(--s-4)}
+.school-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-xl);overflow:hidden;box-shadow:var(--shadow-sm);transition:all var(--t)}
+.school-card:hover{box-shadow:var(--shadow-md);transform:translateY(-2px)}
+.school-card-top{padding:var(--s-5) var(--s-6);display:flex;align-items:center;gap:var(--s-4)}
+.school-num{font-family:'SF Mono',ui-monospace,monospace;font-size:var(--xs);color:var(--faint);width:28px;flex-shrink:0}
+.school-titles{flex:1}
+.school-name{font-size:var(--lg);font-weight:700;margin-bottom:2px}
+.school-type{font-size:var(--xs);color:var(--faint);text-transform:uppercase;letter-spacing:.1em}
+.school-dot{width:10px;height:10px;border-radius:var(--r-full);flex-shrink:0}
+.school-body{padding:0 var(--s-6) var(--s-5);border-top:1px solid var(--divider)}
+.school-body p{font-size:var(--sm);padding-top:var(--s-4);margin:0}
+.school-footer{padding:var(--s-3) var(--s-6);background:var(--offset);border-top:1px solid var(--divider);font-size:var(--xs);color:var(--muted)}
+.school-card.integration .school-footer{background:var(--text);color:var(--inverse)}
+
+/* ══════════════════════════════════════
+   5P CARDS
+══════════════════════════════════════ */
+.p5-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:var(--s-3)}
+@media(max-width:900px){.p5-grid{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:540px){.p5-grid{grid-template-columns:1fr 1fr}}
+.p5-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-xl);padding:var(--s-6) var(--s-5);text-align:center;transition:all var(--t)}
+.p5-card:hover{box-shadow:var(--shadow-md)}
+.p5-letter{font-size:var(--2xl);font-weight:900;margin-bottom:var(--s-2);letter-spacing:-.04em}
+.p5-name{font-size:var(--sm);font-weight:600;margin-bottom:var(--s-2)}
+.p5-desc{font-size:var(--xs);color:var(--muted);line-height:1.5;text-align:left}
+
+/* ══════════════════════════════════════
+   INTENDED vs EMERGENT
+══════════════════════════════════════ */
+.strat-flow{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-xl);overflow:hidden}
+.strat-flow-head{padding:var(--s-5) var(--s-6);border-bottom:1px solid var(--divider);display:flex;align-items:center;justify-content:space-between}
+.strat-flow-body{display:grid;grid-template-columns:1fr 56px 1fr 56px 1fr;align-items:center;padding:var(--s-8) var(--s-6);gap:var(--s-4)}
+@media(max-width:640px){
+  .strat-flow-body{grid-template-columns:1fr;text-align:center}
+  .sf-arrow{transform:rotate(90deg)}
+}
+.sf-node{padding:var(--s-5) var(--s-5);background:var(--offset);border-radius:var(--r-lg);text-align:center}
+.sf-node h4{font-size:var(--base);font-weight:600;margin-bottom:var(--s-1)}
+.sf-node p{font-size:var(--xs);margin:0}
+.sf-arrow{display:flex;align-items:center;justify-content:center;color:var(--faint)}
+.sf-note{padding:var(--s-4) var(--s-6);background:color-mix(in oklab,var(--amber) 8%,var(--offset));border-top:1px solid var(--divider);font-size:var(--xs);color:var(--muted)}
+
+/* ══════════════════════════════════════
+   HOW TO USE — steps
+══════════════════════════════════════ */
+.steps{display:grid;gap:var(--s-3)}
+.step{display:grid;grid-template-columns:48px 1fr;gap:var(--s-5);align-items:start;padding:var(--s-5) var(--s-6);background:var(--surface);border:1px solid var(--border);border-radius:var(--r-xl);transition:all var(--t)}
+.step:hover{border-color:var(--text);box-shadow:var(--shadow-sm)}
+.step-num{font-family:'SF Mono',ui-monospace,monospace;font-size:var(--sm);color:var(--faint);padding-top:.15rem}
+.step h4{font-size:var(--base);font-weight:600;margin-bottom:var(--s-1)}
+.step p{font-size:var(--sm);margin:0}
+
+/* ══════════════════════════════════════
+   CALLOUT
+══════════════════════════════════════ */
+.callout{background:var(--text);color:var(--inverse);border-radius:var(--r-2xl);padding:var(--s-12);display:grid;grid-template-columns:1fr 1fr;gap:var(--s-10);align-items:center}
+@media(max-width:720px){.callout{grid-template-columns:1fr;padding:var(--s-8)}}
+.callout-eyebrow{font-size:var(--xs);text-transform:uppercase;letter-spacing:.14em;color:color-mix(in oklab,var(--inverse) 50%,transparent);margin-bottom:var(--s-4)}
+.callout h2{font-size:var(--2xl);letter-spacing:-.03em;line-height:1.1}
+.callout p{color:color-mix(in oklab,var(--inverse) 65%,transparent);font-size:var(--base);margin-top:var(--s-4);max-width:44ch}
+.callout-quote{padding:var(--s-6);background:color-mix(in oklab,var(--inverse) 7%,transparent);border-radius:var(--r-xl)}
+.callout-quote blockquote{font-size:var(--lg);font-weight:600;line-height:1.5;margin-bottom:var(--s-3)}
+.callout-quote cite{font-size:var(--xs);color:color-mix(in oklab,var(--inverse) 50%,transparent);font-style:normal;text-transform:uppercase;letter-spacing:.1em}
+
+/* ══════════════════════════════════════
+   SEE ALSO
+══════════════════════════════════════ */
+.see-also{display:flex;flex-wrap:wrap;gap:var(--s-3)}
+.see-chip{padding:var(--s-2) var(--s-4);background:var(--surface);border:1px solid var(--border);border-radius:var(--r-full);font-size:var(--sm);transition:all var(--t)}
+.see-chip:hover{background:var(--offset);border-color:var(--text)}
+
+footer{padding-block:var(--s-12);font-size:var(--sm);color:var(--muted)}
+.footer-inner{display:flex;justify-content:space-between;flex-wrap:wrap;gap:var(--s-4)}
+.fade-up{opacity:0;transform:translateY(10px);transition:opacity .6s ease,transform .6s ease}
+.fade-up.in{opacity:1;transform:none}
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container header-inner">
+    <div class="brand"><span class="brand-dot"></span> Mintzberg Safari</div>
+    <nav class="header-nav">
+      <a href="#schools">10 школ</a>
+      <a href="#5p">5P</a>
+      <a href="#flow">Задуманная vs реализованная</a>
+      <a href="#apply">Как применять</a>
+    </nav>
+    <button class="theme-toggle" data-theme-toggle aria-label="Переключить тему">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+    </button>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="container">
+    <div class="eyebrow">Book Card · Henry Mintzberg · Strategy Safari · 1998</div>
+    <h1>Стратегическое<br/>Сафари.</h1>
+    <p class="hero-lede">Стратегия — это не то, что планируют, а то, что складывается. Лучшие стратеги удерживают несколько школ одновременно — они видят слона целиком, а не только ухо или хобот.</p>
+    <div class="hero-meta">
+      <div><div class="k">Школ формирования</div><div class="v">10</div></div>
+      <div><div class="k">P-измерений стратегии</div><div class="v">5</div></div>
+      <div><div class="k">Интегрирующая</div><div class="v">Школа конфигурации</div></div>
+      <div><div class="k">Год</div><div class="v">1998</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- 10 Schools -->
+<section class="block" id="schools">
+  <div class="container">
+    <div class="section-head">
+      <div class="section-index">01 — 10 Schools</div>
+      <div>
+        <h2 class="section-title">10 школ формирования стратегии</h2>
+        <p class="section-desc">Каждая школа — это отдельный взгляд на то, как и где рождается стратегия. Ни одна не универсальна: правильная школа зависит от контекста, стадии и ситуации организации.</p>
+      </div>
+    </div>
+
+    <div class="schools-grid">
+
+      <div class="school-card">
+        <div class="school-card-top">
+          <div class="school-num">01</div>
+          <div class="school-titles">
+            <div class="school-name">Дизайна</div>
+            <div class="school-type">Процесс осмысления</div>
+          </div>
+          <div class="school-dot" style="background:var(--blue)"></div>
+        </div>
+        <div class="school-body"><p>Стратегия = соответствие внутренних сил и внешних возможностей (SWOT). Лидер-архитектор проектирует чёткую, осознанную концепцию.</p></div>
+        <div class="school-footer">Инструменты: SWOT · LCAG-модель</div>
+      </div>
+
+      <div class="school-card">
+        <div class="school-card-top">
+          <div class="school-num">02</div>
+          <div class="school-titles">
+            <div class="school-name">Планирования</div>
+            <div class="school-type">Формальный процесс</div>
+          </div>
+          <div class="school-dot" style="background:var(--teal)"></div>
+        </div>
+        <div class="school-body"><p>Строгие процедуры, шаги, расписания, бюджеты. Стратегия — продукт систематизированного планирования, а не творчества.</p></div>
+        <div class="school-footer">Инструменты: BSC · Roadmap · Portfolio matrix</div>
+      </div>
+
+      <div class="school-card">
+        <div class="school-card-top">
+          <div class="school-num">03</div>
+          <div class="school-titles">
+            <div class="school-name">Позиционирования</div>
+            <div class="school-type">Аналитический процесс</div>
+          </div>
+          <div class="school-dot" style="background:var(--sky)"></div>
+        </div>
+        <div class="school-body"><p>Стратегия = выбор рыночной позиции. Инструменты: Портер (5 сил, цепочка ценности), матрицы BCG/McKinsey. Главное — отраслевой анализ.</p></div>
+        <div class="school-footer">Инструменты: Porter 5 forces · BCG · Value Chain</div>
+      </div>
+
+      <div class="school-card">
+        <div class="school-card-top">
+          <div class="school-num">04</div>
+          <div class="school-titles">
+            <div class="school-name">Предпринимательства</div>
+            <div class="school-type">Процесс предвидения</div>
+          </div>
+          <div class="school-dot" style="background:var(--violet)"></div>
+        </div>
+        <div class="school-body"><p>Стратегия живёт в голове визионера-лидера как интуитивное видение. Гибкая, адаптируется под опыт лидера. Риск: зависимость от одной личности.</p></div>
+        <div class="school-footer">Контекст: стартапы · кризис · лидер-основатель</div>
+      </div>
+
+      <div class="school-card">
+        <div class="school-card-top">
+          <div class="school-num">05</div>
+          <div class="school-titles">
+            <div class="school-name">Когнитивная</div>
+            <div class="school-type">Ментальный процесс</div>
+          </div>
+          <div class="school-dot" style="background:var(--rose)"></div>
+        </div>
+        <div class="school-body"><p>Стратегия — продукт разума стратега. Как воспринимается реальность, какие ментальные карты используются — это и определяет направление.</p></div>
+        <div class="school-footer">Корни: когнитивная психология · bounded rationality</div>
+      </div>
+
+      <div class="school-card">
+        <div class="school-card-top">
+          <div class="school-num">06</div>
+          <div class="school-titles">
+            <div class="school-name">Обучения</div>
+            <div class="school-type">Развивающийся процесс</div>
+          </div>
+          <div class="school-dot" style="background:var(--green)"></div>
+        </div>
+        <div class="school-body"><p>Стратегия возникает из экспериментов и уроков. Реализация и формулировка идут параллельно. Организация обучается методом проб — и это её стратегия.</p></div>
+        <div class="school-footer">Связь: emergent strategy · Lindblom · Weick</div>
+      </div>
+
+      <div class="school-card">
+        <div class="school-card-top">
+          <div class="school-num">07</div>
+          <div class="school-titles">
+            <div class="school-name">Власти</div>
+            <div class="school-type">Процесс переговоров</div>
+          </div>
+          <div class="school-dot" style="background:var(--orange)"></div>
+        </div>
+        <div class="school-body"><p>Стратегия — результат политической борьбы внутри организации и её торга с внешними stakeholders. Коалиции, компромиссы, влияние.</p></div>
+        <div class="school-footer">Инструменты: stakeholder mapping · коалиционный анализ</div>
+      </div>
+
+      <div class="school-card">
+        <div class="school-card-top">
+          <div class="school-num">08</div>
+          <div class="school-titles">
+            <div class="school-name">Культуры</div>
+            <div class="school-type">Коллективный процесс</div>
+          </div>
+          <div class="school-dot" style="background:var(--amber)"></div>
+        </div>
+        <div class="school-body"><p>Стратегия вырастает из корпоративной культуры и общих ценностей. Сила — устойчивость; слабость — инерция и сопротивление переменам.</p></div>
+        <div class="school-footer">Риск: культурная инерция при необходимости изменений</div>
+      </div>
+
+      <div class="school-card">
+        <div class="school-card-top">
+          <div class="school-num">09</div>
+          <div class="school-titles">
+            <div class="school-name">Внешней среды</div>
+            <div class="school-type">Реактивный процесс</div>
+          </div>
+          <div class="school-dot" style="background:var(--lime)"></div>
+        </div>
+        <div class="school-body"><p>Среда диктует стратегию. Организация реагирует на внешние силы — она не выбирает, а адаптируется. Корни: популяционная экология и теория зависимости.</p></div>
+        <div class="school-footer">Корни: population ecology · contingency theory</div>
+      </div>
+
+      <div class="school-card integration">
+        <div class="school-card-top">
+          <div class="school-num">10</div>
+          <div class="school-titles">
+            <div class="school-name">Конфигурации</div>
+            <div class="school-type">Процесс трансформации</div>
+          </div>
+          <div class="school-dot" style="background:var(--text)"></div>
+        </div>
+        <div class="school-body"><p>Организация проходит через стадии — стартап, зрелость, трансформация — и в каждой применяет разные школы. Стратегия = управление переходами между конфигурациями.</p></div>
+        <div class="school-footer">★ Интегрирует все остальные школы · Минцберг считает наиболее полной</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- 5P -->
+<section class="block" id="5p">
+  <div class="container">
+    <div class="section-head">
+      <div class="section-index">02 — 5P Strategy</div>
+      <div>
+        <h2 class="section-title">Пять P стратегии</h2>
+        <p class="section-desc">Стратегия — не одно из пяти измерений, а все пять одновременно. Минцберг предлагает этот набор, чтобы преодолеть односторонние определения.</p>
+      </div>
+    </div>
+    <div class="p5-grid">
+      <div class="p5-card">
+        <div class="p5-letter" style="color:var(--blue)">P</div>
+        <div class="p5-name">Plan</div>
+        <div class="p5-desc">Осознанный курс действий, сформулированный заранее</div>
+      </div>
+      <div class="p5-card">
+        <div class="p5-letter" style="color:var(--violet)">P</div>
+        <div class="p5-name">Pattern</div>
+        <div class="p5-desc">Устойчивый образец поведения во времени — реализованная стратегия</div>
+      </div>
+      <div class="p5-card">
+        <div class="p5-letter" style="color:var(--teal)">P</div>
+        <div class="p5-name">Position</div>
+        <div class="p5-desc">Место продукта в рыночной среде относительно конкурентов</div>
+      </div>
+      <div class="p5-card">
+        <div class="p5-letter" style="color:var(--amber)">P</div>
+        <div class="p5-name">Perspective</div>
+        <div class="p5-desc">Укоренившееся мировоззрение и способ действия организации</div>
+      </div>
+      <div class="p5-card">
+        <div class="p5-letter" style="color:var(--rose)">P</div>
+        <div class="p5-name">Ploy</div>
+        <div class="p5-desc">Конкретный манёвр для обхода конкурента или выхода на рынок</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Intended vs Emergent -->
+<section class="block" id="flow">
+  <div class="container">
+    <div class="section-head">
+      <div class="section-index">03 — Intended vs Emergent</div>
+      <div>
+        <h2 class="section-title">Задуманная и возникающая стратегия</h2>
+        <p class="section-desc">Ключевой вклад Минцберга: стратегия, которую планируют, и та, что реализуется — принципиально разные вещи. Возникающая стратегия не менее важна.</p>
+      </div>
+    </div>
+
+    <div class="strat-flow">
+      <div class="strat-flow-head">
+        <h3>Как стратегия трансформируется по пути</h3>
+        <span style="font-size:var(--xs);color:var(--faint)">Mintzberg & Waters, 1985</span>
+      </div>
+      <div class="strat-flow-body">
+        <div class="sf-node">
+          <h4>Intended</h4>
+          <p style="font-size:var(--xs)">Задуманная стратегия — то, что планировалось и было задокументировано</p>
+        </div>
+        <div class="sf-arrow">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </div>
+        <div class="sf-node">
+          <h4>Deliberate</h4>
+          <p style="font-size:var(--xs)">Реализованная часть — то, что из задуманного действительно воплотилось</p>
+        </div>
+        <div class="sf-arrow">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </div>
+        <div class="sf-node" style="background:color-mix(in oklab,var(--green) 10%,var(--offset))">
+          <h4>Realized</h4>
+          <p style="font-size:var(--xs)">Фактическая стратегия = Deliberate + <strong>Emergent</strong> (незапланированные паттерны)</p>
+        </div>
+      </div>
+      <div class="sf-note">
+        ↳ <strong style="color:var(--text)">Emergent strategy</strong> — паттерны, возникшие без предварительного замысла. Минцберг утверждает: в успешных компаниях emergent стратегии часто важнее deliberate.
+      </div>
+    </div>
+
+    <!-- Craftsman -->
+    <div style="margin-top:var(--s-6);padding:var(--s-8);background:var(--surface);border:1px solid var(--border);border-radius:var(--r-xl)">
+      <div style="font-size:var(--xs);color:var(--faint);text-transform:uppercase;letter-spacing:.12em;margin-bottom:var(--s-4)">Метафора Минцберга</div>
+      <h3 style="font-size:var(--xl);margin-bottom:var(--s-3)">Стратег-ремесленник</h3>
+      <p>Минцберг сравнивает стратегию с гончарным делом: мастер знает, что получится, лишь работая с глиной. Планирование — это не стратегия. Стратегия рождается в процессе работы, из опыта и обратной связи — не в переговорной комнате.</p>
+    </div>
+  </div>
+</section>
+
+<!-- Callout -->
+<section class="block">
+  <div class="container">
+    <div class="callout">
+      <div>
+        <div class="callout-eyebrow">Главная мысль · Mintzberg, 1998</div>
+        <h2>Ни одна школа не видит слона целиком.</h2>
+        <p>Каждая из 10 школ права в своём контексте и слепа за его пределами. Зрелый стратег не выбирает одну школу — он знает, когда применять каждую из них.</p>
+      </div>
+      <div class="callout-quote">
+        <blockquote>«Стратегия — это не то, что планируют, а то, что складывается. Лучшие стратеги видят слона целиком, а не только ухо или хобот.»</blockquote>
+        <cite>— Генри Минцберг</cite>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- How to apply -->
+<section class="block" id="apply">
+  <div class="container">
+    <div class="section-head">
+      <div class="section-index">04 — How to Apply</div>
+      <div>
+        <h2 class="section-title">Как применять в работе</h2>
+        <p class="section-desc">Четыре практических шага — от диагностики текущей школы до осознанного управления переходами между конфигурациями.</p>
+      </div>
+    </div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">01</div>
+        <div>
+          <h4>Диагностируйте текущую школу</h4>
+          <p>Определите, какую из 10 школ ваша организация использует де-факто. Чаще всего это видно по тому, как принимаются стратегические решения — не по декларациям, а по реальным процессам.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">02</div>
+        <div>
+          <h4>Проверьте соответствие контексту</h4>
+          <p>На ранней стадии работает предпринимательская школа, в зрелой отрасли — позиционирование, в кризис — обучение. Смена контекста требует смены школы. Несоответствие — частая причина провала стратегии.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">03</div>
+        <div>
+          <h4>Отслеживайте возникающие стратегии</h4>
+          <p>Фиксируйте паттерны в действиях, которые никто не планировал. Часто реальная стратегия прячется именно там — в том, что команда делает интуитивно и успешно.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">04</div>
+        <div>
+          <h4>Управляйте переходами (школа конфигурации)</h4>
+          <p>Определите, на какой стадии жизненного цикла находится организация, и спроектируйте переход к следующей стадии осознанно. Нарушение конфигурации — одна из самых дорогих стратегических ошибок.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- See also -->
+<section class="block" style="border-bottom:none">
+  <div class="container">
+    <div class="section-head">
+      <div class="section-index">See Also</div>
+      <div>
+        <h2 class="section-title">Смотрите также</h2>
+      </div>
+    </div>
+    <div class="see-also">
+      <div class="see-chip">Rumelt's Kernel of Strategy</div>
+      <div class="see-chip">Porter 5 Forces</div>
+      <div class="see-chip">BCG Matrix</div>
+      <div class="see-chip">Blue Ocean Strategy</div>
+      <div class="see-chip">Balanced Scorecard</div>
+      <div class="see-chip">SWOT Analysis</div>
+      <div class="see-chip">OKR</div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container footer-inner">
+    <div>© 2026 · Mintzberg Safari Card · Arrange Styleguide</div>
+    <div>10 Schools · 5P · Emergent Strategy</div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  const t=document.querySelector('[data-theme-toggle]'),r=document.documentElement;
+  let d=matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light';
+  r.setAttribute('data-theme',d);
+  t&&t.addEventListener('click',()=>{
+    d=d==='dark'?'light':'dark';
+    r.setAttribute('data-theme',d);
+    t.innerHTML=d==='dark'
+      ?'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>'
+      :'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>';
+  });
+  const io=new IntersectionObserver(es=>es.forEach(e=>e.isIntersecting&&e.target.classList.add('in')),{threshold:.08});
+  document.querySelectorAll('.block,.hero').forEach(el=>{el.classList.add('fade-up');io.observe(el);});
+})();
+</script>
+</body>
+</html>
