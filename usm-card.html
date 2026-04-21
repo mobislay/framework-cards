@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="ru" data-theme="light">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>User Story Mapping — Карточка техники</title>
+<link href="https://api.fontshare.com/v2/css?f[]=satoshi@300,400,500,700,900&display=swap" rel="stylesheet"/>
+<style>
+:root,[data-theme="light"]{
+  --bg:#f4f4f4;--surface:#fff;--surface-2:#fafafa;--offset:#f0f0f0;--offset-2:#e8e8e8;
+  --divider:#ececec;--border:#e4e4e4;
+  --text:#0a0a0a;--muted:#6b6b6b;--faint:#a3a3a3;--inverse:#fff;
+  --blue:#2b6df6;--green:#22c55e;--amber:#f59e0b;--red:#ef4444;--violet:#8b5cf6;--teal:#14b8a6;--rose:#f43f5e;
+  --shadow-sm:0 1px 2px rgba(10,10,10,.04);
+  --shadow-md:0 4px 16px rgba(10,10,10,.07);
+  --shadow-lg:0 20px 48px rgba(10,10,10,.09);
+  --r-sm:.375rem;--r-md:.5rem;--r-lg:.75rem;--r-xl:1rem;--r-2xl:1.25rem;--r-full:9999px;
+  --s-1:.25rem;--s-2:.5rem;--s-3:.75rem;--s-4:1rem;--s-5:1.25rem;--s-6:1.5rem;
+  --s-8:2rem;--s-10:2.5rem;--s-12:3rem;--s-16:4rem;--s-20:5rem;
+  --t:180ms cubic-bezier(.16,1,.3,1);
+  --xs:clamp(.75rem,.7rem + .2vw,.8125rem);
+  --sm:clamp(.875rem,.82rem + .2vw,.9375rem);
+  --base:clamp(1rem,.95rem + .25vw,1.0625rem);
+  --lg:clamp(1.125rem,1rem + .5vw,1.375rem);
+  --xl:clamp(1.5rem,1.2rem + 1vw,2rem);
+  --2xl:clamp(2rem,1.2rem + 2vw,3rem);
+  --hero:clamp(3.5rem,1rem + 8vw,8rem);
+}
+[data-theme="dark"]{
+  --bg:#0a0a0a;--surface:#141414;--surface-2:#1a1a1a;--offset:#1f1f1f;--offset-2:#262626;
+  --divider:#262626;--border:#2d2d2d;
+  --text:#f4f4f4;--muted:#a3a3a3;--faint:#6b6b6b;--inverse:#0a0a0a;
+  --shadow-sm:0 1px 2px rgba(0,0,0,.3);--shadow-md:0 4px 16px rgba(0,0,0,.4);--shadow-lg:0 20px 48px rgba(0,0,0,.5);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased}
+body{font-family:'Satoshi','Inter',system-ui,sans-serif;font-size:var(--base);line-height:1.6;color:var(--text);background:var(--bg);min-height:100dvh;transition:background var(--t),color var(--t)}
+h1,h2,h3,h4{font-weight:700;letter-spacing:-.02em;line-height:1.1}
+p{color:var(--muted);max-width:72ch}
+button{font:inherit;cursor:pointer;background:none;border:none;color:inherit}
+svg{display:block}
+.container{max-width:1100px;margin-inline:auto;padding-inline:var(--s-6)}
+
+/* Header */
+.site-header{position:sticky;top:0;z-index:50;backdrop-filter:blur(14px);background:color-mix(in oklab,var(--bg) 80%,transparent);border-bottom:1px solid var(--divider)}
+.header-inner{display:flex;align-items:center;justify-content:space-between;padding-block:var(--s-4)}
+.brand{display:flex;align-items:center;gap:var(--s-2);font-weight:700}
+.brand-dot{width:8px;height:8px;border-radius:var(--r-full);background:var(--text)}
+.header-nav{display:flex;gap:var(--s-6);font-size:var(--sm);color:var(--muted)}
+.header-nav a{text-decoration:none;transition:color var(--t)}
+.header-nav a:hover{color:var(--text)}
+.theme-toggle{width:36px;height:36px;border-radius:var(--r-full);border:1px solid var(--border);display:grid;place-items:center;transition:all var(--t)}
+.theme-toggle:hover{background:var(--offset)}
+@media(max-width:720px){.header-nav{display:none}}
+
+/* Hero */
+.hero{padding-block:var(--s-20) var(--s-14);border-bottom:1px solid var(--divider)}
+.eyebrow{display:inline-flex;align-items:center;gap:var(--s-2);font-size:var(--xs);text-transform:uppercase;letter-spacing:.14em;color:var(--muted);margin-bottom:var(--s-6)}
+.eyebrow::before{content:'';width:6px;height:6px;border-radius:var(--r-full);background:var(--amber)}
+.hero h1{font-size:var(--hero);font-weight:900;letter-spacing:-.05em;margin-bottom:var(--s-5)}
+.hero-lede{font-size:var(--lg);max-width:58ch}
+.hero-meta{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:var(--s-6);margin-top:var(--s-10);padding-top:var(--s-8);border-top:1px solid var(--divider)}
+.hero-meta .k{font-size:var(--xs);color:var(--faint);text-transform:uppercase;letter-spacing:.12em;margin-bottom:var(--s-1)}
+.hero-meta .v{font-size:var(--base);font-weight:500}
+
+/* Section */
+.block{padding-block:var(--s-20);border-bottom:1px solid var(--divider)}
+.section-head{display:grid;grid-template-columns:180px 1fr;gap:var(--s-12);margin-bottom:var(--s-10)}
+@media(max-width:720px){.section-head{grid-template-columns:1fr;gap:var(--s-3)}}
+.section-index{font-size:var(--xs);color:var(--faint);letter-spacing:.16em;text-transform:uppercase}
+.section-title{font-size:var(--xl);margin-bottom:var(--s-3)}
+.section-desc{font-size:var(--base)}
+
+/* ═══════════════════════════
+   USM INTERACTIVE MAP
+═══════════════════════════ */
+.map-wrap{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-xl);overflow:hidden}
+.map-header{padding:var(--s-5) var(--s-6);border-bottom:1px solid var(--divider);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:var(--s-3)}
+.map-header h3{font-size:var(--base);font-weight:600}
+.map-legend{display:flex;flex-wrap:wrap;gap:var(--s-4)}
+.map-legend-item{display:flex;align-items:center;gap:var(--s-2);font-size:var(--xs);color:var(--muted)}
+.map-legend-dot{width:10px;height:10px;border-radius:var(--r-sm)}
+
+.map-body{overflow-x:auto;padding:var(--s-6)}
+.map-grid{min-width:720px}
+
+/* Backbone row */
+.map-backbone{display:flex;gap:var(--s-3);margin-bottom:var(--s-2)}
+.bb-activity{flex:1;min-width:130px;background:var(--text);color:var(--inverse);border-radius:var(--r-lg);padding:var(--s-3) var(--s-4);position:relative}
+.bb-activity .act-label{font-size:var(--xs);color:color-mix(in oklab,var(--inverse) 55%,transparent);text-transform:uppercase;letter-spacing:.1em;margin-bottom:var(--s-1)}
+.bb-activity .act-name{font-size:var(--sm);font-weight:600}
+
+/* Epics row */
+.map-epics{display:flex;gap:var(--s-3);margin-bottom:var(--s-3)}
+.bb-epic{flex:1;min-width:130px;background:var(--offset);border:1px solid var(--border);border-radius:var(--r-lg);padding:var(--s-3) var(--s-4)}
+.bb-epic .epic-label{font-size:var(--xs);color:var(--faint);text-transform:uppercase;letter-spacing:.1em;margin-bottom:var(--s-1)}
+.bb-epic .epic-name{font-size:var(--sm);font-weight:500}
+
+/* Release swimlane */
+.map-release{margin-bottom:var(--s-2)}
+.release-header{display:flex;align-items:center;gap:var(--s-3);margin-bottom:var(--s-2)}
+.release-line{flex:1;height:1px;background:var(--divider)}
+.release-label{font-size:var(--xs);text-transform:uppercase;letter-spacing:.12em;font-weight:600;white-space:nowrap;padding:var(--s-1) var(--s-3);border-radius:var(--r-full)}
+
+.map-stories{display:flex;gap:var(--s-3)}
+.story-col{flex:1;min-width:130px;display:grid;gap:var(--s-2)}
+.story-card{background:var(--surface-2);border:1px solid var(--border);border-radius:var(--r-md);padding:var(--s-2) var(--s-3);font-size:var(--xs);line-height:1.4;transition:all var(--t);cursor:default}
+.story-card:hover{border-color:var(--text);background:var(--surface);box-shadow:var(--shadow-sm)}
+.story-card.mvp{background:color-mix(in oklab,var(--green) 8%,var(--surface));border-color:color-mix(in oklab,var(--green) 25%,var(--border))}
+.story-card.r2{background:color-mix(in oklab,var(--blue) 6%,var(--surface));border-color:color-mix(in oklab,var(--blue) 20%,var(--border))}
+.story-card.r3{background:var(--offset)}
+
+/* Walking skeleton highlight */
+.ws-indicator{display:flex;align-items:center;gap:var(--s-2);margin-top:var(--s-4);padding:var(--s-3) var(--s-4);background:color-mix(in oklab,var(--amber) 8%,var(--offset));border-radius:var(--r-lg);font-size:var(--xs);color:var(--muted)}
+.ws-dot{width:8px;height:8px;border-radius:var(--r-full);background:var(--amber);flex-shrink:0}
+
+/* ── Concepts 3-col ── */
+.concepts{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--s-4)}
+@media(max-width:720px){.concepts{grid-template-columns:1fr}}
+.concept-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-xl);padding:var(--s-6);box-shadow:var(--shadow-sm);transition:all var(--t)}
+.concept-card:hover{box-shadow:var(--shadow-md);transform:translateY(-2px)}
+.concept-icon{width:44px;height:44px;border-radius:var(--r-lg);display:grid;place-items:center;margin-bottom:var(--s-4)}
+.concept-card h3{font-size:var(--lg);margin-bottom:var(--s-2)}
+.concept-card p{font-size:var(--sm)}
+.concept-tag{display:inline-flex;align-items:center;gap:var(--s-2);padding:var(--s-1) var(--s-3);border-radius:var(--r-full);font-size:var(--xs);font-weight:600;background:var(--offset);margin-top:var(--s-4)}
+.concept-tag-dot{width:6px;height:6px;border-radius:var(--r-full)}
+
+/* ── Axis explainer ── */
+.axes{display:grid;grid-template-columns:1fr 1fr;gap:var(--s-4)}
+@media(max-width:640px){.axes{grid-template-columns:1fr}}
+.axis-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-xl);padding:var(--s-6)}
+.axis-arrow{display:flex;align-items:center;gap:var(--s-3);margin-bottom:var(--s-4)}
+.axis-arrow-line{flex:1;height:2px;background:var(--border);position:relative}
+.axis-arrow-line::after{content:'';position:absolute;right:0;top:-4px;border-left:8px solid var(--border);border-top:5px solid transparent;border-bottom:5px solid transparent}
+.axis-arrow-head{font-size:var(--xs);color:var(--faint);font-weight:600;text-transform:uppercase;letter-spacing:.1em;white-space:nowrap}
+.axis-card h3{font-size:var(--lg);margin-bottom:var(--s-2)}
+.axis-card p{font-size:var(--sm)}
+
+/* ── Build steps ── */
+.steps-list{display:grid;gap:var(--s-3)}
+.step-row{display:grid;grid-template-columns:48px 1fr;gap:var(--s-5);align-items:start;padding:var(--s-5) var(--s-6);background:var(--surface);border:1px solid var(--border);border-radius:var(--r-xl);transition:all var(--t)}
+.step-row:hover{border-color:var(--text);box-shadow:var(--shadow-sm)}
+.step-row-num{font-family:'SF Mono',ui-monospace,monospace;font-size:var(--sm);color:var(--faint);padding-top:.2rem}
+.step-row h4{font-size:var(--base);font-weight:600;margin-bottom:var(--s-1)}
+.step-row p{font-size:var(--sm);margin:0}
+
+/* ── Callout ── */
+.callout{background:var(--text);color:var(--inverse);border-radius:var(--r-2xl);padding:var(--s-12);display:grid;grid-template-columns:1fr 1fr;gap:var(--s-8);align-items:center}
+@media(max-width:720px){.callout{grid-template-columns:1fr;padding:var(--s-8)}}
+.callout-eyebrow{font-size:var(--xs);text-transform:uppercase;letter-spacing:.14em;color:color-mix(in oklab,var(--inverse) 55%,transparent);margin-bottom:var(--s-4)}
+.callout h2{font-size:var(--2xl);letter-spacing:-.03em;line-height:1.1}
+.callout p{color:color-mix(in oklab,var(--inverse) 70%,transparent);font-size:var(--base);margin-top:var(--s-4);max-width:44ch}
+.callout-axes{display:grid;gap:var(--s-4)}
+.callout-axis{display:flex;align-items:baseline;gap:var(--s-3)}
+.callout-axis-dir{font-size:var(--xl);font-weight:900;width:36px;flex-shrink:0}
+.callout-axis-text{font-size:var(--base);color:color-mix(in oklab,var(--inverse) 65%,transparent)}
+
+/* ── Mistakes ── */
+.mistake-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:var(--s-4)}
+.mistake{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-xl);padding:var(--s-6);transition:all var(--t)}
+.mistake:hover{border-color:var(--text)}
+.mistake .num{font-family:'SF Mono',ui-monospace,monospace;font-size:var(--xs);color:var(--faint);margin-bottom:var(--s-3)}
+.mistake h3{font-size:var(--lg);margin-bottom:var(--s-2)}
+.mistake p{font-size:var(--sm)}
+
+footer{padding-block:var(--s-12);font-size:var(--sm);color:var(--muted)}
+.footer-inner{display:flex;justify-content:space-between;flex-wrap:wrap;gap:var(--s-4)}
+.fade-up{opacity:0;transform:translateY(10px);transition:opacity .6s ease,transform .6s ease}
+.fade-up.in{opacity:1;transform:none}
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container header-inner">
+    <div class="brand"><span class="brand-dot"></span> User Story Mapping</div>
+    <nav class="header-nav">
+      <a href="#map">Карта</a>
+      <a href="#concepts">Концепции</a>
+      <a href="#build">Как строить</a>
+      <a href="#mistakes">Ошибки</a>
+    </nav>
+    <button class="theme-toggle" data-theme-toggle aria-label="Переключить тему">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+    </button>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="container">
+    <div class="eyebrow">Technique Card · Jeff Patton · 2005 · Agile / Product</div>
+    <h1>User Story<br/>Mapping.</h1>
+    <p class="hero-lede">Превращает плоский бэклог в двумерную карту пользовательского пути. Слева направо — история пользователя, сверху вниз — детализация и приоритет.</p>
+    <div class="hero-meta">
+      <div><div class="k">Оси</div><div class="v">2</div></div>
+      <div><div class="k">Горизонталь</div><div class="v">Время / путь</div></div>
+      <div><div class="k">Вертикаль</div><div class="v">Приоритет</div></div>
+      <div><div class="k">Против</div><div class="v">Плоских бэклогов</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- Interactive Map -->
+<section class="block" id="map">
+  <div class="container">
+    <div class="section-head">
+      <div class="section-index">01 — Map</div>
+      <div>
+        <h2 class="section-title">Живой пример Story Map</h2>
+        <p class="section-desc">Пример карты для продукта «Планировщик задач». Backbone — неизменяемый скелет, релизы — горизонтальные срезы приоритета.</p>
+      </div>
+    </div>
+
+    <div class="map-wrap">
+      <div class="map-header">
+        <h3>Планировщик задач — Story Map</h3>
+        <div class="map-legend">
+          <div class="map-legend-item"><span class="map-legend-dot" style="background:var(--text)"></span>Backbone</div>
+          <div class="map-legend-item"><span class="map-legend-dot" style="background:var(--green);opacity:.6"></span>MVP / Release 1</div>
+          <div class="map-legend-item"><span class="map-legend-dot" style="background:var(--blue);opacity:.6"></span>Release 2</div>
+          <div class="map-legend-item"><span class="map-legend-dot" style="background:var(--faint)"></span>Release 3+</div>
+        </div>
+      </div>
+
+      <div class="map-body">
+        <div class="map-grid">
+
+          <!-- Activities (Backbone) -->
+          <div class="map-backbone">
+            <div class="bb-activity"><div class="act-label">Activity</div><div class="act-name">Войти в систему</div></div>
+            <div class="bb-activity"><div class="act-label">Activity</div><div class="act-name">Создать задачу</div></div>
+            <div class="bb-activity"><div class="act-label">Activity</div><div class="act-name">Управлять задачами</div></div>
+            <div class="bb-activity"><div class="act-label">Activity</div><div class="act-name">Отследить прогресс</div></div>
+            <div class="bb-activity"><div class="act-label">Activity</div><div class="act-name">Настроить аккаунт</div></div>
+          </div>
+
+          <!-- Epics -->
+          <div class="map-epics">
+            <div class="bb-epic"><div class="epic-label">Epic</div><div class="epic-name">Регистрация</div></div>
+            <div class="bb-epic"><div class="epic-label">Epic</div><div class="epic-name">Новая задача</div></div>
+            <div class="bb-epic"><div class="epic-label">Epic</div><div class="epic-name">Список / поиск</div></div>
+            <div class="bb-epic"><div class="epic-label">Epic</div><div class="epic-name">Дашборд</div></div>
+            <div class="bb-epic"><div class="epic-label">Epic</div><div class="epic-name">Профиль</div></div>
+          </div>
+
+          <!-- MVP swimlane -->
+          <div class="map-release">
+            <div class="release-header">
+              <div class="release-label" style="background:color-mix(in oklab,var(--green) 12%,var(--offset));color:var(--green)">MVP · Release 1</div>
+              <div class="release-line"></div>
+            </div>
+            <div class="map-stories">
+              <div class="story-col">
+                <div class="story-card mvp">Войти по email + паролю</div>
+              </div>
+              <div class="story-col">
+                <div class="story-card mvp">Добавить название задачи</div>
+                <div class="story-card mvp">Выбрать приоритет</div>
+              </div>
+              <div class="story-col">
+                <div class="story-card mvp">Просмотреть список задач</div>
+                <div class="story-card mvp">Отметить выполненной</div>
+              </div>
+              <div class="story-col">
+                <div class="story-card mvp">Счётчик выполненных</div>
+              </div>
+              <div class="story-col">
+                <div class="story-card mvp">Изменить пароль</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- R2 swimlane -->
+          <div class="map-release">
+            <div class="release-header">
+              <div class="release-label" style="background:color-mix(in oklab,var(--blue) 10%,var(--offset));color:var(--blue)">Release 2</div>
+              <div class="release-line"></div>
+            </div>
+            <div class="map-stories">
+              <div class="story-col">
+                <div class="story-card r2">Войти через Google</div>
+              </div>
+              <div class="story-col">
+                <div class="story-card r2">Добавить описание</div>
+                <div class="story-card r2">Установить дедлайн</div>
+              </div>
+              <div class="story-col">
+                <div class="story-card r2">Фильтр по статусу</div>
+                <div class="story-card r2">Поиск по тексту</div>
+              </div>
+              <div class="story-col">
+                <div class="story-card r2">График за неделю</div>
+              </div>
+              <div class="story-col">
+                <div class="story-card r2">Загрузить аватар</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- R3 swimlane -->
+          <div class="map-release">
+            <div class="release-header">
+              <div class="release-label" style="background:var(--offset-2);color:var(--muted)">Release 3+</div>
+              <div class="release-line"></div>
+            </div>
+            <div class="map-stories">
+              <div class="story-col">
+                <div class="story-card r3">SSO / SAML</div>
+              </div>
+              <div class="story-col">
+                <div class="story-card r3">Подзадачи</div>
+                <div class="story-card r3">Теги / метки</div>
+              </div>
+              <div class="story-col">
+                <div class="story-card r3">Bulk-действия</div>
+                <div class="story-card r3">Drag & drop</div>
+              </div>
+              <div class="story-col">
+                <div class="story-card r3">Экспорт в CSV</div>
+              </div>
+              <div class="story-col">
+                <div class="story-card r3">Уведомления</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Walking skeleton note -->
+          <div class="ws-indicator">
+            <span class="ws-dot"></span>
+            <span><strong style="color:var(--text)">Walking Skeleton</strong> — вертикальный срез MVP: по одной истории из каждой колонки даёт сквозную функциональность с конца в конец.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Concepts -->
+<section class="block" id="concepts">
+  <div class="container">
+    <div class="section-head">
+      <div class="section-index">02 — Concepts</div>
+      <div>
+        <h2 class="section-title">Три ключевых концепции</h2>
+        <p class="section-desc">Backbone, Walking Skeleton и Swimlane — три элемента, которые делают карту рабочим инструментом, а не просто визуализацией бэклога.</p>
+      </div>
+    </div>
+
+    <div class="concepts">
+      <div class="concept-card">
+        <div class="concept-icon" style="background:color-mix(in oklab,var(--text) 8%,var(--offset))">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--text)" stroke-width="1.75"><path d="M3 12h18M3 6h18M3 18h18"/></svg>
+        </div>
+        <h3>Backbone</h3>
+        <p>Неизменяемый горизонтальный скелет из активностей и эпиков. Отражает полный путь пользователя от начала до конца. Backbone нельзя приоритизировать — это контекст, а не задачи.</p>
+        <div class="concept-tag"><span class="concept-tag-dot" style="background:var(--text)"></span>Горизонталь · Не трогать</div>
+      </div>
+
+      <div class="concept-card">
+        <div class="concept-icon" style="background:color-mix(in oklab,var(--amber) 10%,var(--offset))">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--amber)" stroke-width="1.75"><path d="M12 2v20M5 5l7-3 7 3M5 12l7-3 7 3M5 19l7-3 7 3"/></svg>
+        </div>
+        <h3>Walking Skeleton</h3>
+        <p>Вертикальный срез MVP: минимальный набор историй, дающий сквозную функциональность с конца в конец. Не самые важные истории — а те, которые вместе образуют работающий продукт.</p>
+        <div class="concept-tag"><span class="concept-tag-dot" style="background:var(--amber)"></span>Вертикаль · Срез MVP</div>
+      </div>
+
+      <div class="concept-card">
+        <div class="concept-icon" style="background:color-mix(in oklab,var(--blue) 10%,var(--offset))">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="1.75"><path d="M3 8h18M3 16h18"/></svg>
+        </div>
+        <h3>Swimlane — Релизы</h3>
+        <p>Горизонтальные линии делят карту на релизы. Истории выше черты — в текущем релизе, ниже — в следующем. Каждый срез должен давать законченную ценность пользователю.</p>
+        <div class="concept-tag"><span class="concept-tag-dot" style="background:var(--blue)"></span>Горизонталь · Приоритет</div>
+      </div>
+    </div>
+
+    <!-- Two axes -->
+    <div class="axes" style="margin-top:var(--s-6)">
+      <div class="axis-card">
+        <div class="axis-arrow">
+          <div class="axis-arrow-head">Начало</div>
+          <div class="axis-arrow-line"></div>
+          <div class="axis-arrow-head">Конец пути</div>
+        </div>
+        <h3>→ Горизонталь: Время</h3>
+        <p>Слева направо — хронологический порядок пользовательского пути. Activities и эпики отражают последовательность действий пользователя в продукте.</p>
+      </div>
+      <div class="axis-card">
+        <div class="axis-arrow">
+          <div class="axis-arrow-head">Высокий приоритет</div>
+          <div class="axis-arrow-line"></div>
+          <div class="axis-arrow-head">Низкий</div>
+        </div>
+        <h3>↓ Вертикаль: Приоритет</h3>
+        <p>Сверху вниз — убывающий приоритет. Истории ближе к Backbone — обязательные, ниже — «было бы здорово». Swimlane-линии фиксируют конкретные релизы.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Callout -->
+<section class="block">
+  <div class="container">
+    <div class="callout">
+      <div>
+        <div class="callout-eyebrow">Ключевой принцип</div>
+        <h2>Карта возвращает контекст, потерянный в плоском бэклоге.</h2>
+        <p>В обычном бэклоге истории — изолированные карточки без связи с пользовательским путём. USM показывает, зачем каждая история существует и как она соотносится с другими.</p>
+      </div>
+      <div class="callout-axes">
+        <div class="callout-axis">
+          <div class="callout-axis-dir">→</div>
+          <div class="callout-axis-text">Горизонталь — путь пользователя во времени</div>
+        </div>
+        <div class="callout-axis">
+          <div class="callout-axis-dir">↓</div>
+          <div class="callout-axis-text">Вертикаль — детализация и приоритет</div>
+        </div>
+        <div class="callout-axis">
+          <div class="callout-axis-dir">—</div>
+          <div class="callout-axis-text">Swimlane — границы релиза</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Build steps -->
+<section class="block" id="build">
+  <div class="container">
+    <div class="section-head">
+      <div class="section-index">03 — Build</div>
+      <div>
+        <h2 class="section-title">Как построить карту</h2>
+        <p class="section-desc">Строится на совместной сессии с командой. Физические стикеры на стене — лучший формат для первой версии. Обновляется по мере накопления знаний.</p>
+      </div>
+    </div>
+
+    <div class="steps-list">
+      <div class="step-row">
+        <div class="step-row-num">01</div>
+        <div>
+          <h4>Определить пользователя и его цель</h4>
+          <p>Кто этот пользователь и что он пытается достичь? Без чёткого ответа карта будет про систему, а не про человека. Одна карта = один тип пользователя.</p>
+        </div>
+      </div>
+      <div class="step-row">
+        <div class="step-row-num">02</div>
+        <div>
+          <h4>Выложить Backbone — Activities</h4>
+          <p>Крупные шаги пути пользователя слева направо. 5–10 активностей на уровне «глагол + объект»: «Найти товар», «Оформить заказ», «Отследить доставку».</p>
+        </div>
+      </div>
+      <div class="step-row">
+        <div class="step-row-num">03</div>
+        <div>
+          <h4>Добавить эпики под каждой активностью</h4>
+          <p>Укрупнённые задачи, составляющие активность. Они тоже часть Backbone — не приоритизируются, только детализируют шаг пути.</p>
+        </div>
+      </div>
+      <div class="step-row">
+        <div class="step-row-num">04</div>
+        <div>
+          <h4>Раскрыть user stories под эпиками</h4>
+          <p>Конкретные истории: «Как [роль], я хочу [действие], чтобы [ценность]». Истории падают вниз под своим эпиком. Самые важные — выше.</p>
+        </div>
+      </div>
+      <div class="step-row">
+        <div class="step-row-num">05</div>
+        <div>
+          <h4>Провести swimlane-линии (релизы)</h4>
+          <p>Горизонтальные линии фиксируют релизы. Каждый срез должен давать законченную ценность — от первого экрана до последнего. Начать с Walking Skeleton.</p>
+        </div>
+      </div>
+      <div class="step-row">
+        <div class="step-row-num">06</div>
+        <div>
+          <h4>Обновлять по мере открытий</h4>
+          <p>Карта — живой документ. По мере накопления знаний о пользователях и продукте активности, эпики и приоритеты историй меняются. Это норма, не хаос.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Mistakes -->
+<section class="block" id="mistakes">
+  <div class="container">
+    <div class="section-head">
+      <div class="section-index">04 — Mistakes</div>
+      <div>
+        <h2 class="section-title">Типичные ошибки</h2>
+        <p class="section-desc">Большинство проблем — в переносе плоского бэклога в визуальный формат без пересмотра его содержания.</p>
+      </div>
+    </div>
+
+    <div class="mistake-grid">
+      <div class="mistake">
+        <div class="num">ERR 01</div>
+        <h3>Backbone как задачи команды</h3>
+        <p>Backbone — это путь пользователя, а не план разработки. Если активности звучат как «Разработать API» — карта про систему, не про человека.</p>
+      </div>
+      <div class="mistake">
+        <div class="num">ERR 02</div>
+        <h3>Walking Skeleton = все главные фичи</h3>
+        <p>Walking Skeleton — не про «самое важное», а про сквозную функциональность. Одна история из каждой колонки, которая вместе даёт работающий путь.</p>
+      </div>
+      <div class="mistake">
+        <div class="num">ERR 03</div>
+        <h3>Карта строится без пользователей</h3>
+        <p>Backbone, созданный только командой разработки, отражает архитектуру системы. Для карты нужны инсайты из реальных интервью и наблюдений.</p>
+      </div>
+      <div class="mistake">
+        <div class="num">ERR 04</div>
+        <h3>Один пользователь = одна карта нет</h3>
+        <p>Если у продукта несколько ключевых пользователей с разными путями — нужно несколько карт. Попытка уместить всех в одну создаёт хаос, а не ясность.</p>
+      </div>
+      <div class="mistake">
+        <div class="num">ERR 05</div>
+        <h3>Карта строится один раз</h3>
+        <p>USM — живой документ. Новые открытия о пользователях меняют Backbone, приоритет историй и границы релизов. Карта, не обновлявшаяся 3+ месяца, устарела.</p>
+      </div>
+      <div class="mistake">
+        <div class="num">ERR 06</div>
+        <h3>Swimlane-линии без проверки ценности</h3>
+        <p>Каждый релизный срез должен давать законченную ценность пользователю — не просто набор историй. Если срез не отвечает на вопрос «что теперь может пользователь?» — он неправильный.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container footer-inner">
+    <div>© 2026 · User Story Mapping Card · Arrange Styleguide</div>
+    <div>Backbone · Walking Skeleton · Swimlane</div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  const t=document.querySelector('[data-theme-toggle]'),r=document.documentElement;
+  let d=matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light';
+  r.setAttribute('data-theme',d);
+  t&&t.addEventListener('click',()=>{
+    d=d==='dark'?'light':'dark';
+    r.setAttribute('data-theme',d);
+    t.innerHTML=d==='dark'
+      ?'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>'
+      :'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>';
+  });
+  const io=new IntersectionObserver(es=>es.forEach(e=>e.isIntersecting&&e.target.classList.add('in')),{threshold:.08});
+  document.querySelectorAll('.block,.hero').forEach(el=>{el.classList.add('fade-up');io.observe(el);});
+})();
+</script>
+</body>
+</html>
