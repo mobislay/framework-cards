@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="ru" data-theme="light">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>KPI — Карточка метода</title>
+<link href="https://api.fontshare.com/v2/css?f[]=satoshi@300,400,500,700,900&display=swap" rel="stylesheet"/>
+<style>
+:root,[data-theme="light"]{
+  --bg:#f4f4f4;--surface:#fff;--surface-2:#fafafa;--offset:#f0f0f0;--offset-2:#e8e8e8;
+  --divider:#ececec;--border:#e4e4e4;
+  --text:#0a0a0a;--muted:#6b6b6b;--faint:#a3a3a3;--inverse:#fff;
+  --blue:#2b6df6;--green:#22c55e;--amber:#f59e0b;--red:#ef4444;--violet:#8b5cf6;--teal:#14b8a6;
+  --shadow-sm:0 1px 2px rgba(10,10,10,.04);
+  --shadow-md:0 4px 16px rgba(10,10,10,.07);
+  --shadow-lg:0 20px 48px rgba(10,10,10,.09);
+  --r-sm:.375rem;--r-md:.5rem;--r-lg:.75rem;--r-xl:1rem;--r-2xl:1.25rem;--r-full:9999px;
+  --s-1:.25rem;--s-2:.5rem;--s-3:.75rem;--s-4:1rem;--s-5:1.25rem;--s-6:1.5rem;
+  --s-8:2rem;--s-10:2.5rem;--s-12:3rem;--s-16:4rem;--s-20:5rem;--s-24:6rem;
+  --t:180ms cubic-bezier(.16,1,.3,1);
+  --xs:clamp(.75rem,.7rem + .2vw,.8125rem);
+  --sm:clamp(.875rem,.82rem + .2vw,.9375rem);
+  --base:clamp(1rem,.95rem + .25vw,1.0625rem);
+  --lg:clamp(1.125rem,1rem + .5vw,1.375rem);
+  --xl:clamp(1.5rem,1.2rem + 1vw,2rem);
+  --2xl:clamp(2rem,1.2rem + 2vw,3rem);
+  --hero:clamp(3.5rem,1rem + 8vw,8rem);
+}
+[data-theme="dark"]{
+  --bg:#0a0a0a;--surface:#141414;--surface-2:#1a1a1a;--offset:#1f1f1f;--offset-2:#262626;
+  --divider:#262626;--border:#2d2d2d;
+  --text:#f4f4f4;--muted:#a3a3a3;--faint:#6b6b6b;--inverse:#0a0a0a;
+  --shadow-sm:0 1px 2px rgba(0,0,0,.3);--shadow-md:0 4px 16px rgba(0,0,0,.4);--shadow-lg:0 20px 48px rgba(0,0,0,.5);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased}
+body{font-family:'Satoshi','Inter',system-ui,sans-serif;font-size:var(--base);line-height:1.6;color:var(--text);background:var(--bg);min-height:100dvh;transition:background var(--t),color var(--t)}
+h1,h2,h3,h4{font-weight:700;letter-spacing:-.02em;line-height:1.15}
+p{color:var(--muted);max-width:72ch}
+button{font:inherit;cursor:pointer;background:none;border:none;color:inherit}
+svg{display:block}
+.container{max-width:1100px;margin-inline:auto;padding-inline:var(--s-6)}
+
+/* ── Header ── */
+.site-header{position:sticky;top:0;z-index:50;backdrop-filter:blur(14px);background:color-mix(in oklab,var(--bg) 80%,transparent);border-bottom:1px solid var(--divider)}
+.header-inner{display:flex;align-items:center;justify-content:space-between;padding-block:var(--s-4)}
+.brand{display:flex;align-items:center;gap:var(--s-2);font-weight:700}
+.brand-dot{width:8px;height:8px;border-radius:var(--r-full);background:var(--text)}
+.header-nav{display:flex;gap:var(--s-6);font-size:var(--sm);color:var(--muted)}
+.header-nav a{text-decoration:none;transition:color var(--t)}
+.header-nav a:hover{color:var(--text)}
+.theme-toggle{width:36px;height:36px;border-radius:var(--r-full);border:1px solid var(--border);display:grid;place-items:center;transition:all var(--t)}
+.theme-toggle:hover{background:var(--offset)}
+@media(max-width:720px){.header-nav{display:none}}
+
+/* ── Hero ── */
+.hero{padding-block:var(--s-20) var(--s-14);border-bottom:1px solid var(--divider)}
+.eyebrow{display:inline-flex;align-items:center;gap:var(--s-2);font-size:var(--xs);text-transform:uppercase;letter-spacing:.14em;color:var(--muted);margin-bottom:var(--s-6)}
+.eyebrow::before{content:'';width:6px;height:6px;border-radius:var(--r-full);background:var(--green)}
+.hero h1{font-size:var(--hero);font-weight:900;letter-spacing:-.05em;margin-bottom:var(--s-5)}
+.hero-lede{font-size:var(--lg);max-width:58ch}
+.hero-meta{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:var(--s-6);margin-top:var(--s-10);padding-top:var(--s-8);border-top:1px solid var(--divider)}
+.hero-meta .k{font-size:var(--xs);color:var(--faint);text-transform:uppercase;letter-spacing:.12em;margin-bottom:var(--s-1)}
+.hero-meta .v{font-size:var(--base);font-weight:500}
+
+/* ── Block ── */
+.block{padding-block:var(--s-20);border-bottom:1px solid var(--divider)}
+.section-head{display:grid;grid-template-columns:180px 1fr;gap:var(--s-12);margin-bottom:var(--s-10)}
+@media(max-width:720px){.section-head{grid-template-columns:1fr;gap:var(--s-3)}}
+.section-index{font-size:var(--xs);color:var(--faint);letter-spacing:.16em;text-transform:uppercase}
+.section-title{font-size:var(--xl);margin-bottom:var(--s-3)}
+.section-desc{font-size:var(--base)}
+
+/* ── 01 Definition — две колонки ── */
+.def-split{display:grid;grid-template-columns:1fr 1fr;gap:var(--s-4)}
+@media(max-width:640px){.def-split{grid-template-columns:1fr}}
+.def-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-2xl);padding:var(--s-8);box-shadow:var(--shadow-sm);transition:all var(--t)}
+.def-card:hover{box-shadow:var(--shadow-md);transform:translateY(-2px)}
+.def-label{font-size:var(--xs);text-transform:uppercase;letter-spacing:.12em;font-weight:600;margin-bottom:var(--s-4)}
+.def-big{font-size:var(--2xl);font-weight:900;letter-spacing:-.04em;line-height:1;margin-bottom:var(--s-4)}
+.def-rule{font-size:var(--sm);color:var(--muted);padding:var(--s-3) var(--s-4);background:var(--offset);border-radius:var(--r-lg);margin-bottom:var(--s-3)}
+.def-tag{display:inline-flex;align-items:center;gap:var(--s-2);padding:var(--s-1) var(--s-3);border-radius:var(--r-full);font-size:var(--xs);font-weight:500;background:var(--offset);color:var(--muted);margin-top:var(--s-4);border:1px solid var(--border)}
+
+/* ── 02 Types — grid ── */
+.types-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--s-4)}
+@media(max-width:720px){.types-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:480px){.types-grid{grid-template-columns:1fr}}
+.type-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-xl);padding:var(--s-6);box-shadow:var(--shadow-sm);transition:all var(--t);position:relative;overflow:hidden}
+.type-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--accent-color,var(--faint))}
+.type-card:hover{box-shadow:var(--shadow-md);transform:translateY(-2px)}
+.type-num{font-family:'SF Mono',ui-monospace,monospace;font-size:var(--xs);color:var(--faint);margin-bottom:var(--s-3)}
+.type-card h3{font-size:var(--lg);margin-bottom:var(--s-2)}
+.type-card p{font-size:var(--sm);margin:0}
+.type-badge{display:inline-flex;align-items:center;gap:var(--s-2);padding:var(--s-1) var(--s-3);border-radius:var(--r-full);font-size:var(--xs);font-weight:500;background:var(--offset);color:var(--text);margin-top:var(--s-4)}
+.type-badge-dot{width:6px;height:6px;border-radius:var(--r-full)}
+
+/* ── 03 SMART table ── */
+.smart-wrap{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-xl);overflow:hidden}
+.smart-row-head{display:grid;grid-template-columns:52px 160px 1fr;gap:var(--s-4);padding:var(--s-3) var(--s-6);background:var(--offset);border-bottom:1px solid var(--divider);font-size:var(--xs);color:var(--faint);text-transform:uppercase;letter-spacing:.1em}
+.smart-row{display:grid;grid-template-columns:52px 160px 1fr;gap:var(--s-4);padding:var(--s-5) var(--s-6);border-bottom:1px solid var(--divider);align-items:center;transition:background var(--t)}
+.smart-row:last-child{border-bottom:0}
+.smart-row:hover{background:var(--surface-2)}
+.smart-letter-box{width:40px;height:40px;border-radius:var(--r-lg);background:var(--offset);border:1px solid var(--border);display:grid;place-items:center;font-size:var(--base);font-weight:900;color:var(--text)}
+.smart-term{font-size:var(--sm);font-weight:600;color:var(--text)}
+.smart-desc{font-size:var(--sm);color:var(--muted)}
+@media(max-width:640px){
+  .smart-row-head{grid-template-columns:40px 1fr;}.smart-row-head span:last-child{display:none}
+  .smart-row{grid-template-columns:40px 1fr;}.smart-row .smart-desc{display:none}
+}
+
+/* ── 04 Formula callout ── */
+.callout{background:var(--text);color:var(--inverse);border-radius:var(--r-2xl);padding:var(--s-12);display:grid;grid-template-columns:1fr 1fr;gap:var(--s-8);align-items:center}
+@media(max-width:720px){.callout{grid-template-columns:1fr;padding:var(--s-8)}}
+.callout-eyebrow{font-size:var(--xs);text-transform:uppercase;letter-spacing:.14em;color:color-mix(in oklab,var(--inverse) 50%,transparent);margin-bottom:var(--s-4)}
+.callout h2{font-size:var(--2xl);letter-spacing:-.03em;line-height:1.1}
+.callout p{color:color-mix(in oklab,var(--inverse) 65%,transparent);font-size:var(--base);margin-top:var(--s-4);max-width:44ch}
+.formula-box{background:color-mix(in oklab,var(--inverse) 8%,transparent);border-radius:var(--r-xl);padding:var(--s-6)}
+.formula-label{font-size:var(--xs);text-transform:uppercase;letter-spacing:.12em;color:color-mix(in oklab,var(--inverse) 45%,transparent);margin-bottom:var(--s-4)}
+.formula-eq{font-size:var(--xl);font-weight:700;line-height:1.4;font-family:'SF Mono',ui-monospace,monospace}
+.formula-example{margin-top:var(--s-5);display:grid;gap:var(--s-2)}
+.fex-row{display:flex;justify-content:space-between;align-items:center;padding:var(--s-2) var(--s-3);background:color-mix(in oklab,var(--inverse) 6%,transparent);border-radius:var(--r-md)}
+.fex-label{font-size:var(--xs);color:color-mix(in oklab,var(--inverse) 55%,transparent)}
+.fex-val{font-size:var(--xs);font-weight:700;font-family:'SF Mono',ui-monospace,monospace}
+.fex-above{color:var(--green)}
+.fex-below{color:var(--red)}
+
+/* ── 05 Implementation steps ── */
+.steps-wrap{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-xl);overflow:hidden}
+.step-row{display:grid;grid-template-columns:56px 1fr;gap:var(--s-4);padding:var(--s-5) var(--s-6);border-bottom:1px solid var(--divider);align-items:start;transition:background var(--t)}
+.step-row:last-child{border-bottom:0}
+.step-row:hover{background:var(--surface-2)}
+.step-num{font-family:'SF Mono',ui-monospace,monospace;font-size:var(--xs);color:var(--faint);padding-top:.2rem}
+.step-title{font-size:var(--base);font-weight:600;color:var(--text)}
+.step-sub{font-size:var(--sm);color:var(--muted);margin-top:2px}
+
+/* ── 06 Mistakes ── */
+.mistake-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--s-4)}
+@media(max-width:720px){.mistake-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:480px){.mistake-grid{grid-template-columns:1fr}}
+.mistake{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-xl);padding:var(--s-6);transition:all var(--t)}
+.mistake:hover{border-color:var(--text)}
+.mistake .num{font-family:'SF Mono',ui-monospace,monospace;font-size:var(--xs);color:var(--faint);margin-bottom:var(--s-3)}
+.mistake h3{font-size:var(--lg);margin-bottom:var(--s-2)}
+.mistake p{font-size:var(--sm);margin:0}
+
+/* ── 07 See also ── */
+.see-also{display:flex;flex-wrap:wrap;gap:var(--s-3)}
+.see-chip{padding:var(--s-3) var(--s-5);background:var(--surface);border:1px solid var(--border);border-radius:var(--r-full);font-size:var(--sm);color:var(--muted);transition:all var(--t);cursor:default}
+.see-chip:hover{border-color:var(--text);color:var(--text)}
+
+/* ── Footer ── */
+footer{padding-block:var(--s-12);font-size:var(--sm);color:var(--muted)}
+.footer-inner{display:flex;justify-content:space-between;flex-wrap:wrap;gap:var(--s-4)}
+
+/* ── Fade-up ── */
+.fade-up{opacity:0;transform:translateY(14px);transition:opacity .65s ease,transform .65s ease}
+.fade-up.in{opacity:1;transform:none}
+@media(prefers-reduced-motion:reduce){.fade-up{opacity:1;transform:none}}
+
+.back-link{display:inline-flex;align-items:center;gap:6px;padding:6px 12px;border:1px solid var(--border);border-radius:999px;color:var(--muted);font-size:var(--sm);text-decoration:none;transition:color var(--t),border-color var(--t),background var(--t)}
+.back-link:hover{color:var(--text);border-color:var(--text);background:var(--offset)}
+.back-link svg{width:14px;height:14px}
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container header-inner">
+    <a class="back-link" href="index.html" aria-label="Вернуться в каталог"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>Каталог</a><div class="brand"><span class="brand-dot"></span> KPI</div>
+    <nav class="header-nav">
+      <a href="#definition">Что такое</a>
+      <a href="#types">Виды</a>
+      <a href="#smart">SMART</a>
+      <a href="#implementation">Внедрение</a>
+      <a href="#mistakes">Ошибки</a>
+    </nav>
+    <button class="theme-toggle" data-theme-toggle aria-label="Переключить тему">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+    </button>
+  </div>
+</header>
+
+<!-- ── HERO ── -->
+<section class="hero">
+  <div class="container">
+    <div class="eyebrow">Framework Card · Питер Друкер · 1950-е · Management</div>
+    <h1>KPI.</h1>
+    <p class="hero-lede">Числовые показатели деятельности, которые помогают измерить степень достижения целей или оптимальности процесса. Переводят стратегию в конкретные измеримые числа.</p>
+    <div class="hero-meta">
+      <div><div class="k">Расшифровка</div><div class="v">Key Performance Indicators</div></div>
+      <div><div class="k">Основатель</div><div class="v">Питер Друкер, MBO</div></div>
+      <div><div class="k">Показателей на роль</div><div class="v">3–5</div></div>
+      <div><div class="k">Уровень применения</div><div class="v">Компания · Команда · Сотрудник</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ── 01 DEFINITION ── -->
+<section class="block" id="definition">
+  <div class="container">
+    <div class="section-head">
+      <div class="section-index">01 — Definition</div>
+      <div>
+        <h2 class="section-title">Что такое KPI</h2>
+        <p class="section-desc">KPI — это не просто цифра, а связь между стратегической целью и ежедневными действиями. Хороший KPI отвечает на вопрос: «Как мы поймём, что движемся в нужном направлении?»</p>
+      </div>
+    </div>
+
+    <div class="def-split">
+      <div class="def-card">
+        <div class="def-label" style="color:var(--green)">Что измеряет</div>
+        <div class="def-big">Результат,<br/>не действие</div>
+        <div class="def-rule">KPI — это outcome, не output. Важно не «провели 10 встреч», а «заключили 3 сделки».</div>
+        <div class="def-rule">Опережающий KPI: «число новых лидов» — предсказывает будущее.<br/>Запаздывающий KPI: «выручка за квартал» — фиксирует прошлое.</div>
+        <p style="font-size:var(--sm);margin-top:var(--s-4)">Показатель должен быть напрямую связан со стратегической целью компании и понятен сотруднику без дополнительного контекста.</p>
+        <div class="def-tag">Числовой · Измеримый · Периодический</div>
+      </div>
+
+      <div class="def-card">
+        <div class="def-label" style="color:var(--blue)">История</div>
+        <div class="def-big">MBO →<br/>KPI →<br/>OKR</div>
+        <div class="def-rule">Питер Друкер, 1954: «The Practice of Management». Идея: менеджеры управляют через цели, а не через задачи.</div>
+        <div class="def-rule">Balanced Scorecard (Каплан и Нортон, 1992) расширил KPI за рамки финансов: 4 перспективы.</div>
+        <p style="font-size:var(--sm);margin-top:var(--s-4)">OKR (Гроув/Дорр) — более гибкая и частая версия KPI, выросшая из той же концепции управления по целям.</p>
+        <div class="def-tag">Drucker 1954 · BSC 1992 · OKR 1999</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── 02 TYPES ── -->
+<section class="block" id="types">
+  <div class="container">
+    <div class="section-head">
+      <div class="section-index">02 — Types</div>
+      <div>
+        <h2 class="section-title">Виды KPI</h2>
+        <p class="section-desc">KPI классифицируются по трём осям: временно́му горизонту, содержанию и бизнес-функции. Сбалансированная система включает показатели из нескольких групп одновременно.</p>
+      </div>
+    </div>
+
+    <!-- По времени -->
+    <div style="margin-bottom:var(--s-4);font-size:var(--xs);color:var(--faint);text-transform:uppercase;letter-spacing:.12em">По временно́му горизонту</div>
+    <div class="def-split" style="margin-bottom:var(--s-8)">
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--r-xl);padding:var(--s-6);box-shadow:var(--shadow-sm)">
+        <div style="display:flex;align-items:center;gap:var(--s-2);margin-bottom:var(--s-3)">
+          <span style="width:8px;height:8px;border-radius:var(--r-full);background:var(--blue);flex-shrink:0"></span>
+          <span style="font-size:var(--xs);font-weight:600;text-transform:uppercase;letter-spacing:.1em;color:var(--blue)">Опережающие · Leading</span>
+        </div>
+        <h3 style="font-size:var(--lg);margin-bottom:var(--s-2)">Предсказывают будущее</h3>
+        <p style="font-size:var(--sm);margin:0">Показывают, что происходит сейчас и что будет. Поддаются управлению. Например: число новых лидов, конверсия воронки, количество demo-встреч.</p>
+      </div>
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--r-xl);padding:var(--s-6);box-shadow:var(--shadow-sm)">
+        <div style="display:flex;align-items:center;gap:var(--s-2);margin-bottom:var(--s-3)">
+          <span style="width:8px;height:8px;border-radius:var(--r-full);background:var(--text);flex-shrink:0"></span>
+          <span style="font-size:var(--xs);font-weight:600;text-transform:uppercase;letter-spacing:.1em;color:var(--muted)">Запаздывающие · Lagging</span>
+        </div>
+        <h3 style="font-size:var(--lg);margin-bottom:var(--s-2)">Фиксируют прошлое</h3>
+        <p style="font-size:var(--sm);margin:0">Итоговые результаты периода. Управлять ими сложно — можно только наблюдать. Например: выручка, прибыль, уровень удержания клиентов.</p>
+      </div>
+    </div>
+
+    <!-- По направлению -->
+    <div style="margin-bottom:var(--s-4);font-size:var(--xs);color:var(--faint);text-transform:uppercase;letter-spacing:.12em">По бизнес-функции</div>
+    <div class="types-grid">
+      <div class="type-card" style="--accent-color:var(--text)">
+        <div class="type-num">TYPE 01</div>
+        <h3>Финансовые</h3>
+        <p>Валовая прибыль, рентабельность, ROI, EBITDA, выручка на сотрудника.</p>
+        <div class="type-badge"><span class="type-badge-dot" style="background:var(--text)"></span> Revenue · Profit · ROI</div>
+      </div>
+      <div class="type-card" style="--accent-color:var(--blue)">
+        <div class="type-num">TYPE 02</div>
+        <h3>Маркетинговые</h3>
+        <p>ROMI, CAC (стоимость привлечения клиента), CPL, охват, конверсия.</p>
+        <div class="type-badge"><span class="type-badge-dot" style="background:var(--blue)"></span> ROMI · CAC · CPL</div>
+      </div>
+      <div class="type-card" style="--accent-color:var(--green)">
+        <div class="type-num">TYPE 03</div>
+        <h3>Продаж</h3>
+        <p>Выполнение плана, средний чек, количество сделок, длина цикла продажи.</p>
+        <div class="type-badge"><span class="type-badge-dot" style="background:var(--green)"></span> Pipeline · Deals · ARR</div>
+      </div>
+      <div class="type-card" style="--accent-color:var(--amber)">
+        <div class="type-num">TYPE 04</div>
+        <h3>Клиентские</h3>
+        <p>NPS, CSAT, удержание, Churn Rate, LTV, число постоянных клиентов.</p>
+        <div class="type-badge"><span class="type-badge-dot" style="background:var(--amber)"></span> NPS · Churn · LTV</div>
+      </div>
+      <div class="type-card" style="--accent-color:var(--violet)">
+        <div class="type-num">TYPE 05</div>
+        <h3>HR</h3>
+        <p>Текучесть кадров, вовлечённость, время адаптации, закрытие вакансий.</p>
+        <div class="type-badge"><span class="type-badge-dot" style="background:var(--violet)"></span> Turnover · eNPS</div>
+      </div>
+      <div class="type-card" style="--accent-color:var(--teal)">
+        <div class="type-num">TYPE 06</div>
+        <h3>Операционные</h3>
+        <p>Загрузка оборудования, процент брака, cycle time, SLA-выполнение.</p>
+        <div class="type-badge"><span class="type-badge-dot" style="background:var(--teal)"></span> SLA · Cycle Time</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── 03 SMART ── -->
+<section class="block" id="smart">
+  <div class="container">
+    <div class="section-head">
+      <div class="section-index">03 — Quality</div>
+      <div>
+        <h2 class="section-title">Критерии SMART</h2>
+        <p class="section-desc">Каждый KPI должен пройти проверку по пяти критериям. Показатель, не соответствующий хотя бы одному из них — не KPI, а wishlist.</p>
+      </div>
+    </div>
+
+    <div class="smart-wrap">
+      <div class="smart-row-head">
+        <span>Буква</span>
+        <span>Критерий</span>
+        <span>Что это значит</span>
+      </div>
+      <div class="smart-row">
+        <div class="smart-letter-box">S</div>
+        <div class="smart-term">Specific — Конкретность</div>
+        <div class="smart-desc">Однозначно определено, что именно измеряется. Нет размытых формулировок вроде «улучшить качество».</div>
+      </div>
+      <div class="smart-row">
+        <div class="smart-letter-box">M</div>
+        <div class="smart-term">Measurable — Измеримость</div>
+        <div class="smart-desc">Прогресс можно выразить числом. Есть базовое значение, целевое значение и метод измерения.</div>
+      </div>
+      <div class="smart-row">
+        <div class="smart-letter-box">A</div>
+        <div class="smart-term">Achievable — Достижимость</div>
+        <div class="smart-desc">Цель амбициозна, но реалистична при имеющихся ресурсах. Недостижимые KPI демотивируют.</div>
+      </div>
+      <div class="smart-row">
+        <div class="smart-letter-box">R</div>
+        <div class="smart-term">Relevant — Актуальность</div>
+        <div class="smart-desc">Напрямую связан со стратегической целью компании. Если связь неочевидна — показатель лишний.</div>
+      </div>
+      <div class="smart-row">
+        <div class="smart-letter-box">T</div>
+        <div class="smart-term">Time-bound — Срочность</div>
+        <div class="smart-desc">Указан чёткий временной период. «Увеличить выручку» → «Увеличить выручку на 15% за Q3 2026».</div>
+      </div>
+    </div>
+
+    <!-- Anti-example → Good example -->
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--r-xl);overflow:hidden;margin-top:var(--s-6)">
+      <div style="padding:var(--s-5) var(--s-6);border-bottom:1px solid var(--divider);display:flex;align-items:center;justify-content:space-between">
+        <h3 style="font-size:var(--base);font-weight:600">Как выглядит плохой и хороший KPI</h3>
+        <span style="font-size:var(--xs);color:var(--faint);text-transform:uppercase;letter-spacing:.1em">Пример</span>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--divider)">
+        <div style="padding:var(--s-6);background:var(--surface)">
+          <div style="font-size:var(--xs);font-weight:600;text-transform:uppercase;letter-spacing:.1em;color:var(--red);margin-bottom:var(--s-3)">✗ Плохой KPI</div>
+          <div style="font-size:var(--lg);font-weight:700;margin-bottom:var(--s-2)">«Увеличить продажи»</div>
+          <p style="font-size:var(--sm);margin:0">Нет числа, нет срока, нет метода измерения. Невозможно понять, выполнен ли показатель.</p>
+        </div>
+        <div style="padding:var(--s-6);background:var(--surface)">
+          <div style="font-size:var(--xs);font-weight:600;text-transform:uppercase;letter-spacing:.1em;color:var(--green);margin-bottom:var(--s-3)">✓ Хороший KPI</div>
+          <div style="font-size:var(--lg);font-weight:700;margin-bottom:var(--s-2)">«Вырастить выручку на 15% за Q3 2026»</div>
+          <p style="font-size:var(--sm);margin:0">Конкретно (выручка), измеримо (15%), достижимо, релевантно стратегии, привязано к сроку.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── FORMULA CALLOUT ── -->
+<section class="block" style="border-bottom:none;padding-bottom:0">
+  <div class="container">
+    <div class="callout">
+      <div>
+        <div class="callout-eyebrow">Базовая формула</div>
+        <h2>Факт делим на план, умножаем на 100%.</h2>
+        <p>Результат выше 100% — перевыполнение. Ниже 100% — недовыполнение. Но цифра без контекста ничего не значит: важно понимать причину отклонения.</p>
+      </div>
+      <div class="formula-box">
+        <div class="formula-label">Расчёт KPI</div>
+        <div class="formula-eq">KPI = Факт / План × 100%</div>
+        <div class="formula-example">
+          <div class="fex-row">
+            <span class="fex-label">Выручка (план 1,5 млн / факт 1,74 млн)</span>
+            <span class="fex-val fex-above">116,7%</span>
+          </div>
+          <div class="fex-row">
+            <span class="fex-label">Конверсия (план 60% / факт 64%)</span>
+            <span class="fex-val fex-above">106,7%</span>
+          </div>
+          <div class="fex-row">
+            <span class="fex-label">Доп. услуги (план 100К / факт 93К)</span>
+            <span class="fex-val fex-below">93,0%</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── 04 IMPLEMENTATION ── -->
+<section class="block" id="implementation">
+  <div class="container">
+    <div class="section-head">
+      <div class="section-index">04 — Implementation</div>
+      <div>
+        <h2 class="section-title">Этапы внедрения</h2>
+        <p class="section-desc">Внедрение KPI — это не разработка таблички с метриками, а системное изменение управленческой культуры. Без подготовки команды любая методология превратится в формальность.</p>
+      </div>
+    </div>
+
+    <div class="steps-wrap">
+      <div class="step-row">
+        <span class="step-num">01</span>
+        <div>
+          <div class="step-title">Определить стратегическую цель</div>
+          <div class="step-sub">Зафиксировать, чего хочет достичь компания на горизонте 1–3 лет</div>
+        </div>
+      </div>
+      <div class="step-row">
+        <span class="step-num">02</span>
+        <div>
+          <div class="step-title">Декомпозировать цель</div>
+          <div class="step-sub">Разбить стратегию до уровня подразделений и отдельных сотрудников</div>
+        </div>
+      </div>
+      <div class="step-row">
+        <span class="step-num">03</span>
+        <div>
+          <div class="step-title">Выбрать и описать показатели</div>
+          <div class="step-sub">Применить SMART-фильтр, определить формулу расчёта и источник данных</div>
+        </div>
+      </div>
+      <div class="step-row">
+        <span class="step-num">04</span>
+        <div>
+          <div class="step-title">Установить плановые значения</div>
+          <div class="step-sub">Задать базовый уровень, норму и целевой показатель</div>
+        </div>
+      </div>
+      <div class="step-row">
+        <span class="step-num">05</span>
+        <div>
+          <div class="step-title">Подготовить команду</div>
+          <div class="step-sub">Обучить руководство, объяснить сотрудникам смысл изменений и связь с мотивацией</div>
+        </div>
+      </div>
+      <div class="step-row">
+        <span class="step-num">06</span>
+        <div>
+          <div class="step-title">Пилотный запуск</div>
+          <div class="step-sub">Начать с одного отдела, собрать обратную связь, выявить ошибки до масштабирования</div>
+        </div>
+      </div>
+      <div class="step-row">
+        <span class="step-num">07</span>
+        <div>
+          <div class="step-title">Масштабировать систему</div>
+          <div class="step-sub">После корректировки — распространить на всю компанию с учётом специфики каждого подразделения</div>
+        </div>
+      </div>
+      <div class="step-row">
+        <span class="step-num">08</span>
+        <div>
+          <div class="step-title">Мониторинг и пересмотр</div>
+          <div class="step-sub">Регулярно проверять актуальность KPI, собирать фидбэк и обновлять показатели вслед за стратегией</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── 05 MISTAKES ── -->
+<section class="block" id="mistakes">
+  <div class="container">
+    <div class="section-head">
+      <div class="section-index">05 — Mistakes</div>
+      <div>
+        <h2 class="section-title">Типичные ошибки</h2>
+        <p class="section-desc">Большинство проблем с KPI — не в самих показателях, а в том, как их выбирают, внедряют и интерпретируют.</p>
+      </div>
+    </div>
+
+    <div class="mistake-grid">
+      <div class="mistake">
+        <div class="num">ERR 01</div>
+        <h3>Слишком много метрик</h3>
+        <p>Размывают фокус. Если всё важно — ничто не важно. Рекомендуется 3–5 KPI на роль, не больше.</p>
+      </div>
+      <div class="mistake">
+        <div class="num">ERR 02</div>
+        <h3>Vanity Metrics</h3>
+        <p>Красивые, но не actionable показатели. Посещаемость сайта без привязки к конверсии — типичный пример.</p>
+      </div>
+      <div class="mistake">
+        <div class="num">ERR 03</div>
+        <h3>Нет buy-in команды</h3>
+        <p>Сотрудники воспринимают KPI как инструмент наказания, а не развития. Ведёт к манипуляции цифрами.</p>
+      </div>
+      <div class="mistake">
+        <div class="num">ERR 04</div>
+        <h3>Только числа, без качества</h3>
+        <p>Игнорирование качественных факторов. Не всё, что важно, поддаётся измерению — и это нормально.</p>
+      </div>
+      <div class="mistake">
+        <div class="num">ERR 05</div>
+        <h3>KPI не пересматривается</h3>
+        <p>Устаревшие показатели вводят в заблуждение и теряют связь со стратегией по мере её эволюции.</p>
+      </div>
+      <div class="mistake">
+        <div class="num">ERR 06</div>
+        <h3>KPI вместо OKR</h3>
+        <p>KPI измеряет текущее состояние, OKR — амбициозный горизонт. Подмена одного другим ведёт к потере фокуса на росте.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── SEE ALSO ── -->
+<section class="block" style="border-bottom:none">
+  <div class="container">
+    <div class="section-head">
+      <div class="section-index">See Also</div>
+      <div>
+        <h2 class="section-title">Смотрите также</h2>
+        <p class="section-desc">Инструменты и фреймворки, которые используются вместе с KPI или развивают его концепцию.</p>
+      </div>
+    </div>
+    <div class="see-also">
+      <div class="see-chip">OKR</div>
+      <div class="see-chip">Balanced Scorecard</div>
+      <div class="see-chip">MBO (Управление по целям)</div>
+      <div class="see-chip">SMART-критерии</div>
+      <div class="see-chip">North Star Metric</div>
+      <div class="see-chip">Pirate Metrics (AARRR)</div>
+      <div class="see-chip">Data-driven culture</div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container footer-inner">
+    <div>© 2026 · KPI Card · Arrange Styleguide</div>
+    <div>Key Performance Indicators · Питер Друкер · 1950-е</div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  const t=document.querySelector('[data-theme-toggle]'),r=document.documentElement;
+  let d=matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light';
+  r.setAttribute('data-theme',d);
+  t&&t.addEventListener('click',()=>{
+    d=d==='dark'?'light':'dark';
+    r.setAttribute('data-theme',d);
+    t.innerHTML=d==='dark'
+      ?'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>'
+      :'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>';
+  });
+  const io=new IntersectionObserver(es=>es.forEach(e=>e.isIntersecting&&e.target.classList.add('in')),{threshold:.08});
+  document.querySelectorAll('.block,.hero').forEach(el=>{el.classList.add('fade-up');io.observe(el);});
+})();
+</script>
+</body>
+</html>
