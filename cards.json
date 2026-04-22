@@ -94,6 +94,22 @@
       "name": "Модель McKinsey 7S",
       "subtitle": "7 стратегических рычагов высокоэффективных компаний",
       "category": "leadership"
+    },
+    {
+      "id": "kpi",
+      "file": "kpi-framework-card.html",
+      "name": "KPI",
+      "subtitle": "Key Performance Indicators · Питер Друкер",
+      "category": "analysis",
+      "icon": "📊"
+    },
+    {
+      "id": "scrum",
+      "file": "scrum-framework-card.html",
+      "name": "Scrum",
+      "subtitle": "Agile-фреймворк · Джефф Сазерленд · Кен Швабер",
+      "category": "planning",
+      "icon": "🚀"
     }
   ]
 }
