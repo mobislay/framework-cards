@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<html lang="ru" data-theme="light">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Scrum — Карточка фреймворка</title>
+<link href="https://api.fontshare.com/v2/css?f[]=satoshi@300,400,500,700,900&display=swap" rel="stylesheet"/>
+<style>
+:root,[data-theme="light"]{
+  --bg:#f4f4f4;--surface:#fff;--surface-2:#fafafa;--offset:#f0f0f0;--offset-2:#e8e8e8;
+  --divider:#ececec;--border:#e4e4e4;
+  --text:#0a0a0a;--muted:#6b6b6b;--faint:#a3a3a3;--inverse:#fff;
+  --blue:#2b6df6;--green:#22c55e;--amber:#f59e0b;--red:#ef4444;--violet:#8b5cf6;--teal:#14b8a6;--rose:#f43f5e;
+  --shadow-sm:0 1px 2px rgba(10,10,10,.04);
+  --shadow-md:0 4px 16px rgba(10,10,10,.07);
+  --shadow-lg:0 20px 48px rgba(10,10,10,.09);
+  --r-sm:.375rem;--r-md:.5rem;--r-lg:.75rem;--r-xl:1rem;--r-2xl:1.25rem;--r-full:9999px;
+  --s-1:.25rem;--s-2:.5rem;--s-3:.75rem;--s-4:1rem;--s-5:1.25rem;--s-6:1.5rem;
+  --s-8:2rem;--s-10:2.5rem;--s-12:3rem;--s-16:4rem;--s-20:5rem;--s-24:6rem;
+  --t:180ms cubic-bezier(.16,1,.3,1);
+  --xs:clamp(.75rem,.7rem + .2vw,.8125rem);
+  --sm:clamp(.875rem,.82rem + .2vw,.9375rem);
+  --base:clamp(1rem,.95rem + .25vw,1.0625rem);
+  --lg:clamp(1.125rem,1rem + .5vw,1.375rem);
+  --xl:clamp(1.5rem,1.2rem + 1vw,2rem);
+  --2xl:clamp(2rem,1.2rem + 2vw,3rem);
+  --hero:clamp(3.5rem,1rem + 8vw,8rem);
+}
+[data-theme="dark"]{
+  --bg:#0a0a0a;--surface:#141414;--surface-2:#1a1a1a;--offset:#1f1f1f;--offset-2:#262626;
+  --divider:#262626;--border:#2d2d2d;
+  --text:#f4f4f4;--muted:#a3a3a3;--faint:#6b6b6b;--inverse:#0a0a0a;
+  --shadow-sm:0 1px 2px rgba(0,0,0,.3);--shadow-md:0 4px 16px rgba(0,0,0,.4);--shadow-lg:0 20px 48px rgba(0,0,0,.5);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased}
+body{font-family:'Satoshi','Inter',system-ui,sans-serif;font-size:var(--base);line-height:1.6;color:var(--text);background:var(--bg);min-height:100dvh;transition:background var(--t),color var(--t)}
+h1,h2,h3,h4{font-weight:700;letter-spacing:-.02em;line-height:1.1}
+p{color:var(--muted);max-width:72ch}
+button{font:inherit;cursor:pointer;background:none;border:none;color:inherit}
+svg{display:block}
+.container{max-width:1100px;margin-inline:auto;padding-inline:var(--s-6)}
+
+/* ── Header ── */
+.site-header{position:sticky;top:0;z-index:50;backdrop-filter:blur(14px);background:color-mix(in oklab,var(--bg) 80%,transparent);border-bottom:1px solid var(--divider)}
+.header-inner{display:flex;align-items:center;justify-content:space-between;padding-block:var(--s-4)}
+.brand{display:flex;align-items:center;gap:var(--s-2);font-weight:700;font-size:var(--sm)}
+.brand-dot{width:8px;height:8px;border-radius:var(--r-full);background:var(--text)}
+.header-nav{display:flex;gap:var(--s-6);font-size:var(--sm);color:var(--muted)}
+.header-nav a{text-decoration:none;color:inherit;transition:color var(--t)}
+.header-nav a:hover{color:var(--text)}
+.theme-toggle{width:36px;height:36px;border-radius:var(--r-full);border:1px solid var(--border);display:grid;place-items:center;transition:all var(--t)}
+.theme-toggle:hover{background:var(--offset)}
+@media(max-width:720px){.header-nav{display:none}}
+
+/* ── Hero ── */
+.hero{padding-block:var(--s-20) var(--s-14);border-bottom:1px solid var(--divider)}
+.eyebrow{display:inline-flex;align-items:center;gap:var(--s-2);font-size:var(--xs);text-transform:uppercase;letter-spacing:.14em;color:var(--muted);margin-bottom:var(--s-6)}
+.eyebrow::before{content:'';width:6px;height:6px;border-radius:var(--r-full);background:var(--blue)}
+.hero h1{font-size:var(--hero);font-weight:900;letter-spacing:-.05em;margin-bottom:var(--s-5)}
+.hero-lede{font-size:var(--lg);max-width:58ch}
+.hero-meta{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:var(--s-6);margin-top:var(--s-10);padding-top:var(--s-8);border-top:1px solid var(--divider)}
+.hero-meta .k{font-size:var(--xs);color:var(--faint);text-transform:uppercase;letter-spacing:.12em;margin-bottom:var(--s-1)}
+.hero-meta .v{font-size:var(--base);font-weight:500}
+
+/* ── Section ── */
+.block{padding-block:var(--s-20);border-bottom:1px solid var(--divider)}
+.section-head{display:grid;grid-template-columns:180px 1fr;gap:var(--s-12);margin-bottom:var(--s-10)}
+@media(max-width:720px){.section-head{grid-template-columns:1fr;gap:var(--s-3)}}
+.section-index{font-size:var(--xs);color:var(--faint);letter-spacing:.16em;text-transform:uppercase;padding-top:.2rem}
+.section-title{font-size:var(--xl);margin-bottom:var(--s-3)}
+.section-desc{font-size:var(--base)}
+
+/* ── OODA ── */
+.ooda-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--s-4)}
+@media(max-width:640px){.ooda-grid{grid-template-columns:1fr 1fr}}
+.ooda-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-xl);padding:var(--s-6);box-shadow:var(--shadow-sm);transition:all var(--t)}
+.ooda-card:hover{box-shadow:var(--shadow-md);transform:translateY(-2px)}
+.ooda-letter{font-size:var(--2xl);font-weight:900;letter-spacing:-.04em;line-height:1;margin-bottom:var(--s-3)}
+.ooda-en{font-size:var(--sm);font-weight:600;margin-bottom:var(--s-1)}
+.ooda-ru{font-size:var(--xs);color:var(--faint)}
+.ooda-desc{font-size:var(--xs);color:var(--muted);margin-top:var(--s-3);line-height:1.6}
+
+/* ── Pillars ── */
+.pillars-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--s-4)}
+@media(max-width:720px){.pillars-grid{grid-template-columns:1fr}}
+.pillar-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-xl);padding:var(--s-6);box-shadow:var(--shadow-sm);transition:all var(--t)}
+.pillar-card:hover{box-shadow:var(--shadow-md);transform:translateY(-2px)}
+.pillar-num{font-family:'SF Mono',ui-monospace,monospace;font-size:var(--xs);color:var(--faint);margin-bottom:var(--s-3)}
+.pillar-card h3{font-size:var(--lg);margin-bottom:var(--s-2)}
+.pillar-card p{font-size:var(--sm)}
+.pillar-rule{margin-top:var(--s-4);padding:var(--s-3) var(--s-4);background:var(--offset);border-radius:var(--r-md);font-size:var(--xs);color:var(--muted);font-style:italic}
+
+/* ── Rule 3-5-3 ── */
+.rule-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--s-4)}
+@media(max-width:720px){.rule-grid{grid-template-columns:1fr}}
+.rule-col{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-xl);overflow:hidden;box-shadow:var(--shadow-sm)}
+.rule-col-header{padding:var(--s-5) var(--s-6);border-bottom:1px solid var(--divider);display:flex;align-items:center;justify-content:space-between}
+.rule-col-header h3{font-size:var(--base);font-weight:600}
+.rule-count{font-size:var(--2xl);font-weight:900;letter-spacing:-.04em;line-height:1;color:var(--faint)}
+.rule-items{padding:var(--s-4) var(--s-6)}
+.rule-item{display:grid;grid-template-columns:auto 1fr;gap:var(--s-3);padding:var(--s-3) 0;border-bottom:1px solid var(--divider);align-items:start}
+.rule-item:last-child{border-bottom:0}
+.rule-dot{width:6px;height:6px;border-radius:var(--r-full);margin-top:.5rem;flex-shrink:0}
+.rule-item-name{font-size:var(--sm);font-weight:600;margin-bottom:2px}
+.rule-item-desc{font-size:var(--xs);color:var(--muted);line-height:1.5}
+.rule-badge{display:inline-flex;align-items:center;padding:2px var(--s-2);border-radius:var(--r-full);font-size:.65rem;font-weight:600;letter-spacing:.04em;background:var(--offset-2);color:var(--muted);margin-top:var(--s-1)}
+
+/* ── Sprint timeline ── */
+.sprint-timeline{position:relative}
+.sprint-timeline::before{content:'';position:absolute;left:17px;top:8px;bottom:8px;width:1px;background:var(--divider)}
+.sprint-step{display:grid;grid-template-columns:36px 1fr;gap:var(--s-4);padding-bottom:var(--s-6);position:relative}
+.sprint-step:last-child{padding-bottom:0}
+.sprint-node{width:36px;height:36px;border-radius:var(--r-full);border:1px solid var(--border);background:var(--surface);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:var(--xs);font-weight:700;color:var(--faint);position:relative;z-index:1}
+.sprint-step.active .sprint-node{background:var(--text);color:var(--inverse);border-color:var(--text)}
+.sprint-step-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:var(--s-1);padding-top:var(--s-2)}
+.sprint-step-name{font-size:var(--base);font-weight:600}
+.sprint-step-time{font-size:var(--xs);color:var(--faint);background:var(--offset);padding:2px var(--s-2);border-radius:var(--r-full)}
+.sprint-step-desc{font-size:var(--sm);color:var(--muted)}
+
+/* ── Callout ── */
+.callout{background:var(--text);color:var(--inverse);border-radius:var(--r-2xl);padding:var(--s-12);display:grid;grid-template-columns:1fr 1fr;gap:var(--s-8);align-items:center}
+@media(max-width:720px){.callout{grid-template-columns:1fr;padding:var(--s-8)}}
+.callout-eyebrow{font-size:var(--xs);text-transform:uppercase;letter-spacing:.14em;color:color-mix(in oklab,var(--inverse) 55%,transparent);margin-bottom:var(--s-4)}
+.callout h2{font-size:var(--2xl);letter-spacing:-.03em;line-height:1.1;color:var(--inverse)}
+.callout p{color:color-mix(in oklab,var(--inverse) 70%,transparent);font-size:var(--base);margin-top:var(--s-4);max-width:44ch}
+.callout-stat .big{font-size:var(--hero);font-weight:900;letter-spacing:-.05em;line-height:1;color:var(--inverse)}
+.callout-stat .cap{font-size:var(--sm);color:color-mix(in oklab,var(--inverse) 55%,transparent);margin-top:var(--s-2);text-transform:uppercase;letter-spacing:.12em}
+
+/* ── Mistakes ── */
+.mistake-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:var(--s-4)}
+.mistake{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-xl);padding:var(--s-6);transition:all var(--t)}
+.mistake:hover{border-color:var(--text)}
+.mistake .num{font-family:'SF Mono',ui-monospace,monospace;font-size:var(--xs);color:var(--faint);margin-bottom:var(--s-3)}
+.mistake h3{font-size:var(--lg);margin-bottom:var(--s-2)}
+.mistake p{font-size:var(--sm)}
+
+/* ── History ── */
+.history{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-xl);overflow:hidden}
+.history-row{display:grid;grid-template-columns:80px 1fr;gap:var(--s-6);padding:var(--s-4) var(--s-6);border-bottom:1px solid var(--divider);align-items:start;transition:background var(--t)}
+.history-row:last-child{border-bottom:0}
+.history-row:hover{background:var(--offset)}
+.history-row.highlight{background:color-mix(in oklab,var(--blue) 5%,var(--offset))}
+.history-year{font-family:'SF Mono',ui-monospace,monospace;font-size:var(--sm);font-weight:600;color:var(--text);padding-top:.15rem}
+.history-event{font-size:var(--sm);color:var(--muted)}
+.history-row.highlight .history-event{color:var(--text);font-weight:500}
+
+/* ── Principles ── */
+.principles-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:var(--s-4)}
+.principle{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-xl);padding:var(--s-6);transition:all var(--t)}
+.principle:hover{border-color:var(--text)}
+.principle .num{font-family:'SF Mono',ui-monospace,monospace;font-size:var(--xs);color:var(--faint);margin-bottom:var(--s-3)}
+.principle h3{font-size:var(--lg);margin-bottom:var(--s-2)}
+.principle p{font-size:var(--sm)}
+
+/* ── Stats row ── */
+.stats-row{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--s-4);margin-top:var(--s-8)}
+@media(max-width:640px){.stats-row{grid-template-columns:1fr 1fr}}
+.stat-card{background:var(--offset);border-radius:var(--r-xl);padding:var(--s-6)}
+.stat-big{font-size:var(--2xl);font-weight:900;letter-spacing:-.04em;line-height:1;margin-bottom:var(--s-2)}
+.stat-label{font-size:var(--xs);color:var(--muted);text-transform:uppercase;letter-spacing:.1em}
+
+/* ── Footer ── */
+footer{padding-block:var(--s-12);font-size:var(--sm);color:var(--muted)}
+.footer-inner{display:flex;justify-content:space-between;flex-wrap:wrap;gap:var(--s-4)}
+
+/* ── Animations ── */
+.fade-up{opacity:0;transform:translateY(10px);transition:opacity .6s ease,transform .6s ease}
+.fade-up.in{opacity:1;transform:none}
+
+.back-link{display:inline-flex;align-items:center;gap:6px;padding:6px 12px;border:1px solid var(--border);border-radius:999px;color:var(--muted);font-size:var(--sm);text-decoration:none;transition:color var(--t),border-color var(--t),background var(--t)}
+.back-link:hover{color:var(--text);border-color:var(--text);background:var(--offset)}
+.back-link svg{width:14px;height:14px}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="site-header">
+  <div class="container header-inner">
+    <a class="back-link" href="index.html" aria-label="Вернуться в каталог"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>Каталог</a><div class="brand">
+      <div class="brand-dot"></div>
+      Framework Cards
+    </div>
+    <nav class="header-nav">
+      <a href="#ooda">OODA</a>
+      <a href="#pillars">Столпы</a>
+      <a href="#structure">Структура</a>
+      <a href="#sprint">Спринт</a>
+      <a href="#principles">Принципы</a>
+      <a href="#history">История</a>
+    </nav>
+    <button class="theme-toggle" data-theme-toggle aria-label="Переключить тему">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+    </button>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="container">
+    <div class="eyebrow">Agile Framework</div>
+    <h1>Scrum</h1>
+    <p class="hero-lede">Итеративный фреймворк управления проектами, утверждающий: небольшие кросс-функциональные команды систематически производят лучшие результаты.</p>
+    <div class="hero-meta">
+      <div>
+        <div class="k">Дословно</div>
+        <div class="v">«Схватка» (регби)</div>
+      </div>
+      <div>
+        <div class="k">Авторы</div>
+        <div class="v">Швабер &amp; Сазерленд</div>
+      </div>
+      <div>
+        <div class="k">Год</div>
+        <div class="v">1995 · OOPSLA</div>
+      </div>
+      <div>
+        <div class="k">Основа</div>
+        <div class="v">Эмпирический контроль</div>
+      </div>
+      <div>
+        <div class="k">Актуальная версия</div>
+        <div class="v">Scrum Guide 2020</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 01 OODA -->
+<section class="block" id="ooda">
+  <div class="container">
+    <div class="section-head">
+      <div class="section-index">01 — Основа</div>
+      <div>
+        <h2 class="section-title">Цикл OODA</h2>
+        <p class="section-desc">Scrum построен на концепции принятия решений OODA, разработанной полковником ВВС США Джоном Бойдом. Каждый спринт воспроизводит один полный виток цикла.</p>
+      </div>
+    </div>
+
+    <div class="ooda-grid">
+      <div class="ooda-card">
+        <div class="ooda-letter" style="color:var(--blue)">O</div>
+        <div class="ooda-en">Observe</div>
+        <div class="ooda-ru">Наблюдать</div>
+        <div class="ooda-desc">Сбор данных о текущем состоянии продукта, рынка и команды.</div>
+      </div>
+      <div class="ooda-card">
+        <div class="ooda-letter" style="color:var(--violet)">O</div>
+        <div class="ooda-en">Orient</div>
+        <div class="ooda-ru">Ориентироваться</div>
+        <div class="ooda-desc">Анализ наблюдений, формирование актуальной картины реальности.</div>
+      </div>
+      <div class="ooda-card">
+        <div class="ooda-letter" style="color:var(--amber)">D</div>
+        <div class="ooda-en">Decide</div>
+        <div class="ooda-ru">Решать</div>
+        <div class="ooda-desc">Выбор курса действий на основе анализа — что делаем в спринте.</div>
+      </div>
+      <div class="ooda-card">
+        <div class="ooda-letter" style="color:var(--green)">A</div>
+        <div class="ooda-en">Act</div>
+        <div class="ooda-ru">Действовать</div>
+        <div class="ooda-desc">Реализация решения и запуск нового витка цикла — следующий спринт.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 02 PILLARS -->
+<section class="block" id="pillars">
+  <div class="container">
+    <div class="section-head">
+      <div class="section-index">02 — Три столпа</div>
+      <div>
+        <h2 class="section-title">Эмпирический контроль процесса</h2>
+        <p class="section-desc">Вся работа в Scrum строится на трёх взаимосвязанных принципах. Без прозрачности инспекция бессмысленна, без инспекции адаптация невозможна.</p>
+      </div>
+    </div>
+
+    <div class="pillars-grid">
+      <div class="pillar-card">
+        <div class="pillar-num">PILLAR 01</div>
+        <h3>Transparency<br>Прозрачность</h3>
+        <p>Процесс и результаты работы видны всем участникам. Важные решения принимаются на основе актуального состояния артефактов.</p>
+        <div class="pillar-rule">«Если это нельзя увидеть — этим нельзя управлять»</div>
+      </div>
+      <div class="pillar-card">
+        <div class="pillar-num">PILLAR 02</div>
+        <h3>Inspection<br>Инспекция</h3>
+        <p>Регулярная проверка артефактов и прогресса позволяет рано выявлять отклонения от цели до того, как они стали критическими.</p>
+        <div class="pillar-rule">Каждое событие Scrum — точка инспекции</div>
+      </div>
+      <div class="pillar-card">
+        <div class="pillar-num">PILLAR 03</div>
+        <h3>Adaptation<br>Адаптация</h3>
+        <p>Если инспекция показывает отклонение — процесс или артефакт корректируется как можно быстрее, чтобы минимизировать дальнейшее отклонение.</p>
+        <div class="pillar-rule">Адаптация без инспекции — это угадывание</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 03 STRUCTURE 3-5-3 -->
+<section class="block" id="structure">
+  <div class="container">
+    <div class="section-head">
+      <div class="section-index">03 — Правило 3-5-3</div>
+      <div>
+        <h2 class="section-title">Структура фреймворка</h2>
+        <p class="section-desc">Весь Scrum описывается тремя категориями: 3 роли, 5 событий, 3 артефакта. Каждый артефакт несёт обязательство, каждое событие имеет таймбокс.</p>
+      </div>
+    </div>
+
+    <div class="rule-grid">
+
+      <!-- ROLES -->
+      <div class="rule-col">
+        <div class="rule-col-header">
+          <h3>Роли</h3>
+          <div class="rule-count">3</div>
+        </div>
+        <div class="rule-items">
+          <div class="rule-item">
+            <div class="rule-dot" style="background:var(--blue)"></div>
+            <div>
+              <div class="rule-item-name">Product Owner</div>
+              <div class="rule-item-desc">Управляет Product Backlog. Максимизирует ценность продукта. Единственный ответственный за приоритеты.</div>
+              <div class="rule-badge">Бизнес-ценность</div>
+            </div>
+          </div>
+          <div class="rule-item">
+            <div class="rule-dot" style="background:var(--green)"></div>
+            <div>
+              <div class="rule-item-name">Scrum Master</div>
+              <div class="rule-item-desc">Устраняет препятствия. Служит команде и организации. Обеспечивает понимание Scrum.</div>
+              <div class="rule-badge">Фасилитатор</div>
+            </div>
+          </div>
+          <div class="rule-item">
+            <div class="rule-dot" style="background:var(--violet)"></div>
+            <div>
+              <div class="rule-item-name">Developers</div>
+              <div class="rule-item-desc">Кросс-функциональная команда. Создаёт «готовый» инкремент продукта в каждом спринте.</div>
+              <div class="rule-badge">Кросс-функция</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- EVENTS -->
+      <div class="rule-col">
+        <div class="rule-col-header">
+          <h3>События</h3>
+          <div class="rule-count">5</div>
+        </div>
+        <div class="rule-items">
+          <div class="rule-item">
+            <div class="rule-dot" style="background:var(--text)"></div>
+            <div>
+              <div class="rule-item-name">Sprint</div>
+              <div class="rule-item-desc">Итерация разработки — сердцебиение Scrum.</div>
+              <div class="rule-badge">≤ 4 недель</div>
+            </div>
+          </div>
+          <div class="rule-item">
+            <div class="rule-dot" style="background:var(--blue)"></div>
+            <div>
+              <div class="rule-item-name">Sprint Planning</div>
+              <div class="rule-item-desc">Определение Sprint Goal и планирование работы.</div>
+              <div class="rule-badge">До 8 часов</div>
+            </div>
+          </div>
+          <div class="rule-item">
+            <div class="rule-dot" style="background:var(--amber)"></div>
+            <div>
+              <div class="rule-item-name">Daily Scrum</div>
+              <div class="rule-item-desc">Ежедневная синхронизация команды. Выявление препятствий.</div>
+              <div class="rule-badge">15 минут</div>
+            </div>
+          </div>
+          <div class="rule-item">
+            <div class="rule-dot" style="background:var(--green)"></div>
+            <div>
+              <div class="rule-item-name">Sprint Review</div>
+              <div class="rule-item-desc">Демонстрация инкремента стейкхолдерам. Адаптация Backlog.</div>
+              <div class="rule-badge">До 4 часов</div>
+            </div>
+          </div>
+          <div class="rule-item">
+            <div class="rule-dot" style="background:var(--violet)"></div>
+            <div>
+              <div class="rule-item-name">Retrospective</div>
+              <div class="rule-item-desc">Анализ процесса и определение улучшений для следующего спринта.</div>
+              <div class="rule-badge">До 3 часов</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ARTIFACTS -->
+      <div class="rule-col">
+        <div class="rule-col-header">
+          <h3>Артефакты</h3>
+          <div class="rule-count">3</div>
+        </div>
+        <div class="rule-items">
+          <div class="rule-item">
+            <div class="rule-dot" style="background:var(--blue)"></div>
+            <div>
+              <div class="rule-item-name">Product Backlog</div>
+              <div class="rule-item-desc">Динамический упорядоченный список всего, что нужно продукту.</div>
+              <div class="rule-badge">→ Product Goal</div>
+            </div>
+          </div>
+          <div class="rule-item">
+            <div class="rule-dot" style="background:var(--green)"></div>
+            <div>
+              <div class="rule-item-name">Sprint Backlog</div>
+              <div class="rule-item-desc">Выбранные задачи и план реализации текущего спринта.</div>
+              <div class="rule-badge">→ Sprint Goal</div>
+            </div>
+          </div>
+          <div class="rule-item">
+            <div class="rule-dot" style="background:var(--violet)"></div>
+            <div>
+              <div class="rule-item-name">Increment</div>
+              <div class="rule-item-desc">Рабочий, потенциально поставляемый продукт на конец спринта.</div>
+              <div class="rule-badge">→ Definition of Done</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- 04 SPRINT LIFECYCLE -->
+<section class="block" id="sprint">
+  <div class="container">
+    <div class="section-head">
+      <div class="section-index">04 — Спринт</div>
+      <div>
+        <h2 class="section-title">Жизненный цикл спринта</h2>
+        <p class="section-desc">Спринт — минимальная единица ценности в Scrum. Максимальная длина — 4 недели. 58% команд выбирают двухнедельный спринт.</p>
+      </div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--s-8);align-items:start">
+
+      <div class="sprint-timeline">
+        <div class="sprint-step">
+          <div class="sprint-node">1</div>
+          <div>
+            <div class="sprint-step-head">
+              <div class="sprint-step-name">Sprint Planning</div>
+              <div class="sprint-step-time">До 8 ч</div>
+            </div>
+            <div class="sprint-step-desc">Product Owner приоритизирует Backlog → команда формирует Sprint Goal и Sprint Backlog.</div>
+          </div>
+        </div>
+        <div class="sprint-step active">
+          <div class="sprint-node">2</div>
+          <div>
+            <div class="sprint-step-head">
+              <div class="sprint-step-name">Sprint (1–4 недели)</div>
+              <div class="sprint-step-time">Таймбокс</div>
+            </div>
+            <div class="sprint-step-desc">Команда работает над Sprint Backlog. Ежедневно — Daily Scrum (15 мин). Создаётся инкремент согласно Definition of Done.</div>
+          </div>
+        </div>
+        <div class="sprint-step">
+          <div class="sprint-node">3</div>
+          <div>
+            <div class="sprint-step-head">
+              <div class="sprint-step-name">Sprint Review</div>
+              <div class="sprint-step-time">До 4 ч</div>
+            </div>
+            <div class="sprint-step-desc">Демонстрация инкремента стейкхолдерам. Сбор обратной связи. Адаптация Product Backlog.</div>
+          </div>
+        </div>
+        <div class="sprint-step">
+          <div class="sprint-node">4</div>
+          <div>
+            <div class="sprint-step-head">
+              <div class="sprint-step-name">Sprint Retrospective</div>
+              <div class="sprint-step-time">До 3 ч</div>
+            </div>
+            <div class="sprint-step-desc">Команда анализирует процесс → определяет улучшения для следующего спринта. Цикл повторяется.</div>
+          </div>
+        </div>
+      </div>
+
+      <div style="display:grid;gap:var(--s-4)">
+        <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--r-xl);padding:var(--s-6);box-shadow:var(--shadow-sm)">
+          <div style="font-size:var(--xs);color:var(--faint);text-transform:uppercase;letter-spacing:.12em;margin-bottom:var(--s-5)">Ключевые параметры</div>
+          <div class="stats-row" style="margin-top:0">
+            <div class="stat-card">
+              <div class="stat-big">≤10</div>
+              <div class="stat-label">человек<br>в команде</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-big">1–4</div>
+              <div class="stat-label">недели<br>спринт</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-big">58%</div>
+              <div class="stat-label">команд: 2-нед. спринт</div>
+            </div>
+          </div>
+        </div>
+        <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--r-xl);padding:var(--s-6);box-shadow:var(--shadow-sm)">
+          <div style="font-size:var(--xs);color:var(--faint);text-transform:uppercase;letter-spacing:.12em;margin-bottom:var(--s-4)">Правило длины спринта</div>
+          <p style="font-size:var(--sm);font-style:italic;margin-bottom:var(--s-4)">"Спринт должен быть как можно короче, но не короче необходимого."</p>
+          <div style="font-size:var(--xs);color:var(--faint)">— Кен Швабер</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- CALLOUT -->
+<section class="block" style="border-bottom:1px solid var(--divider)">
+  <div class="container">
+    <div class="callout">
+      <div>
+        <div class="callout-eyebrow">Фундаментальный принцип</div>
+        <h2>Маленькая команда.<br>Большой результат.</h2>
+        <p>Небольшие кросс-функциональные команды, работающие короткими итерациями с чёткой целью, систематически превосходят большие группы с длинными релизными циклами.</p>
+      </div>
+      <div class="callout-stat">
+        <div class="big">3–9</div>
+        <div class="cap">оптимальный размер<br>Scrum-команды</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 05 PRINCIPLES -->
+<section class="block" id="principles">
+  <div class="container">
+    <div class="section-head">
+      <div class="section-index">05 — Принципы</div>
+      <div>
+        <h2 class="section-title">Шесть ключевых принципов</h2>
+        <p class="section-desc">Принципы Scrum согласуются с Agile-манифестом и определяют культуру работы команды — не только инструменты, но и образ мышления.</p>
+      </div>
+    </div>
+
+    <div class="principles-grid">
+      <div class="principle">
+        <div class="num">PRIN 01</div>
+        <h3>Empirical Process Control</h3>
+        <p>Решения принимаются на основе прозрачности, инспекции и адаптации — а не предположений и заранее составленных планов.</p>
+      </div>
+      <div class="principle">
+        <div class="num">PRIN 02</div>
+        <h3>Self-Organization</h3>
+        <p>Команда самостоятельно выбирает способ выполнения работы. Это усиливает ответственность, вовлечённость и творческий подход.</p>
+      </div>
+      <div class="principle">
+        <div class="num">PRIN 03</div>
+        <h3>Collaboration</h3>
+        <p>Непрерывное взаимодействие внутри кросс-функциональной команды и с заинтересованными сторонами — не только на демо.</p>
+      </div>
+      <div class="principle">
+        <div class="num">PRIN 04</div>
+        <h3>Value-Based Prioritization</h3>
+        <p>В Sprint Backlog попадает только то, что приносит максимальную ценность для клиента или снижает риски проекта.</p>
+      </div>
+      <div class="principle">
+        <div class="num">PRIN 05</div>
+        <h3>Time-Boxing</h3>
+        <p>Все события Scrum имеют чёткий таймбокс. Ограничение времени создаёт фокус и делает прогресс измеримым.</p>
+      </div>
+      <div class="principle">
+        <div class="num">PRIN 06</div>
+        <h3>Iterative Development</h3>
+        <p>Продукт развивается инкрементально от спринта к спринту. Обратная связь встроена в процесс, а не отложена на финал.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 06 MISTAKES -->
+<section class="block" id="mistakes">
+  <div class="container">
+    <div class="section-head">
+      <div class="section-index">06 — Ошибки</div>
+      <div>
+        <h2 class="section-title">Типичные ошибки внедрения</h2>
+        <p class="section-desc">Большинство проблем со Scrum — не проблемы самого фреймворка. Это проблемы его неполной или искажённой реализации.</p>
+      </div>
+    </div>
+
+    <div class="mistake-grid">
+      <div class="mistake">
+        <div class="num">ERR 01</div>
+        <h3>Scrum без Product Owner</h3>
+        <p>Без явного PO приоритеты хаотичны: команда получает задачи от всех сразу. Результат — Sprint без цели и потеря ценности.</p>
+      </div>
+      <div class="mistake">
+        <div class="num">ERR 02</div>
+        <h3>Daily как статус-митинг</h3>
+        <p>Daily Scrum — инструмент синхронизации и выявления блокеров, а не отчёт менеджеру. «Что делал вчера» — не его цель.</p>
+      </div>
+      <div class="mistake">
+        <div class="num">ERR 03</div>
+        <h3>Sprint без Definition of Done</h3>
+        <p>Без явного DoD «готово» означает разное для каждого члена команды. Это порождает технический долг и нестабильные релизы.</p>
+      </div>
+      <div class="mistake">
+        <div class="num">ERR 04</div>
+        <h3>Спринт как mini-waterfall</h3>
+        <p>Разбивать спринт на фазы «аналитика → разработка → тестирование» — значит сохранять waterfall-культуру в Scrum-обёртке.</p>
+      </div>
+      <div class="mistake">
+        <div class="num">ERR 05</div>
+        <h3>Нет Retrospective</h3>
+        <p>Без ретроспективы команда не улучшается — ошибки повторяются. Это самое ценное событие для роста зрелости команды.</p>
+      </div>
+      <div class="mistake">
+        <div class="num">ERR 06</div>
+        <h3>Слишком большая команда</h3>
+        <p>Команды больше 10 человек теряют гибкость. Scrum Guide рекомендует разделить их на несколько команд, работающих над одним продуктом.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 07 HISTORY -->
+<section class="block" id="history">
+  <div class="container">
+    <div class="section-head">
+      <div class="section-index">07 — История</div>
+      <div>
+        <h2 class="section-title">Хронология Scrum</h2>
+        <p class="section-desc">От академической статьи в HBR до глобального стандарта — путь длиной в 40 лет.</p>
+      </div>
+    </div>
+
+    <div class="history">
+      <div class="history-row">
+        <div class="history-year">1970-е</div>
+        <div class="history-event">Полковник Джон Бойд (ВВС США) разрабатывает цикл OODA — концептуальную основу будущего Scrum.</div>
+      </div>
+      <div class="history-row">
+        <div class="history-year">1986</div>
+        <div class="history-event">Такеучи и Нонака публикуют «The New New Product Development Game» в Harvard Business Review — первое описание командной «схватки» в разработке продукта.</div>
+      </div>
+      <div class="history-row">
+        <div class="history-year">1993</div>
+        <div class="history-event">Джеф Сазерленд с командой Easel Corporation создаёт и применяет первую Scrum-команду.</div>
+      </div>
+      <div class="history-row highlight">
+        <div class="history-year">1995</div>
+        <div class="history-event">Кен Швабер и Джеф Сазерленд публично представляют, документируют и чётко формулируют Scrum на конференции OOPSLA'95 в Остине, Техас.</div>
+      </div>
+      <div class="history-row">
+        <div class="history-year">2001</div>
+        <div class="history-event">Швабер, Сазерленд и 15 коллег публикуют Agile-манифест в Сноуберде, Юта. Scrum становится основой Agile-движения.</div>
+      </div>
+      <div class="history-row">
+        <div class="history-year">2002</div>
+        <div class="history-event">Основана Scrum Alliance — первая профессиональная организация с сертификациями CSM, CSPO, CSD.</div>
+      </div>
+      <div class="history-row">
+        <div class="history-year">2009</div>
+        <div class="history-event">Кен Швабер основывает Scrum.org — альтернативную организацию с программой Professional Scrum.</div>
+      </div>
+      <div class="history-row">
+        <div class="history-year">2020</div>
+        <div class="history-event">Выходит актуальная редакция The Scrum Guide — сокращённая, с акцентом на цели (Goals) вместо ролей.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container footer-inner">
+    <div>© 2026 · Scrum Framework Card · Arrange Styleguide</div>
+    <div>Scrum · Agile · Project Management · OODA</div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  const t = document.querySelector('[data-theme-toggle]');
+  const r = document.documentElement;
+  let d = matchMedia('(prefers-color-scheme:dark)').matches ? 'dark' : 'light';
+  r.setAttribute('data-theme', d);
+  updateIcon();
+
+  t && t.addEventListener('click', () => {
+    d = d === 'dark' ? 'light' : 'dark';
+    r.setAttribute('data-theme', d);
+    updateIcon();
+  });
+
+  function updateIcon() {
+    if (!t) return;
+    t.innerHTML = d === 'dark'
+      ? '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>'
+      : '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>';
+  }
+
+  const io = new IntersectionObserver(
+    es => es.forEach(e => e.isIntersecting && e.target.classList.add('in')),
+    { threshold: .08 }
+  );
+  document.querySelectorAll('.block, .hero').forEach(el => {
+    el.classList.add('fade-up');
+    io.observe(el);
+  });
+})();
+</script>
+</body>
+</html>
