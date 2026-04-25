@@ -110,6 +110,14 @@
       "subtitle": "Agile-фреймворк · Джефф Сазерленд · Кен Швабер",
       "category": "planning",
       "icon": "🚀"
+    },
+    {
+      "id": "one-minute-manager",
+      "file": "one-minute-manager-card.html",
+      "name": "One Minute Manager",
+      "subtitle": "Кен Бланшар, Спенсер Джонсон · 1982",
+      "category": "leadership",
+      "icon": "🏛️"
     }
   ]
 }
