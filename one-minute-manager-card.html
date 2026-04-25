@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="ru" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>One Minute Manager Card</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://api.fontshare.com/v2/css?f[]=satoshi@300,400,500,700,900&display=swap" rel="stylesheet">
+  <style>
+    :root, [data-theme="light"] {
+      --color-bg: #f4f4f4;
+      --color-surface: #ffffff;
+      --color-surface-2: #fafafa;
+      --color-surface-offset: #f0f0f0;
+      --color-surface-offset-2: #e8e8e8;
+      --color-divider: #ececec;
+      --color-border: #e4e4e4;
+      --color-text: #0a0a0a;
+      --color-text-muted: #6b6b6b;
+      --color-text-faint: #a3a3a3;
+      --color-text-inverse: #ffffff;
+      --color-primary: #0a0a0a;
+      --color-primary-hover: #1f1f1f;
+      --color-accent-blue: #2b6df6;
+      --color-accent-green: #22c55e;
+      --color-accent-amber: #f59e0b;
+      --color-accent-red: #ef4444;
+      --font-display: 'Satoshi', Inter, system-ui, sans-serif;
+      --font-body: 'Satoshi', Inter, system-ui, sans-serif;
+      --text-xs: clamp(0.75rem, 0.7rem + 0.25vw, 0.8125rem);
+      --text-sm: clamp(0.875rem, 0.8rem + 0.25vw, 0.9375rem);
+      --text-base: clamp(1rem, 0.95rem + 0.25vw, 1.0625rem);
+      --text-lg: clamp(1.125rem, 1rem + 0.5vw, 1.375rem);
+      --text-xl: clamp(1.5rem, 1.2rem + 1vw, 2rem);
+      --text-2xl: clamp(2rem, 1.2rem + 2vw, 3rem);
+      --text-hero: clamp(3rem, 1rem + 6vw, 5.5rem);
+      --space-1: 0.25rem; --space-2: 0.5rem; --space-3: 0.75rem; --space-4: 1rem;
+      --space-5: 1.25rem; --space-6: 1.5rem; --space-8: 2rem; --space-10: 2.5rem;
+      --space-12: 3rem; --space-16: 4rem; --space-20: 5rem; --space-24: 6rem;
+      --radius-sm: 0.375rem; --radius-md: 0.5rem; --radius-lg: 0.75rem; --radius-xl: 1rem; --radius-2xl: 1.25rem; --radius-full: 9999px;
+      --shadow-sm: 0 1px 2px rgba(10,10,10,0.04);
+      --shadow-md: 0 4px 16px rgba(10,10,10,0.07);
+      --shadow-lg: 0 20px 48px rgba(10,10,10,0.09);
+      --transition: 180ms cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    [data-theme="dark"] {
+      --color-bg: #0a0a0a;
+      --color-surface: #141414;
+      --color-surface-2: #1a1a1a;
+      --color-surface-offset: #1f1f1f;
+      --color-surface-offset-2: #262626;
+      --color-divider: #262626;
+      --color-border: #2d2d2d;
+      --color-text: #f4f4f4;
+      --color-text-muted: #a3a3a3;
+      --color-text-faint: #6b6b6b;
+      --color-text-inverse: #0a0a0a;
+      --color-primary: #ffffff;
+      --color-primary-hover: #e5e5e5;
+      --shadow-sm: 0 1px 2px rgba(0,0,0,0.3);
+      --shadow-md: 0 4px 16px rgba(0,0,0,0.4);
+      --shadow-lg: 0 20px 48px rgba(0,0,0,0.5);
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
+    body {
+      min-height: 100dvh;
+      background: var(--color-bg);
+      color: var(--color-text);
+      font-family: var(--font-body);
+      font-size: var(--text-base);
+      line-height: 1.6;
+      transition: background var(--transition), color var(--transition);
+    }
+    h1,h2,h3,h4 { font-family: var(--font-display); line-height: 1.08; letter-spacing: -0.03em; }
+    p { color: var(--color-text-muted); max-width: 72ch; }
+    a { color: inherit; text-decoration: none; }
+    button { font: inherit; cursor: pointer; background: none; border: none; color: inherit; }
+    svg { display: block; }
+    .container { max-width: 1100px; margin-inline: auto; padding-inline: var(--space-6); }
+
+    .site-header {
+      position: sticky; top: 0; z-index: 30;
+      backdrop-filter: blur(14px);
+      background: color-mix(in oklab, var(--color-bg) 82%, transparent);
+      border-bottom: 1px solid var(--color-divider);
+    }
+    .header-inner {
+      display: flex; align-items: center; justify-content: space-between;
+      padding-block: var(--space-4);
+      gap: var(--space-4);
+    }
+    .brand { display: flex; align-items: center; gap: var(--space-2); font-size: var(--text-sm); font-weight: 700; }
+    .brand-dot { width: 8px; height: 8px; border-radius: var(--radius-full); background: var(--color-text); }
+    .header-nav { display: flex; gap: var(--space-6); font-size: var(--text-sm); color: var(--color-text-muted); }
+    .header-nav a:hover { color: var(--color-text); }
+    .theme-toggle {
+      width: 36px; height: 36px; border-radius: var(--radius-full); border: 1px solid var(--color-border);
+      display: grid; place-items: center; transition: all var(--transition);
+    }
+    .theme-toggle:hover { background: var(--color-surface-offset); }
+
+    .hero {
+      padding-block: var(--space-20) var(--space-16);
+      border-bottom: 1px solid var(--color-divider);
+    }
+    .eyebrow {
+      display: inline-flex; align-items: center; gap: var(--space-2);
+      font-size: var(--text-xs); text-transform: uppercase; letter-spacing: .14em;
+      color: var(--color-text-muted); margin-bottom: var(--space-6);
+    }
+    .eyebrow::before {
+      content: ""; width: 6px; height: 6px; border-radius: var(--radius-full); background: var(--color-accent-green);
+    }
+    .hero h1 { font-size: var(--text-hero); font-weight: 900; letter-spacing: -0.05em; margin-bottom: var(--space-5); }
+    .hero-lede { font-size: var(--text-lg); max-width: 58ch; }
+    .hero-meta {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: var(--space-6);
+      margin-top: var(--space-10); padding-top: var(--space-8); border-top: 1px solid var(--color-divider);
+    }
+    .hero-meta .k { font-size: var(--text-xs); color: var(--color-text-faint); text-transform: uppercase; letter-spacing: .12em; margin-bottom: var(--space-1); }
+    .hero-meta .v { font-size: var(--text-base); font-weight: 500; color: var(--color-text); }
+
+    .block { padding-block: var(--space-20); border-bottom: 1px solid var(--color-divider); }
+    .section-head {
+      display: grid; grid-template-columns: 180px 1fr; gap: var(--space-12); margin-bottom: var(--space-10);
+    }
+    .section-index { font-size: var(--text-xs); color: var(--color-text-faint); letter-spacing: .16em; text-transform: uppercase; }
+    .section-title { font-size: var(--text-xl); margin-bottom: var(--space-3); }
+
+    .principle {
+      background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-2xl);
+      padding: var(--space-6); box-shadow: var(--shadow-sm); transition: all var(--transition);
+    }
+    .principle:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); }
+    .principle + .principle { margin-top: var(--space-4); }
+    .principle-head {
+      display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: var(--space-5);
+      margin-bottom: var(--space-5);
+    }
+    .principle-num {
+      width: 40px; height: 40px; border-radius: var(--radius-md); display: grid; place-items: center; font-size: var(--text-sm); font-weight: 700;
+    }
+    .p-blue .principle-num { background: color-mix(in oklab, var(--color-accent-blue) 10%, var(--color-surface-offset)); color: var(--color-accent-blue); }
+    .p-green .principle-num { background: color-mix(in oklab, var(--color-accent-green) 10%, var(--color-surface-offset)); color: var(--color-accent-green); }
+    .p-amber .principle-num { background: color-mix(in oklab, var(--color-accent-amber) 12%, var(--color-surface-offset)); color: var(--color-accent-amber); }
+    .principle-kicker { font-size: var(--text-xs); color: var(--color-text-faint); text-transform: uppercase; letter-spacing: .12em; margin-bottom: var(--space-1); }
+    .principle-title { font-size: var(--text-lg); font-weight: 700; }
+    .principle-badge {
+      padding: var(--space-1) var(--space-3); border-radius: var(--radius-full); font-size: var(--text-xs); font-weight: 600;
+      background: var(--color-surface-offset); color: var(--color-text-muted);
+    }
+    .principle-grid { display: grid; grid-template-columns: 1.05fr .95fr; gap: var(--space-4); }
+    .subcard {
+      background: var(--color-surface-2); border: 1px solid var(--color-border); border-radius: var(--radius-xl); padding: var(--space-5);
+    }
+    .subcard-label { font-size: var(--text-xs); color: var(--color-text-faint); text-transform: uppercase; letter-spacing: .12em; margin-bottom: var(--space-4); }
+    .steps-list { display: grid; gap: var(--space-3); }
+    .step-row { display: grid; grid-template-columns: 24px 1fr; gap: var(--space-3); align-items: start; }
+    .step-dot {
+      width: 24px; height: 24px; border-radius: var(--radius-full); display: grid; place-items: center; font-size: 11px; font-weight: 700; margin-top: 1px;
+      background: var(--color-surface-offset-2); color: var(--color-text-muted);
+    }
+    .formula-stack { display: grid; gap: var(--space-3); }
+    .formula-item {
+      background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-lg); padding: var(--space-4);
+    }
+    .formula-item strong { display: block; font-size: var(--text-xs); text-transform: uppercase; letter-spacing: .1em; margin-bottom: var(--space-2); }
+
+    .axiom {
+      background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-2xl); padding: var(--space-8);
+      display: grid; grid-template-columns: 140px 1fr; gap: var(--space-8); align-items: start;
+    }
+    .axiom-label { font-size: var(--text-xs); color: var(--color-text-faint); text-transform: uppercase; letter-spacing: .14em; }
+    .axiom-text { font-size: var(--text-xl); line-height: 1.2; color: var(--color-text); max-width: 24ch; }
+    .axiom-note { font-size: var(--text-sm); }
+
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-4); }
+    .info-card {
+      background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-xl); padding: var(--space-6);
+    }
+    .info-card h3 { font-size: var(--text-base); margin-bottom: var(--space-4); }
+    .bullet-list { display: grid; gap: var(--space-3); }
+    .bullet-item { display: grid; grid-template-columns: 16px 1fr; gap: var(--space-3); font-size: var(--text-sm); color: var(--color-text-muted); }
+    .bullet-dot { width: 6px; height: 6px; border-radius: var(--radius-full); margin-top: .5rem; background: var(--color-text-faint); }
+
+    .callout {
+      background: var(--color-text); color: var(--color-text-inverse); border-radius: var(--radius-2xl);
+      padding: var(--space-12); display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-8); align-items: center;
+    }
+    .callout-eyebrow { font-size: var(--text-xs); text-transform: uppercase; letter-spacing: .14em; color: color-mix(in oklab, var(--color-text-inverse) 55%, transparent); margin-bottom: var(--space-4); }
+    .callout h2 { font-size: var(--text-2xl); letter-spacing: -0.03em; line-height: 1.1; }
+    .callout p { color: color-mix(in oklab, var(--color-text-inverse) 70%, transparent); font-size: var(--text-base); margin-top: var(--space-4); max-width: 44ch; }
+    .callout-rules { display: grid; gap: var(--space-3); }
+    .callout-rule { display: flex; align-items: baseline; gap: var(--space-3); }
+    .callout-rule .n { font-size: var(--text-xl); font-weight: 900; width: 30px; flex-shrink: 0; }
+    .callout-rule .t { color: color-mix(in oklab, var(--color-text-inverse) 68%, transparent); }
+
+    footer { padding-block: var(--space-12); font-size: var(--text-sm); color: var(--color-text-muted); }
+    .footer-inner { display: flex; justify-content: space-between; flex-wrap: wrap; gap: var(--space-4); }
+
+    .fade-up { opacity: 0; transform: translateY(10px); transition: opacity .6s ease, transform .6s ease; }
+    .fade-up.in { opacity: 1; transform: none; }
+
+    @media (max-width: 860px) {
+      .section-head, .principle-grid, .axiom, .grid-2, .callout { grid-template-columns: 1fr; gap: var(--space-4); }
+      .header-nav { display: none; }
+    }
+    @media (max-width: 560px) {
+      .container { padding-inline: var(--space-4); }
+      .hero { padding-block: var(--space-16) var(--space-12); }
+      .block { padding-block: var(--space-16); }
+      .principle-head { grid-template-columns: auto 1fr; }
+      .principle-badge { grid-column: 1 / -1; justify-self: start; }
+      .callout { padding: var(--space-8); }
+    }
+  
+.back-link{display:inline-flex;align-items:center;gap:6px;padding:6px 12px;border:1px solid var(--border);border-radius:999px;color:var(--muted);font-size:var(--sm);text-decoration:none;transition:color var(--t),border-color var(--t),background var(--t)}
+.back-link:hover{color:var(--text);border-color:var(--text);background:var(--offset)}
+.back-link svg{width:14px;height:14px}
+</style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+    <a class="back-link" href="index.html" aria-label="Вернуться в каталог"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>Каталог</a><div class="brand"><span class="brand-dot"></span> One Minute Manager</div>
+      <nav class="header-nav">
+        <a href="#principles">Принципы</a>
+        <a href="#scripts">Скрипты</a>
+        <a href="#mistakes">Ошибки</a>
+      </nav>
+      <button class="theme-toggle" data-theme-toggle aria-label="Сменить тему">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"></circle><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"></path></svg>
+      </button>
+    </div>
+  </header>
+
+  <section class="hero fade-up">
+    <div class="container">
+      <div class="eyebrow">Framework Card · Blanchard & Johnson</div>
+      <h1>One Minute<br>Manager.</h1>
+      <p class="hero-lede">Короткая управленческая система на основе трёх действий: сначала зафиксировать ожидания, затем замечать правильное поведение и при отклонении быстро возвращать человека к нужному курсу.</p>
+      <div class="hero-meta">
+        <div><div class="k">Метод</div><div class="v">3 управленческих секрета</div></div>
+        <div><div class="k">Фокус</div><div class="v">Ясность → Похвала → Коррекция</div></div>
+        <div><div class="k">Формат</div><div class="v">1–3 минуты на действие</div></div>
+        <div><div class="k">Применение</div><div class="v">1:1, daily work, performance</div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block fade-up">
+    <div class="container">
+      <div class="axiom">
+        <div class="axiom-label">Базовая идея</div>
+        <div>
+          <div class="axiom-text">Люди, которые хорошо себя чувствуют, обычно показывают хорошие результаты.</div>
+          <p class="axiom-note">Поэтому метод строится не на жёстком контроле, а на прозрачных ожиданиях, своевременном признании и быстрой корректировке поведения.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block fade-up" id="principles">
+    <div class="container">
+      <div class="section-head">
+        <div class="section-index">01 Principles</div>
+        <div>
+          <h2 class="section-title">Три управленческих действия</h2>
+          <p class="section-desc">Каждый блок оформлен как рабочая карточка: когда использовать, как провести разговор и какой минимальный скрипт взять в работу.</p>
+        </div>
+      </div>
+
+      <article class="principle p-blue">
+        <div class="principle-head">
+          <div class="principle-num">01</div>
+          <div>
+            <div class="principle-kicker">Planning</div>
+            <h3 class="principle-title">Одноминутные цели</h3>
+          </div>
+          <div class="principle-badge">Основа системы</div>
+        </div>
+        <div class="principle-grid">
+          <div class="subcard">
+            <div class="subcard-label">Шаги</div>
+            <div class="steps-list">
+              <div class="step-row"><div class="step-dot">1</div><div>Согласуйте цель вместе с сотрудником, а не спускайте её в одностороннем порядке.</div></div>
+              <div class="step-row"><div class="step-dot">2</div><div>Запишите каждую цель кратко, чтобы её можно было перечитать примерно за минуту.</div></div>
+              <div class="step-row"><div class="step-dot">3</div><div>Оставьте только несколько ключевых приоритетов, а не полный список задач.</div></div>
+              <div class="step-row"><div class="step-dot">4</div><div>Проверьте, что у цели есть результат, критерий успеха и контрольная дата.</div></div>
+              <div class="step-row"><div class="step-dot">5</div><div>Возвращайтесь к цели регулярно и сверяйте фактическое поведение с ожиданием.</div></div>
+            </div>
+          </div>
+          <div class="subcard">
+            <div class="subcard-label">Формула</div>
+            <div class="formula-stack">
+              <div class="formula-item"><strong>Что</strong>Какой результат должен быть получен.</div>
+              <div class="formula-item"><strong>Как поймём</strong>По какому индикатору видно, что цель достигнута.</div>
+              <div class="formula-item"><strong>Когда</strong>К какой дате или контрольной точке это нужно сделать.</div>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <article class="principle p-green" id="scripts">
+        <div class="principle-head">
+          <div class="principle-num">02</div>
+          <div>
+            <div class="principle-kicker">Recognition</div>
+            <h3 class="principle-title">Одноминутная похвала</h3>
+          </div>
+          <div class="principle-badge">Ловите на правильном</div>
+        </div>
+        <div class="principle-grid">
+          <div class="subcard">
+            <div class="subcard-label">Шаги</div>
+            <div class="steps-list">
+              <div class="step-row"><div class="step-dot">1</div><div>Реагируйте быстро, не откладывайте признание до следующей formal 1:1 встречи.</div></div>
+              <div class="step-row"><div class="step-dot">2</div><div>Назовите конкретное действие, которое было выполнено правильно.</div></div>
+              <div class="step-row"><div class="step-dot">3</div><div>Свяжите действие с эффектом для команды, продукта или клиента.</div></div>
+              <div class="step-row"><div class="step-dot">4</div><div>Покажите искреннюю эмоцию, затем сделайте короткую паузу.</div></div>
+              <div class="step-row"><div class="step-dot">5</div><div>Завершите поощрением: это поведение стоит повторять.</div></div>
+            </div>
+          </div>
+          <div class="subcard">
+            <div class="subcard-label">Скрипт</div>
+            <div class="formula-stack">
+              <div class="formula-item"><strong>Событие</strong>«Я заметил(а), что ты [конкретное действие]».</div>
+              <div class="formula-item"><strong>Эффект</strong>«Это помогло [команда / клиент / задача], потому что ...».</div>
+              <div class="formula-item"><strong>Эмоция</strong>«Мне было важно это увидеть» + короткая пауза.</div>
+              <div class="formula-item"><strong>Продолжение</strong>«Продолжай так же — это ценно».</div>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <article class="principle p-amber">
+        <div class="principle-head">
+          <div class="principle-num">03</div>
+          <div>
+            <div class="principle-kicker">Correction</div>
+            <h3 class="principle-title">Одноминутная переориентация</h3>
+          </div>
+          <div class="principle-badge">Критикуем поступок, не человека</div>
+        </div>
+        <div class="principle-grid">
+          <div class="subcard">
+            <div class="subcard-label">Две части разговора</div>
+            <div class="steps-list">
+              <div class="step-row"><div class="step-dot">1</div><div>Сразу и приватно назовите конкретное отклонение от ожидания.</div></div>
+              <div class="step-row"><div class="step-dot">2</div><div>Скажите, почему это проблема и что вы по этому поводу чувствуете.</div></div>
+              <div class="step-row"><div class="step-dot">3</div><div>Сделайте паузу, чтобы сообщение было услышано.</div></div>
+              <div class="step-row"><div class="step-dot">4</div><div>Затем явно подтвердите ценность человека для команды.</div></div>
+              <div class="step-row"><div class="step-dot">5</div><div>Закройте разговор: ошибка исправляется, отношения сохраняются.</div></div>
+            </div>
+          </div>
+          <div class="subcard">
+            <div class="subcard-label">Скрипт</div>
+            <div class="formula-stack">
+              <div class="formula-item"><strong>Факт</strong>«Ты сделал(а) [действие], и это не соответствует договорённости».</div>
+              <div class="formula-item"><strong>Воздействие</strong>«Это создаёт [риск / задержку / вред для клиента]».</div>
+              <div class="formula-item"><strong>Разворот</strong>«При этом я ценю тебя как специалиста и хочу, чтобы ты преуспел(а)».</div>
+              <div class="formula-item"><strong>Закрытие</strong>«Исправляем и двигаемся дальше».</div>
+            </div>
+          </div>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section class="block fade-up" id="mistakes">
+    <div class="container">
+      <div class="section-head">
+        <div class="section-index">02 Use</div>
+        <div>
+          <h2 class="section-title">Когда работает лучше всего</h2>
+          <p class="section-desc">Карточка особенно полезна для руководителей, которые хотят держать обратную связь короткой, конкретной и повторяемой в ежедневной операционной работе.</p>
+        </div>
+      </div>
+      <div class="grid-2">
+        <div class="info-card">
+          <h3>Когда применять</h3>
+          <div class="bullet-list">
+            <div class="bullet-item"><span class="bullet-dot" style="background:var(--color-accent-blue)"></span><span>Цели — в начале проекта, спринта, нового периода ответственности или онбординга.</span></div>
+            <div class="bullet-item"><span class="bullet-dot" style="background:var(--color-accent-green)"></span><span>Похвалу — сразу после полезного поведения, пока контекст ещё живой.</span></div>
+            <div class="bullet-item"><span class="bullet-dot" style="background:var(--color-accent-amber)"></span><span>Переориентацию — сразу после ошибки, желательно наедине и без затяжки.</span></div>
+            <div class="bullet-item"><span class="bullet-dot" style="background:var(--color-primary)"></span><span>Весь цикл — постоянно, а не только в performance review.</span></div>
+          </div>
+        </div>
+        <div class="info-card">
+          <h3>Типичные ошибки</h3>
+          <div class="bullet-list">
+            <div class="bullet-item"><span class="bullet-dot" style="background:var(--color-accent-red)"></span><span>Ставить слишком много целей и превращать метод в перегруженный checklist.</span></div>
+            <div class="bullet-item"><span class="bullet-dot" style="background:var(--color-accent-red)"></span><span>Хвалить общими словами без указания конкретного поведения и эффекта.</span></div>
+            <div class="bullet-item"><span class="bullet-dot" style="background:var(--color-accent-red)"></span><span>Откладывать corrective feedback до накопления раздражения.</span></div>
+            <div class="bullet-item"><span class="bullet-dot" style="background:var(--color-accent-red)"></span><span>Критиковать личность вместо обсуждения наблюдаемого действия.</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block fade-up">
+    <div class="container">
+      <div class="callout">
+        <div>
+          <div class="callout-eyebrow">Operating rule</div>
+          <h2>Порядок важнее формы.</h2>
+          <p>Если сотрудник не понимает ожидания, похвала и критика будут восприниматься случайно. Поэтому метод всегда начинается с ясной цели, затем поддерживает правильное поведение и только после этого корректирует отклонения.</p>
+        </div>
+        <div class="callout-rules">
+          <div class="callout-rule"><div class="n">1</div><div class="t">Определи, чего ждёшь.</div></div>
+          <div class="callout-rule"><div class="n">2</div><div class="t">Замечай, что получается хорошо.</div></div>
+          <div class="callout-rule"><div class="n">3</div><div class="t">Корректируй быстро и без унижения.</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container footer-inner">
+      <div>2026 · One Minute Manager Card · Arrange-style system</div>
+      <div>Goals · Praising · Redirect</div>
+    </div>
+  </footer>
+
+  <script>
+    (function(){
+      const t=document.querySelector('[data-theme-toggle]');
+      const r=document.documentElement;
+      let d=matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light';
+      r.setAttribute('data-theme',d);
+      const sun='<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"></circle><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"></path></svg>';
+      const moon='<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>';
+      if(t){ t.innerHTML=d==='dark'?moon:sun; t.addEventListener('click',()=>{ d=d==='dark'?'light':'dark'; r.setAttribute('data-theme',d); t.innerHTML=d==='dark'?moon:sun; }); }
+      const io=new IntersectionObserver(es=>es.forEach(e=>{ if(e.isIntersecting) e.target.classList.add('in'); }),{threshold:.08});
+      document.querySelectorAll('.fade-up').forEach(el=>io.observe(el));
+    })();
+  </script>
+</body>
+</html>
