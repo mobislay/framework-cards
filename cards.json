@@ -118,6 +118,46 @@
       "subtitle": "Кен Бланшар, Спенсер Джонсон · 1982",
       "category": "leadership",
       "icon": "🏛️"
+    },
+    {
+      "id": "i-statement",
+      "file": "i-statement-card.html",
+      "name": "Я-высказывание",
+      "subtitle": "Техника ненасильственного общения · Маршалл Розенберг",
+      "category": "leadership",
+      "icon": "🏛️"
+    },
+    {
+      "id": "six-meetings",
+      "file": "six-meetings-card.html",
+      "name": "6 типов встреч",
+      "subtitle": "Meeting Cadence · ритм команды от daily до annual",
+      "category": "leadership",
+      "icon": "🏛️"
+    },
+    {
+      "id": "now-next-later",
+      "file": "now-next-later-card.html",
+      "name": "Now / Next / Later",
+      "subtitle": "Roadmap по горизонтам уверенности · Janna Bastow",
+      "category": "planning",
+      "icon": "🗺️"
+    },
+    {
+      "id": "master-problem-solving",
+      "file": "master-problem-solving-card.html",
+      "name": "Master Problem Solving",
+      "subtitle": "12 фреймворков диагностики и решений · PDCA · DMAIC · OODA · TRIZ",
+      "category": "analysis",
+      "icon": "📊"
+    },
+    {
+      "id": "situational-leadership",
+      "file": "situational-leadership-card.html",
+      "name": "Ситуационное лидерство",
+      "subtitle": "Hersey & Blanchard · 4 стиля по уровню зрелости сотрудника",
+      "category": "leadership",
+      "icon": "🏛️"
     }
   ]
 }
