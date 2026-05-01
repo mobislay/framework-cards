@@ -1,0 +1,737 @@
+<!DOCTYPE html>
+<html lang="ru" data-theme="light">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Я-высказывание — Framework Card</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://api.fontshare.com/v2/css?f[]=satoshi@300,400,500,700,900&display=swap" rel="stylesheet"/>
+<style>
+:root,[data-theme="light"]{
+  --color-bg:#f4f4f4;
+  --color-surface:#ffffff;
+  --color-surface-2:#fafafa;
+  --color-surface-offset:#f0f0f0;
+  --color-surface-offset-2:#e8e8e8;
+  --color-divider:#ececec;
+  --color-border:#e4e4e4;
+  --color-text:#0a0a0a;
+  --color-text-muted:#6b6b6b;
+  --color-text-faint:#a3a3a3;
+  --color-text-inverse:#ffffff;
+  --color-primary:#0a0a0a;
+  --color-primary-hover:#1f1f1f;
+  --color-accent-blue:#2b6df6;
+  --color-accent-green:#22c55e;
+  --color-accent-red:#ef4444;
+  --color-accent-amber:#f59e0b;
+  --color-accent-violet:#8b5cf6;
+  --font-display:'Satoshi','Inter',system-ui,sans-serif;
+  --font-body:'Satoshi','Inter',system-ui,sans-serif;
+  --font-mono:'SF Mono',ui-monospace,monospace;
+  --text-xs:clamp(0.75rem,0.7rem + 0.25vw,0.8125rem);
+  --text-sm:clamp(0.875rem,0.8rem + 0.25vw,0.9375rem);
+  --text-base:clamp(1rem,0.95rem + 0.25vw,1.0625rem);
+  --text-lg:clamp(1.125rem,1rem + 0.5vw,1.375rem);
+  --text-xl:clamp(1.5rem,1.2rem + 1vw,2rem);
+  --text-2xl:clamp(2rem,1.2rem + 2vw,3rem);
+  --text-hero:clamp(3rem,1rem + 6vw,5.5rem);
+  --space-1:.25rem;--space-2:.5rem;--space-3:.75rem;
+  --space-4:1rem;--space-5:1.25rem;--space-6:1.5rem;
+  --space-8:2rem;--space-10:2.5rem;--space-12:3rem;
+  --space-16:4rem;--space-20:5rem;--space-24:6rem;
+  --radius-sm:.375rem;--radius-md:.5rem;--radius-lg:.75rem;
+  --radius-xl:1rem;--radius-2xl:1.25rem;--radius-full:9999px;
+  --shadow-sm:0 1px 2px rgba(10,10,10,.04);
+  --shadow-md:0 4px 16px rgba(10,10,10,.06);
+  --shadow-lg:0 20px 48px rgba(10,10,10,.08);
+  --transition:180ms cubic-bezier(.16,1,.3,1);
+}
+[data-theme="dark"]{
+  --color-bg:#0a0a0a;
+  --color-surface:#141414;
+  --color-surface-2:#1a1a1a;
+  --color-surface-offset:#1f1f1f;
+  --color-surface-offset-2:#262626;
+  --color-divider:#262626;
+  --color-border:#2d2d2d;
+  --color-text:#f4f4f4;
+  --color-text-muted:#a3a3a3;
+  --color-text-faint:#6b6b6b;
+  --color-text-inverse:#0a0a0a;
+  --color-primary:#ffffff;
+  --color-primary-hover:#e5e5e5;
+  --shadow-sm:0 1px 2px rgba(0,0,0,.3);
+  --shadow-md:0 4px 16px rgba(0,0,0,.4);
+  --shadow-lg:0 20px 48px rgba(0,0,0,.5);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased;}
+body{font-family:var(--font-body);font-size:var(--text-base);line-height:1.6;color:var(--color-text);background:var(--color-bg);min-height:100dvh;transition:background var(--transition),color var(--transition);}
+h1,h2,h3,h4{font-family:var(--font-display);line-height:1.1;letter-spacing:-.02em;font-weight:700;}
+p{max-width:65ch;color:var(--color-text-muted);}
+button{font:inherit;cursor:pointer;background:none;border:none;color:inherit;}
+a{color:inherit;text-decoration:none;}
+svg{display:block;}
+.container{max-width:1200px;margin-inline:auto;padding-inline:var(--space-6);}
+
+/* ─── Header ─── */
+.site-header{position:sticky;top:0;z-index:50;backdrop-filter:blur(14px);background:color-mix(in oklab,var(--color-bg) 80%,transparent);border-bottom:1px solid var(--color-divider);}
+.header-inner{display:flex;align-items:center;justify-content:space-between;padding-block:var(--space-4);}
+.brand{display:flex;align-items:center;gap:var(--space-2);font-weight:700;font-size:var(--text-base);}
+.brand-dot{width:8px;height:8px;border-radius:var(--radius-full);background:var(--color-text);}
+.header-nav{display:flex;gap:var(--space-6);font-size:var(--text-sm);color:var(--color-text-muted);}
+.header-nav a{transition:color var(--transition);}
+.header-nav a:hover{color:var(--color-text);}
+.theme-toggle{width:36px;height:36px;border-radius:var(--radius-full);border:1px solid var(--color-border);display:grid;place-items:center;transition:background var(--transition),border-color var(--transition);}
+.theme-toggle:hover{background:var(--color-surface-offset);}
+@media(max-width:680px){.header-nav{display:none;}}
+
+/* ─── Hero ─── */
+.hero{padding-block:var(--space-24) var(--space-16);border-bottom:1px solid var(--color-divider);}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:var(--space-2);font-size:var(--text-xs);text-transform:uppercase;letter-spacing:.12em;color:var(--color-text-muted);margin-bottom:var(--space-6);}
+.hero-eyebrow::before{content:'';width:6px;height:6px;border-radius:var(--radius-full);background:var(--color-accent-blue);}
+.hero h1{font-size:var(--text-hero);font-weight:900;letter-spacing:-.04em;margin-bottom:var(--space-6);}
+.hero-lede{font-size:var(--text-lg);max-width:52ch;}
+.hero-meta{display:flex;gap:var(--space-8);flex-wrap:wrap;margin-top:var(--space-10);padding-top:var(--space-8);border-top:1px solid var(--color-divider);}
+.hero-meta div{font-size:var(--text-sm);}
+.hero-meta .label{color:var(--color-text-faint);display:block;margin-bottom:var(--space-1);}
+
+/* ─── Section ─── */
+section.block{padding-block:var(--space-20);border-bottom:1px solid var(--color-divider);}
+.section-head{display:grid;grid-template-columns:180px 1fr;gap:var(--space-12);margin-bottom:var(--space-12);}
+@media(max-width:720px){.section-head{grid-template-columns:1fr;gap:var(--space-4);}}
+.section-index{font-size:var(--text-xs);color:var(--color-text-faint);letter-spacing:.16em;text-transform:uppercase;padding-top:.15rem;}
+.section-title{font-size:var(--text-xl);margin-bottom:var(--space-3);}
+.section-desc{font-size:var(--text-base);}
+
+/* ─── Formula Builder (главный блок) ─── */
+.formula-wrap{display:grid;gap:var(--space-4);}
+.formula-step{background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--radius-xl);overflow:hidden;box-shadow:var(--shadow-sm);transition:box-shadow var(--transition),border-color var(--transition);}
+.formula-step:hover{box-shadow:var(--shadow-md);border-color:var(--color-text);}
+.formula-step-head{display:grid;grid-template-columns:56px 1fr auto;align-items:center;gap:var(--space-5);padding:var(--space-5) var(--space-6);}
+.step-num{width:44px;height:44px;border-radius:var(--radius-full);border:1.5px solid var(--color-border);display:grid;place-items:center;font-family:var(--font-mono);font-size:var(--text-sm);font-weight:600;color:var(--color-text-faint);flex-shrink:0;}
+.step-meta h3{font-size:var(--text-lg);margin-bottom:2px;}
+.step-meta .trigger{font-size:var(--text-xs);color:var(--color-text-faint);font-family:var(--font-mono);text-transform:uppercase;letter-spacing:.1em;}
+.step-badge{display:inline-flex;align-items:center;padding:3px var(--space-3);border-radius:var(--radius-full);font-size:.65rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;white-space:nowrap;}
+.formula-step-body{padding:0 var(--space-6) var(--space-6);padding-left:calc(56px + var(--space-5) + var(--space-6));}
+.step-desc{font-size:var(--text-sm);margin-bottom:var(--space-4);}
+.example-row{display:grid;grid-template-columns:1fr 1fr;gap:var(--space-3);}
+@media(max-width:600px){.example-row{grid-template-columns:1fr;}}
+.example-card{background:var(--color-surface-offset);border-radius:var(--radius-lg);padding:var(--space-4) var(--space-5);}
+.example-label{font-size:var(--text-xs);text-transform:uppercase;letter-spacing:.1em;font-weight:600;margin-bottom:var(--space-2);}
+.example-text{font-size:var(--text-sm);color:var(--color-text-muted);line-height:1.5;}
+
+/* Connector arrow */
+.formula-arrow{display:flex;align-items:center;justify-content:center;height:var(--space-4);}
+.formula-arrow svg{color:var(--color-text-faint);}
+
+/* ─── Formula shortcut bar ─── */
+.formula-bar{background:var(--color-text);color:var(--color-text-inverse);border-radius:var(--radius-2xl);padding:var(--space-6) var(--space-8);display:flex;align-items:center;gap:var(--space-3);flex-wrap:wrap;margin-top:var(--space-8);}
+.formula-bar-label{font-size:var(--text-xs);text-transform:uppercase;letter-spacing:.14em;color:rgba(255,255,255,.5);white-space:nowrap;}
+.formula-part{display:flex;align-items:center;gap:var(--space-3);}
+.formula-token{padding:var(--space-2) var(--space-4);border-radius:var(--radius-md);font-size:var(--text-sm);font-weight:600;background:rgba(255,255,255,.1);color:#fff;}
+.formula-plus{font-size:var(--text-sm);color:rgba(255,255,255,.35);}
+
+/* ─── Ty vs Ya comparison ─── */
+.compare-grid{display:grid;grid-template-columns:1fr 1fr;gap:var(--space-4);}
+@media(max-width:600px){.compare-grid{grid-template-columns:1fr;}}
+.compare-col{background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--radius-xl);overflow:hidden;}
+.compare-head{padding:var(--space-5) var(--space-6);border-bottom:1px solid var(--color-divider);}
+.compare-head h3{font-size:var(--text-lg);margin-bottom:var(--space-1);}
+.compare-head p{font-size:var(--text-xs);color:var(--color-text-faint);max-width:none;}
+.compare-items{padding:var(--space-5) var(--space-6);display:grid;gap:var(--space-3);}
+.compare-item{padding:var(--space-3) var(--space-4);border-radius:var(--radius-lg);font-size:var(--text-sm);color:var(--color-text-muted);line-height:1.5;display:grid;grid-template-columns:16px 1fr;gap:var(--space-3);align-items:start;}
+.compare-item-dot{width:6px;height:6px;border-radius:var(--radius-full);margin-top:.45rem;flex-shrink:0;}
+
+/* ─── Live transformer ─── */
+.transformer{background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--radius-xl);padding:var(--space-8);}
+.transformer-label{font-size:var(--text-xs);text-transform:uppercase;letter-spacing:.12em;color:var(--color-text-faint);margin-bottom:var(--space-6);}
+.msg-bubble{padding:var(--space-4) var(--space-5);border-radius:var(--radius-xl);font-size:var(--text-base);margin-bottom:var(--space-4);line-height:1.55;transition:all var(--transition);}
+.msg-bubble.ty{background:color-mix(in oklab,var(--color-accent-red) 8%,var(--color-surface-offset));border:1px solid color-mix(in oklab,var(--color-accent-red) 20%,var(--color-border));}
+.msg-bubble.ya{background:color-mix(in oklab,var(--color-accent-green) 8%,var(--color-surface-offset));border:1px solid color-mix(in oklab,var(--color-accent-green) 20%,var(--color-border));}
+.msg-meta{font-size:var(--text-xs);text-transform:uppercase;letter-spacing:.1em;font-weight:600;margin-bottom:var(--space-2);}
+.arrow-row{display:flex;align-items:center;gap:var(--space-3);margin-block:var(--space-3);color:var(--color-text-faint);font-size:var(--text-xs);text-transform:uppercase;letter-spacing:.1em;}
+.arrow-line{flex:1;height:1px;background:var(--color-divider);}
+.examples-switcher{display:flex;gap:var(--space-2);flex-wrap:wrap;margin-top:var(--space-6);}
+.ex-btn{padding:var(--space-2) var(--space-4);border-radius:var(--radius-full);border:1px solid var(--color-border);font-size:var(--text-xs);font-weight:500;transition:all var(--transition);cursor:pointer;}
+.ex-btn:hover,.ex-btn.active{background:var(--color-text);color:var(--color-text-inverse);border-color:var(--color-text);}
+
+/* ─── Context cards ─── */
+.context-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:var(--space-5);}
+.context-card{background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--radius-xl);padding:var(--space-6);transition:box-shadow var(--transition),border-color var(--transition);}
+.context-card:hover{box-shadow:var(--shadow-md);border-color:var(--color-text);}
+.context-card .num{font-size:var(--text-xs);color:var(--color-text-faint);letter-spacing:.16em;margin-bottom:var(--space-3);font-family:var(--font-mono);}
+.context-card h3{font-size:var(--text-lg);margin-bottom:var(--space-3);}
+.context-card p{font-size:var(--text-sm);}
+
+/* ─── Mistakes ─── */
+.mistake-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:var(--space-4);}
+.mistake{background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--radius-xl);padding:var(--space-6);}
+.mistake .num{font-size:var(--text-xs);color:var(--color-text-faint);font-family:var(--font-mono);margin-bottom:var(--space-3);}
+.mistake h3{font-size:var(--text-lg);margin-bottom:var(--space-3);}
+.mistake p{font-size:var(--text-sm);}
+
+/* ─── Callout ─── */
+.callout-block{background:var(--color-text);border-radius:var(--radius-2xl);padding:var(--space-12) var(--space-10);display:grid;grid-template-columns:1fr 1.2fr;gap:var(--space-12);align-items:center;}
+@media(max-width:720px){.callout-block{grid-template-columns:1fr;padding:var(--space-8);gap:var(--space-8);}}
+.callout-eyebrow{font-size:var(--text-xs);text-transform:uppercase;letter-spacing:.14em;color:rgba(255,255,255,.4);margin-bottom:var(--space-4);}
+.callout-block h2{font-size:var(--text-2xl);color:#fff;letter-spacing:-.03em;line-height:1.1;}
+.callout-block p{color:rgba(255,255,255,.6);max-width:44ch;margin-top:var(--space-4);}
+.callout-pills{display:flex;flex-wrap:wrap;gap:var(--space-2);}
+.callout-pill{padding:var(--space-2) var(--space-4);border-radius:var(--radius-full);background:rgba(255,255,255,.08);font-size:var(--text-xs);font-weight:500;color:#fff;letter-spacing:.04em;}
+
+/* ─── NVC connection ─── */
+.nvc-row{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--space-4);}
+@media(max-width:720px){.nvc-row{grid-template-columns:1fr 1fr;}}
+@media(max-width:420px){.nvc-row{grid-template-columns:1fr;}}
+.nvc-card{background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--radius-xl);padding:var(--space-5);}
+.nvc-num{font-size:var(--text-xs);color:var(--color-text-faint);font-family:var(--font-mono);margin-bottom:var(--space-3);}
+.nvc-title{font-size:var(--text-lg);font-weight:700;margin-bottom:var(--space-2);}
+.nvc-desc{font-size:var(--text-xs);color:var(--color-text-muted);}
+.nvc-link{font-size:var(--text-xs);text-transform:uppercase;letter-spacing:.1em;color:var(--color-text-faint);padding:var(--space-2) var(--space-3);background:var(--color-surface-offset);border-radius:var(--radius-sm);display:inline-block;margin-top:var(--space-3);}
+
+/* ─── Footer ─── */
+footer{padding-block:var(--space-12);font-size:var(--text-sm);color:var(--color-text-muted);}
+.footer-inner{display:flex;justify-content:space-between;flex-wrap:wrap;gap:var(--space-4);}
+
+.fade-up{opacity:0;transform:translateY(10px);transition:opacity .7s ease,transform .7s ease;}
+.fade-up.in{opacity:1;transform:none;}
+
+.back-link{display:inline-flex;align-items:center;gap:6px;padding:6px 12px;border:1px solid var(--border);border-radius:999px;color:var(--muted);font-size:var(--sm);text-decoration:none;transition:color var(--t),border-color var(--t),background var(--t)}
+.back-link:hover{color:var(--text);border-color:var(--text);background:var(--offset)}
+.back-link svg{width:14px;height:14px}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="site-header">
+  <div class="container header-inner">
+    <a class="back-link" href="index.html" aria-label="Вернуться в каталог"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>Каталог</a><div class="brand"><span class="brand-dot"></span> Framework Cards</div>
+    <nav class="header-nav">
+      <a href="#formula">Формула</a>
+      <a href="#compare">Я vs Ты</a>
+      <a href="#examples">Примеры</a>
+      <a href="#context">Контекст</a>
+      <a href="#mistakes">Ошибки</a>
+    </nav>
+    <button class="theme-toggle" data-theme-toggle aria-label="Переключить тему">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+    </button>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero fade-up">
+  <div class="container">
+    <div class="hero-eyebrow">Коммуникация · Психология</div>
+    <h1>Я-высказывание.</h1>
+    <p class="hero-lede">Техника конструктивного общения: говорить о своих чувствах и потребностях без обвинений, критики и атаки на собеседника.</p>
+    <div class="hero-meta">
+      <div><span class="label">Автор</span>Томас Гордон</div>
+      <div><span class="label">Год</span>1960-е, книга PET · 1970</div>
+      <div><span class="label">Основа</span>Нет обвинений — есть чувства</div>
+      <div><span class="label">Связь</span>NVC Маршалла Розенберга</div>
+      <div><span class="label">Применение</span>Конфликты, обратная связь, отношения</div>
+    </div>
+  </div>
+</section>
+
+<!-- 01 FORMULA -->
+<section class="block fade-up" id="formula">
+  <div class="container">
+    <div class="section-head">
+      <div class="section-index">01 — Формула</div>
+      <div>
+        <h2 class="section-title">Пять шагов высказывания</h2>
+        <p class="section-desc">Каждый шаг выполняет свою функцию. Можно использовать упрощённую формулу из 3 шагов — факт, чувство, просьба — или полную пятишаговую.</p>
+      </div>
+    </div>
+
+    <div class="formula-wrap">
+
+      <!-- Step 1 -->
+      <div class="formula-step">
+        <div class="formula-step-head">
+          <div class="step-num">01</div>
+          <div class="step-meta">
+            <h3>Факт</h3>
+            <div class="trigger">«Когда я вижу / слышу / замечаю…»</div>
+          </div>
+          <span class="step-badge" style="background:color-mix(in oklab,var(--color-accent-blue) 12%,var(--color-surface-offset));color:var(--color-accent-blue);">Без оценки</span>
+        </div>
+        <div class="formula-step-body">
+          <p class="step-desc">Описывается конкретное, наблюдаемое поведение или ситуация — безоценочно, как будто камера фиксирует факт. Никаких «ты всегда» и «ты никогда».</p>
+          <div class="example-row">
+            <div class="example-card">
+              <div class="example-label" style="color:var(--color-accent-red);">❌ С оценкой</div>
+              <div class="example-text">«Когда ты грубишь и ведёшь себя неуважительно…»</div>
+            </div>
+            <div class="example-card">
+              <div class="example-label" style="color:var(--color-accent-green);">✓ Факт</div>
+              <div class="example-text">«Когда на совещании ты перебиваешь меня на середине фразы…»</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="formula-arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg></div>
+
+      <!-- Step 2 -->
+      <div class="formula-step">
+        <div class="formula-step-head">
+          <div class="step-num">02</div>
+          <div class="step-meta">
+            <h3>Чувство</h3>
+            <div class="trigger">«Я чувствую… / Мне…»</div>
+          </div>
+          <span class="step-badge" style="background:color-mix(in oklab,var(--color-accent-violet) 12%,var(--color-surface-offset));color:var(--color-accent-violet);">Про себя</span>
+        </div>
+        <div class="formula-step-body">
+          <p class="step-desc">Называется конкретная эмоция от первого лица. Не «я чувствую, что ты не уважаешь меня» — это замаскированное обвинение. Нужна настоящая эмоция: злость, обида, тревога, радость.</p>
+          <div class="example-row">
+            <div class="example-card">
+              <div class="example-label" style="color:var(--color-accent-red);">❌ Замаскированное обвинение</div>
+              <div class="example-text">«Я чувствую, что тебе всё равно»</div>
+            </div>
+            <div class="example-card">
+              <div class="example-label" style="color:var(--color-accent-green);">✓ Настоящее чувство</div>
+              <div class="example-text">«…я чувствую раздражение и обиду»</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="formula-arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg></div>
+
+      <!-- Step 3 -->
+      <div class="formula-step">
+        <div class="formula-step-head">
+          <div class="step-num">03</div>
+          <div class="step-meta">
+            <h3>Причина / Потребность</h3>
+            <div class="trigger">«Потому что для меня важно…»</div>
+          </div>
+          <span class="step-badge" style="background:color-mix(in oklab,var(--color-accent-amber) 12%,var(--color-surface-offset));color:var(--color-accent-amber);">Необязательно</span>
+        </div>
+        <div class="formula-step-body">
+          <p class="step-desc">Объясняется, почему ситуация вызвала именно такое чувство — какая потребность не удовлетворена. Шаг помогает собеседнику понять вас, а не угадывать. Можно пропустить в коротких высказываниях.</p>
+          <div class="example-row">
+            <div class="example-card">
+              <div class="example-label" style="color:var(--color-accent-green);">✓ Причина</div>
+              <div class="example-text">«…потому что для меня важно, чтобы мой голос был услышан»</div>
+            </div>
+            <div class="example-card">
+              <div class="example-label" style="color:var(--color-accent-green);">✓ Потребность</div>
+              <div class="example-text">«…потому что мне нужно уважение к моей работе»</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="formula-arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg></div>
+
+      <!-- Step 4 -->
+      <div class="formula-step">
+        <div class="formula-step-head">
+          <div class="step-num">04</div>
+          <div class="step-meta">
+            <h3>Просьба</h3>
+            <div class="trigger">«Мне бы хотелось… / Пожалуйста…»</div>
+          </div>
+          <span class="step-badge" style="background:color-mix(in oklab,var(--color-accent-green) 12%,var(--color-surface-offset));color:var(--color-accent-green);">Конкретно</span>
+        </div>
+        <div class="formula-step-body">
+          <p class="step-desc">Формулируется конкретное, выполнимое пожелание. Не требование и не ультиматум — просьба, от которой можно отказаться. Чем конкретнее просьба, тем выше шанс, что она будет услышана.</p>
+          <div class="example-row">
+            <div class="example-card">
+              <div class="example-label" style="color:var(--color-accent-red);">❌ Размытая просьба</div>
+              <div class="example-text">«Мне бы хотелось большего уважения»</div>
+            </div>
+            <div class="example-card">
+              <div class="example-label" style="color:var(--color-accent-green);">✓ Конкретная просьба</div>
+              <div class="example-text">«Пожалуйста, дождись конца моей мысли перед ответом»</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="formula-arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg></div>
+
+      <!-- Step 5 -->
+      <div class="formula-step">
+        <div class="formula-step-head">
+          <div class="step-num">05</div>
+          <div class="step-meta">
+            <h3>Намерение</h3>
+            <div class="trigger">«Я буду стараться… / Что думаешь?»</div>
+          </div>
+          <span class="step-badge" style="background:color-mix(in oklab,var(--color-text-faint) 20%,var(--color-surface-offset));color:var(--color-text-muted);">Опционально</span>
+        </div>
+        <div class="formula-step-body">
+          <p class="step-desc">Говорящий делится своими дальнейшими планами или приглашает собеседника к совместному поиску решения. Превращает монолог в диалог и снижает ощущение давления.</p>
+          <div class="example-row">
+            <div class="example-card">
+              <div class="example-label" style="color:var(--color-accent-green);">✓ Своё намерение</div>
+              <div class="example-text">«Я постараюсь формулировать мысли короче»</div>
+            </div>
+            <div class="example-card">
+              <div class="example-label" style="color:var(--color-accent-green);">✓ Диалог</div>
+              <div class="example-text">«Как ты думаешь, как нам лучше это решить?»</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Formula bar -->
+    <div class="formula-bar">
+      <span class="formula-bar-label">Формула</span>
+      <div class="formula-part">
+        <span class="formula-token">Факт</span>
+        <span class="formula-plus">+</span>
+        <span class="formula-token">Чувство</span>
+        <span class="formula-plus">+</span>
+        <span class="formula-token">Потребность</span>
+        <span class="formula-plus">+</span>
+        <span class="formula-token">Просьба</span>
+        <span class="formula-plus">+</span>
+        <span class="formula-token" style="opacity:.55;">Намерение</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 02 ТЫ vs Я -->
+<section class="block fade-up" id="compare">
+  <div class="container">
+    <div class="section-head">
+      <div class="section-index">02 — Ты vs Я</div>
+      <div>
+        <h2 class="section-title">Противопоставление</h2>
+        <p class="section-desc">Ты-высказывание и Я-высказывание несут одно и то же содержание, но вызывают диаметрально противоположные реакции у собеседника.</p>
+      </div>
+    </div>
+
+    <div class="compare-grid">
+      <div class="compare-col">
+        <div class="compare-head">
+          <h3>Ты-высказывание</h3>
+          <p>Включает защитную реакцию</p>
+        </div>
+        <div class="compare-items">
+          <div class="compare-item" style="background:color-mix(in oklab,var(--color-accent-red) 6%,var(--color-surface-offset));">
+            <div class="compare-item-dot" style="background:var(--color-accent-red);"></div>
+            <span>Фокус — на поведении другого человека</span>
+          </div>
+          <div class="compare-item" style="background:color-mix(in oklab,var(--color-accent-red) 6%,var(--color-surface-offset));">
+            <div class="compare-item-dot" style="background:var(--color-accent-red);"></div>
+            <span>Содержит оценку, обвинение или ярлык</span>
+          </div>
+          <div class="compare-item" style="background:color-mix(in oklab,var(--color-accent-red) 6%,var(--color-surface-offset));">
+            <div class="compare-item-dot" style="background:var(--color-accent-red);"></div>
+            <span>Собеседник закрывается, включает защиту</span>
+          </div>
+          <div class="compare-item" style="background:color-mix(in oklab,var(--color-accent-red) 6%,var(--color-surface-offset));">
+            <div class="compare-item-dot" style="background:var(--color-accent-red);"></div>
+            <span>Конфликт обостряется или уходит вглубь</span>
+          </div>
+          <div class="compare-item" style="background:color-mix(in oklab,var(--color-accent-red) 6%,var(--color-surface-offset));">
+            <div class="compare-item-dot" style="background:var(--color-accent-red);"></div>
+            <span>«Ты никогда не убираешь за собой!»</span>
+          </div>
+        </div>
+      </div>
+      <div class="compare-col">
+        <div class="compare-head">
+          <h3>Я-высказывание</h3>
+          <p>Снимает защиту, открывает диалог</p>
+        </div>
+        <div class="compare-items">
+          <div class="compare-item" style="background:color-mix(in oklab,var(--color-accent-green) 6%,var(--color-surface-offset));">
+            <div class="compare-item-dot" style="background:var(--color-accent-green);"></div>
+            <span>Фокус — на собственных чувствах говорящего</span>
+          </div>
+          <div class="compare-item" style="background:color-mix(in oklab,var(--color-accent-green) 6%,var(--color-surface-offset));">
+            <div class="compare-item-dot" style="background:var(--color-accent-green);"></div>
+            <span>Описывает факт и называет эмоцию</span>
+          </div>
+          <div class="compare-item" style="background:color-mix(in oklab,var(--color-accent-green) 6%,var(--color-surface-offset));">
+            <div class="compare-item-dot" style="background:var(--color-accent-green);"></div>
+            <span>Собеседник расслабляется — это не про него</span>
+          </div>
+          <div class="compare-item" style="background:color-mix(in oklab,var(--color-accent-green) 6%,var(--color-surface-offset));">
+            <div class="compare-item-dot" style="background:var(--color-accent-green);"></div>
+            <span>Пространство для эмпатии и совместного решения</span>
+          </div>
+          <div class="compare-item" style="background:color-mix(in oklab,var(--color-accent-green) 6%,var(--color-surface-offset));">
+            <div class="compare-item-dot" style="background:var(--color-accent-green);"></div>
+            <span>«Когда посуда остаётся в раковине, я чувствую усталость»</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 03 LIVE EXAMPLES -->
+<section class="block fade-up" id="examples">
+  <div class="container">
+    <div class="section-head">
+      <div class="section-index">03 — Примеры</div>
+      <div>
+        <h2 class="section-title">Трансформатор высказываний</h2>
+        <p class="section-desc">Одна и та же ситуация — через Ты-высказывание и через Я-высказывание. Выберите контекст.</p>
+      </div>
+    </div>
+
+    <div class="transformer">
+      <div class="transformer-label">Преобразование</div>
+
+      <div id="ty-bubble" class="msg-bubble ty">
+        <div class="msg-meta" style="color:var(--color-accent-red);">Ты-высказывание</div>
+        <div id="ty-text">«Ты вечно опаздываешь! Тебе плевать на моё время.»</div>
+      </div>
+
+      <div class="arrow-row">
+        <div class="arrow-line"></div>
+        <span>→ трансформация</span>
+        <div class="arrow-line"></div>
+      </div>
+
+      <div id="ya-bubble" class="msg-bubble ya">
+        <div class="msg-meta" style="color:var(--color-accent-green);">Я-высказывание</div>
+        <div id="ya-text">«Когда ты приходишь позже договорённого времени, я расстраиваюсь и начинаю беспокоиться — для меня важно, чтобы наши договорённости соблюдались. Пожалуйста, предупреждай заранее, если задерживаешься.»</div>
+      </div>
+
+      <div class="examples-switcher" id="ex-switcher">
+        <button class="ex-btn active" data-idx="0">Опоздание</button>
+        <button class="ex-btn" data-idx="1">Перебивают</button>
+        <button class="ex-btn" data-idx="2">Критика работы</button>
+        <button class="ex-btn" data-idx="3">Беспорядок</button>
+        <button class="ex-btn" data-idx="4">Обратная связь</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 04 CONTEXT -->
+<section class="block fade-up" id="context">
+  <div class="container">
+    <div class="section-head">
+      <div class="section-index">04 — Контексты</div>
+      <div>
+        <h2 class="section-title">Где применять</h2>
+        <p class="section-desc">Я-высказывание одинаково работает в семье, в команде и при обратной связи с коллегами — везде, где важно донести информацию без разрушения отношений.</p>
+      </div>
+    </div>
+
+    <div class="context-grid">
+      <div class="context-card">
+        <div class="num">CONTEXT 01</div>
+        <h3>Личные отношения</h3>
+        <p>Партнёр, дети, родители. Выражение обиды, тревоги или благодарности без обвинений. Помогает строить доверие и психологическую безопасность в семье.</p>
+      </div>
+      <div class="context-card">
+        <div class="num">CONTEXT 02</div>
+        <h3>Команда и коллеги</h3>
+        <p>Конфликты в рабочей группе, недопонимание с менеджером или подчинённым. Позволяет озвучить дискомфорт, не создавая HR-инцидента.</p>
+      </div>
+      <div class="context-card">
+        <div class="num">CONTEXT 03</div>
+        <h3>Обратная связь</h3>
+        <p>Фидбек на работу или поведение. «Когда отчёт приходит без данных, мне сложно принять решение на встрече» — конструктивнее, чем «ты халтуришь».</p>
+      </div>
+      <div class="context-card">
+        <div class="num">CONTEXT 04</div>
+        <h3>Переговоры</h3>
+        <p>Позволяет обозначить свою позицию и интересы, не перекладывая ответственность на другую сторону. Снижает градус и удерживает разговор в зоне поиска решений.</p>
+      </div>
+      <div class="context-card">
+        <div class="num">CONTEXT 05</div>
+        <h3>Педагогика</h3>
+        <p>Первоначальная аудитория Томаса Гордона — родители и учителя. Техника помогает ставить границы детям без давления на самооценку: «Когда ты кричишь в библиотеке, я не могу сосредоточиться».</p>
+      </div>
+      <div class="context-card">
+        <div class="num">CONTEXT 06</div>
+        <h3>Позитивные ситуации</h3>
+        <p>Техника работает не только в конфликтах. «Когда ты помогаешь мне, я чувствую поддержку» — Я-высказывание для благодарности и признания, которое ощущается по-настоящему.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 05 MISTAKES -->
+<section class="block fade-up" id="mistakes">
+  <div class="container">
+    <div class="section-head">
+      <div class="section-index">05 — Ошибки</div>
+      <div>
+        <h2 class="section-title">Типичные ловушки</h2>
+        <p class="section-desc">Я-высказывание — это не просто замена «ты» на «я». Эти ошибки превращают технику в замаскированное обвинение.</p>
+      </div>
+    </div>
+
+    <div class="mistake-grid">
+      <div class="mistake">
+        <div class="num">ERR 01</div>
+        <h3>«Я чувствую, что ты…»</h3>
+        <p>После слов «я чувствую» идёт обвинение, а не эмоция. «Я чувствую, что тебе всё равно» — это Ты-высказывание с маскировкой. Нужно называть эмоцию: обида, злость, тревога.</p>
+      </div>
+      <div class="mistake">
+        <div class="num">ERR 02</div>
+        <h3>Ты-обвинение в шаге «Факт»</h3>
+        <p>«Когда ты ведёшь себя грубо» — это оценка, а не факт. Факт — наблюдаемое поведение: «Когда ты отвечаешь одним словом», «Когда ты уходишь посреди разговора».</p>
+      </div>
+      <div class="mistake">
+        <div class="num">ERR 03</div>
+        <h3>Обобщения вместо конкретики</h3>
+        <p>«Когда ты всегда…» и «Когда ты никогда…» — это не факт, это обобщение. Оно немедленно провоцирует спор о том, «всегда» или «иногда», и уводит разговор в сторону.</p>
+      </div>
+      <div class="mistake">
+        <div class="num">ERR 04</div>
+        <h3>Просьба как требование</h3>
+        <p>«Ты обязан(а) делать X» — это не просьба. Просьба предполагает право отказа. Если в голосе звучит ультиматум, собеседник слышит угрозу, а не запрос.</p>
+      </div>
+      <div class="mistake">
+        <div class="num">ERR 05</div>
+        <h3>Использование в острой фазе</h3>
+        <p>В момент пика эмоций ни один инструмент не работает идеально. Если накал слишком высок — лучше взять паузу и вернуться к разговору, когда оба готовы слушать.</p>
+      </div>
+      <div class="mistake">
+        <div class="num">ERR 06</div>
+        <h3>Ожидание «чудо-таблетки»</h3>
+        <p>Я-высказывание снижает вероятность конфликта, но не гарантирует нужный результат. Это инструмент честного диалога, а не манипуляция для получения желаемого.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 06 NVC CONNECTION -->
+<section class="block fade-up">
+  <div class="container">
+    <div class="section-head">
+      <div class="section-index">06 — Связь с NVC</div>
+      <div>
+        <h2 class="section-title">Ненасильственное общение</h2>
+        <p class="section-desc">Я-высказывание Гордона и Ненасильственное общение Розенберга — родственные концепции с разным происхождением. NVC более формализована и добавляет явный фокус на потребностях.</p>
+      </div>
+    </div>
+
+    <div class="nvc-row">
+      <div class="nvc-card">
+        <div class="nvc-num">NVC · 01</div>
+        <div class="nvc-title">Наблюдение</div>
+        <div class="nvc-desc">Конкретный факт без суждений и оценок — как камера</div>
+        <span class="nvc-link">= Факт в Я-высказывании</span>
+      </div>
+      <div class="nvc-card">
+        <div class="nvc-num">NVC · 02</div>
+        <div class="nvc-title">Чувства</div>
+        <div class="nvc-desc">Реальная эмоция, вызванная наблюдением — не интерпретация</div>
+        <span class="nvc-link">= Чувство в Я-высказывании</span>
+      </div>
+      <div class="nvc-card">
+        <div class="nvc-num">NVC · 03</div>
+        <div class="nvc-title">Потребности</div>
+        <div class="nvc-desc">Фундаментальная нужда, которая стоит за чувством</div>
+        <span class="nvc-link">= Причина в Я-высказывании</span>
+      </div>
+      <div class="nvc-card">
+        <div class="nvc-num">NVC · 04</div>
+        <div class="nvc-title">Просьба</div>
+        <div class="nvc-desc">Конкретное действие, которое поможет удовлетворить потребность</div>
+        <span class="nvc-link">= Просьба в Я-высказывании</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CALLOUT -->
+<section class="block fade-up" style="padding-block:var(--space-12)">
+  <div class="container">
+    <div class="callout-block">
+      <div>
+        <div class="callout-eyebrow">Ключевой принцип</div>
+        <h2>Говори про себя — не про другого.</h2>
+        <p>Когда мы описываем свои чувства, собеседник не чувствует атаки. Он готов слушать. Один шаг — замена «ты» на «я» — меняет всю динамику разговора.</p>
+      </div>
+      <div>
+        <div style="color:rgba(255,255,255,.4);font-size:var(--text-xs);text-transform:uppercase;letter-spacing:.12em;margin-bottom:var(--space-4);">Эффекты техники</div>
+        <div class="callout-pills">
+          <span class="callout-pill">Снимает защитную реакцию</span>
+          <span class="callout-pill">Берёт ответственность за свои чувства</span>
+          <span class="callout-pill">Формирует психологическую безопасность</span>
+          <span class="callout-pill">Снижает эскалацию конфликта</span>
+          <span class="callout-pill">Открывает пространство для эмпатии</span>
+          <span class="callout-pill">Работает в положительных ситуациях</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container footer-inner">
+    <div>© 2026 · Framework Cards · Я-высказывание · Томас Гордон, 1970</div>
+    <div>Коммуникация · NVC · Ненасильственное общение</div>
+  </div>
+</footer>
+
+<script>
+// Theme toggle
+(function(){
+  const t=document.querySelector('[data-theme-toggle]'),r=document.documentElement;
+  let d=matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light';
+  r.setAttribute('data-theme',d);updateIcon();
+  t&&t.addEventListener('click',()=>{d=d==='dark'?'light':'dark';r.setAttribute('data-theme',d);updateIcon();});
+  function updateIcon(){if(!t)return;t.innerHTML=d==='dark'?'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>':'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>';}
+})();
+
+// Intersection observer для fade-up
+(function(){
+  const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('in');}),{threshold:.07});
+  document.querySelectorAll('.fade-up').forEach(el=>io.observe(el));
+})();
+
+// Examples switcher
+const examples=[
+  {
+    ty:'«Ты вечно опаздываешь! Тебе плевать на моё время.»',
+    ya:'«Когда ты приходишь позже договорённого времени, я расстраиваюсь и начинаю беспокоиться — для меня важно, чтобы наши договорённости соблюдались. Пожалуйста, предупреждай заранее, если задерживаешься.»'
+  },
+  {
+    ty:'«Ты меня вообще не слушаешь! Постоянно перебиваешь!»',
+    ya:'«Когда ты перебиваешь меня на середине фразы, я чувствую раздражение и теряю мысль — мне важно быть услышанной. Пожалуйста, дождись, когда я закончу.»'
+  },
+  {
+    ty:'«Ты сделал это отвратительно, как обычно. Никакой самостоятельности.»',
+    ya:'«Когда я вижу работу без сопроводительных данных, мне сложно презентовать результат руководству. Можешь добавлять источники в следующий раз?»'
+  },
+  {
+    ty:'«Ты никогда не убираешь за собой! Живёшь как в хлеву.»',
+    ya:'«Когда посуда остаётся в раковине после ужина, я устаю и чувствую, что делаю всё одна. Мне было бы важно, чтобы мы убирали по очереди.»'
+  },
+  {
+    ty:'«Ты мог бы хоть раз сказать "спасибо"! Я стараюсь, а ты ничего не замечаешь.»',
+    ya:'«Когда ты говоришь, что мой вклад помог, я чувствую радость и мотивацию продолжать. Для меня это действительно важно.»'
+  }
+];
+(function(){
+  const tyEl=document.getElementById('ty-text'),yaEl=document.getElementById('ya-text');
+  const btns=document.querySelectorAll('#ex-switcher .ex-btn');
+  btns.forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      btns.forEach(b=>b.classList.remove('active'));
+      btn.classList.add('active');
+      const idx=+btn.dataset.idx;
+      tyEl.textContent=examples[idx].ty;
+      yaEl.textContent=examples[idx].ya;
+    });
+  });
+})();
+</script>
+</body>
+</html>
