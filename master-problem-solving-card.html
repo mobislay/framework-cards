@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="ru" data-theme="light">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Master Problem Solving — Framework Card</title>
+<link href="https://api.fontshare.com/v2/css?f[]=satoshi@300,400,500,700,900&display=swap" rel="stylesheet"/>
+<style>
+:root,[data-theme="light"]{
+  --bg:#f4f4f4;--surface:#fff;--surface-2:#fafafa;--offset:#f0f0f0;--offset-2:#e8e8e8;
+  --divider:#ececec;--border:#e4e4e4;
+  --text:#0a0a0a;--muted:#6b6b6b;--faint:#a3a3a3;--inverse:#fff;
+  --blue:#2b6df6;--green:#22c55e;--amber:#f59e0b;--red:#ef4444;--violet:#8b5cf6;--teal:#14b8a6;--rose:#f43f5e;
+  --shadow-sm:0 1px 2px rgba(10,10,10,.04);
+  --shadow-md:0 4px 16px rgba(10,10,10,.07);
+  --shadow-lg:0 20px 48px rgba(10,10,10,.09);
+  --r-sm:.375rem;--r-md:.5rem;--r-lg:.75rem;--r-xl:1rem;--r-2xl:1.25rem;--r-full:9999px;
+  --s-1:.25rem;--s-2:.5rem;--s-3:.75rem;--s-4:1rem;--s-5:1.25rem;--s-6:1.5rem;
+  --s-8:2rem;--s-10:2.5rem;--s-12:3rem;--s-14:3.5rem;--s-16:4rem;--s-20:5rem;--s-24:6rem;
+  --t:180ms cubic-bezier(.16,1,.3,1);
+  --xs:clamp(.75rem,.7rem + .2vw,.8125rem);
+  --sm:clamp(.875rem,.82rem + .2vw,.9375rem);
+  --base:clamp(1rem,.95rem + .25vw,1.0625rem);
+  --lg:clamp(1.125rem,1rem + .5vw,1.375rem);
+  --xl:clamp(1.5rem,1.2rem + 1vw,2rem);
+  --2xl:clamp(2rem,1.2rem + 2vw,3rem);
+  --hero:clamp(3.25rem,1rem + 8vw,7rem);
+}
+[data-theme="dark"]{
+  --bg:#0a0a0a;--surface:#141414;--surface-2:#1a1a1a;--offset:#1f1f1f;--offset-2:#262626;
+  --divider:#262626;--border:#2d2d2d;
+  --text:#f4f4f4;--muted:#a3a3a3;--faint:#6b6b6b;--inverse:#0a0a0a;
+  --shadow-sm:0 1px 2px rgba(0,0,0,.3);--shadow-md:0 4px 16px rgba(0,0,0,.4);--shadow-lg:0 20px 48px rgba(0,0,0,.5);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased}
+body{font-family:'Satoshi','Inter',system-ui,sans-serif;font-size:var(--base);line-height:1.6;color:var(--text);background:var(--bg);min-height:100dvh;transition:background var(--t),color var(--t)}
+h1,h2,h3,h4{font-weight:700;letter-spacing:-.02em;line-height:1.1}
+p{color:var(--muted);max-width:72ch}
+a{color:inherit}
+button{font:inherit;cursor:pointer;background:none;border:none;color:inherit}
+svg{display:block}
+.container{max-width:1100px;margin-inline:auto;padding-inline:var(--s-6)}
+
+.site-header{position:sticky;top:0;z-index:50;backdrop-filter:blur(14px);background:color-mix(in oklab,var(--bg) 80%,transparent);border-bottom:1px solid var(--divider)}
+.header-inner{display:flex;align-items:center;justify-content:space-between;padding-block:var(--s-4)}
+.brand{display:flex;align-items:center;gap:var(--s-2);font-weight:700}
+.brand-dot{width:8px;height:8px;border-radius:var(--r-full);background:var(--text)}
+.header-nav{display:flex;gap:var(--s-6);font-size:var(--sm);color:var(--muted)}
+.header-nav a{text-decoration:none;transition:color var(--t)}
+.header-nav a:hover{color:var(--text)}
+.theme-toggle{width:36px;height:36px;border-radius:var(--r-full);border:1px solid var(--border);display:grid;place-items:center;transition:all var(--t)}
+.theme-toggle:hover{background:var(--offset)}
+@media(max-width:720px){.header-nav{display:none}}
+
+.hero{padding-block:var(--s-20) var(--s-14);border-bottom:1px solid var(--divider)}
+.eyebrow{display:inline-flex;align-items:center;gap:var(--s-2);font-size:var(--xs);text-transform:uppercase;letter-spacing:.14em;color:var(--muted);margin-bottom:var(--s-6)}
+.eyebrow::before{content:'';width:6px;height:6px;border-radius:var(--r-full);background:var(--blue)}
+.hero h1{font-size:var(--hero);font-weight:900;letter-spacing:-.05em;margin-bottom:var(--s-5)}
+.hero-lede{font-size:var(--lg);max-width:58ch}
+.hero-meta{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:var(--s-6);margin-top:var(--s-10);padding-top:var(--s-8);border-top:1px solid var(--divider)}
+.hero-meta .k{font-size:var(--xs);color:var(--faint);text-transform:uppercase;letter-spacing:.12em;margin-bottom:var(--s-1)}
+.hero-meta .v{font-size:var(--base);font-weight:500}
+
+.block{padding-block:var(--s-20);border-bottom:1px solid var(--divider)}
+.section-head{display:grid;grid-template-columns:180px 1fr;gap:var(--s-12);margin-bottom:var(--s-10)}
+@media(max-width:720px){.section-head{grid-template-columns:1fr;gap:var(--s-3)}}
+.section-index{font-size:var(--xs);color:var(--faint);letter-spacing:.16em;text-transform:uppercase}
+.section-title{font-size:var(--xl);margin-bottom:var(--s-3)}
+.section-desc{font-size:var(--base)}
+
+/* Groups row */
+.groups{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--s-3)}
+@media(max-width:900px){.groups{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:520px){.groups{grid-template-columns:1fr}}
+.group-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-xl);padding:var(--s-5);transition:all var(--t)}
+.group-card:hover{border-color:var(--text);box-shadow:var(--shadow-sm)}
+.group-head{display:flex;align-items:center;gap:var(--s-2);font-size:var(--xs);text-transform:uppercase;letter-spacing:.12em;font-weight:600;margin-bottom:var(--s-3)}
+.group-dot{width:8px;height:8px;border-radius:var(--r-full)}
+.group-title{font-size:var(--base);font-weight:600;margin-bottom:var(--s-2)}
+.group-tools{font-size:var(--sm);color:var(--muted)}
+
+/* Method cards */
+.methods-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--s-4)}
+@media(max-width:900px){.methods-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:560px){.methods-grid{grid-template-columns:1fr}}
+.method{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-xl);padding:var(--s-6);box-shadow:var(--shadow-sm);transition:all var(--t);display:flex;flex-direction:column;min-height:260px}
+.method:hover{box-shadow:var(--shadow-md);transform:translateY(-2px)}
+.method-head{display:flex;align-items:flex-start;justify-content:space-between;gap:var(--s-4);margin-bottom:var(--s-4)}
+.method-letter{font-size:var(--2xl);font-weight:900;letter-spacing:-.04em;line-height:1}
+.method-badge{font-size:var(--xs);padding:var(--s-1) var(--s-3);border-radius:var(--r-full);font-weight:600;text-transform:uppercase;letter-spacing:.1em;white-space:nowrap}
+.method-name{font-size:var(--lg);font-weight:700;margin-bottom:var(--s-2)}
+.method-role{font-size:var(--xs);color:var(--faint);text-transform:uppercase;letter-spacing:.12em;margin-bottom:var(--s-3)}
+.method-desc{font-size:var(--sm);color:var(--muted);flex:1}
+.method-steps{margin-top:var(--s-4);padding-top:var(--s-4);border-top:1px solid var(--divider)}
+.method-steps-label{font-size:var(--xs);color:var(--faint);text-transform:uppercase;letter-spacing:.1em;margin-bottom:var(--s-2);font-weight:600}
+.step-list{display:grid;gap:var(--s-1)}
+.step{font-size:var(--xs);color:var(--muted);padding-left:var(--s-4);position:relative}
+.step::before{content:'—';position:absolute;left:0;color:var(--faint)}
+
+.b-blue{background:color-mix(in oklab,var(--blue) 12%,var(--offset));color:var(--blue)}
+.b-green{background:color-mix(in oklab,var(--green) 12%,var(--offset));color:var(--green)}
+.b-amber{background:color-mix(in oklab,var(--amber) 12%,var(--offset));color:var(--amber)}
+.b-violet{background:color-mix(in oklab,var(--violet) 12%,var(--offset));color:var(--violet)}
+.b-teal{background:color-mix(in oklab,var(--teal) 12%,var(--offset));color:var(--teal)}
+.b-rose{background:color-mix(in oklab,var(--rose) 12%,var(--offset));color:var(--rose)}
+.b-red{background:color-mix(in oklab,var(--red) 12%,var(--offset));color:var(--red)}
+
+/* Matrix: when to use */
+.matrix{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-xl);overflow:hidden}
+.matrix table{width:100%;border-collapse:collapse}
+.matrix th{padding:var(--s-3) var(--s-5);font-size:var(--xs);text-transform:uppercase;letter-spacing:.1em;font-weight:600;text-align:left;background:var(--offset);border-bottom:1px solid var(--divider)}
+.matrix td{padding:var(--s-3) var(--s-5);font-size:var(--sm);color:var(--muted);border-bottom:1px solid var(--divider);vertical-align:top}
+.matrix tr:last-child td{border-bottom:0}
+.matrix th:not(:last-child),.matrix td:not(:last-child){border-right:1px solid var(--divider)}
+.matrix .h{color:var(--text);font-weight:500}
+
+/* Callout */
+.callout{background:var(--text);color:var(--inverse);border-radius:var(--r-2xl);padding:var(--s-12);display:grid;grid-template-columns:1fr 1fr;gap:var(--s-8);align-items:center}
+@media(max-width:720px){.callout{grid-template-columns:1fr;padding:var(--s-8)}}
+.callout-eyebrow{font-size:var(--xs);text-transform:uppercase;letter-spacing:.14em;color:color-mix(in oklab,var(--inverse) 55%,transparent);margin-bottom:var(--s-4)}
+.callout h2{font-size:var(--2xl);letter-spacing:-.03em;line-height:1.1}
+.callout p{color:color-mix(in oklab,var(--inverse) 70%,transparent);font-size:var(--base);margin-top:var(--s-4);max-width:44ch}
+.callout-stat .big{font-size:var(--hero);font-weight:900;letter-spacing:-.05em;line-height:1}
+.callout-stat .cap{font-size:var(--sm);color:color-mix(in oklab,var(--inverse) 55%,transparent);margin-top:var(--s-2);text-transform:uppercase;letter-spacing:.12em}
+
+/* Mistakes */
+.mistake-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:var(--s-4)}
+.mistake{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-xl);padding:var(--s-6);transition:all var(--t)}
+.mistake:hover{border-color:var(--text)}
+.mistake .num{font-family:'SF Mono',ui-monospace,monospace;font-size:var(--xs);color:var(--faint);margin-bottom:var(--s-3)}
+.mistake h3{font-size:var(--lg);margin-bottom:var(--s-2)}
+.mistake p{font-size:var(--sm)}
+
+footer{padding-block:var(--s-12);font-size:var(--sm);color:var(--muted)}
+.footer-inner{display:flex;justify-content:space-between;flex-wrap:wrap;gap:var(--s-4)}
+
+
+
+
+.back-link{display:inline-flex;align-items:center;gap:6px;padding:6px 12px;border:1px solid var(--border);border-radius:999px;color:var(--muted);font-size:var(--sm);text-decoration:none;transition:color var(--t),border-color var(--t),background var(--t)}
+.back-link:hover{color:var(--text);border-color:var(--text);background:var(--offset)}
+.back-link svg{width:14px;height:14px}
+</style>
+</head>
+<body>
+<header class="site-header">
+  <div class="container">
+    <div class="header-inner">
+    <a class="back-link" href="index.html" aria-label="Вернуться в каталог"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>Каталог</a><div class="brand"><span class="brand-dot"></span> Master Problem Solving</div>
+      <nav class="header-nav">
+        <a href="#groups">Группы</a>
+        <a href="#methods">12 методов</a>
+        <a href="#matrix">Когда применять</a>
+        <a href="#mistakes">Ошибки</a>
+      </nav>
+      <button class="theme-toggle" data-theme-toggle aria-label="Переключить тему">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="container">
+    <div class="eyebrow">Карточка фреймворка · Problem Solving Toolkit </div>
+    <h1>Master<br/>Problem Solving.</h1>
+    <p class="hero-lede">12 проверенных фреймворков для диагностики проблем, поиска корневых причин, приоритизации и принятия решений — от PDCA и DMAIC до OODA и TRIZ. Одна шпаргалка для команды, которая устала гадать, с чего начать.</p>
+    <div class="hero-meta">
+      <div><div class="k">Методов</div><div class="v">12</div></div>
+      <div><div class="k">Группы</div><div class="v">4 семейства</div></div>
+      <div><div class="k">Фокус</div><div class="v">Диагностика → действие</div></div>
+      <div><div class="k">Формат</div><div class="v">Cheat sheet · Arrange style</div></div>
+    </div>
+  </div>
+</section>
+
+<section class="block" id="groups">
+  <div class="container">
+    <div class="section-head">
+      <div class="section-index">01 · Группы</div>
+      <div>
+        <h2 class="section-title">4 семейства методов</h2>
+        <p class="section-desc">Чтобы не запутаться, мы разделили 12 фреймворков по типу задачи: улучшение процессов, поиск причин, стратегия и продукт, а также быстрые решения.</p>
+      </div>
+    </div>
+
+    <div class="groups">
+      <div class="group-card">
+        <div class="group-head" style="color:var(--blue)"><span class="group-dot" style="background:var(--blue)"></span>Процесс</div>
+        <div class="group-title">Непрерывное улучшение</div>
+        <div class="group-tools">PDCA · DMAIC · 8D</div>
+      </div>
+      <div class="group-card">
+        <div class="group-head" style="color:var(--red)"><span class="group-dot" style="background:var(--red)"></span>Причины</div>
+        <div class="group-title">Анализ корневых причин</div>
+        <div class="group-tools">Root Cause · Pareto · Kepner‑Tregoe</div>
+      </div>
+      <div class="group-card">
+        <div class="group-head" style="color:var(--amber)"><span class="group-dot" style="background:var(--amber)"></span>Стратегия</div>
+        <div class="group-title">Продукт и решения</div>
+        <div class="group-tools">A3 · SWOT · CIRCLES</div>
+      </div>
+      <div class="group-card">
+        <div class="group-head" style="color:var(--violet)"><span class="group-dot" style="background:var(--violet)"></span>Скорость</div>
+        <div class="group-title">Идеи и быстрые решения</div>
+        <div class="group-tools">TRIZ · LDJ · OODA</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="block" id="methods">
+  <div class="container">
+    <div class="section-head">
+      <div class="section-index">02 · Методы</div>
+      <div>
+        <h2 class="section-title">12 фреймворков</h2>
+        <p class="section-desc">Каждый метод — со своим назначением, короткой сутью и ключевыми шагами. Этого достаточно, чтобы выбрать инструмент под задачу, а не лепить всё через «давайте SWOT».</p>
+      </div>
+    </div>
+
+    <div class="methods-grid">
+      <article class="method">
+        <div class="method-head"><div class="method-letter" style="color:var(--blue)">01</div><span class="method-badge b-blue">Процесс</span></div>
+        <div class="method-role">Цикл улучшения</div>
+        <h3 class="method-name">PDCA</h3>
+        <p class="method-desc">4‑шаговая модель бережливого решения проблем и управления изменениями: спланируй, сделай, проверь, действуй по итогам.</p>
+        <div class="method-steps"><div class="method-steps-label">Шаги</div>
+          <div class="step-list">
+            <div class="step">Plan — гипотеза и план</div>
+            <div class="step">Do — эксперимент</div>
+            <div class="step">Check — проверь результат</div>
+            <div class="step">Act — закрепи или скорректируй</div>
+          </div>
+        </div>
+      </article>
+
+      <article class="method">
+        <div class="method-head"><div class="method-letter" style="color:var(--blue)">02</div><span class="method-badge b-blue">Процесс</span></div>
+        <div class="method-role">Структурирование</div>
+        <h3 class="method-name">A3</h3>
+        <p class="method-desc">Структурированный подход, который помещается на лист A3: проблема, корневые причины, контрмеры и план действий в одном документе.</p>
+        <div class="method-steps"><div class="method-steps-label">Блоки листа</div>
+          <div class="step-list">
+            <div class="step">Контекст и проблема</div>
+            <div class="step">Анализ причин</div>
+            <div class="step">Контрмеры и план</div>
+          </div>
+        </div>
+      </article>
+
+      <article class="method">
+        <div class="method-head"><div class="method-letter" style="color:var(--violet)">03</div><span class="method-badge b-violet">Идеи</span></div>
+        <div class="method-role">Изобретательство</div>
+        <h3 class="method-name">TRIZ</h3>
+        <p class="method-desc">Теория решения изобретательских задач: систематическая методология для поиска нестандартных решений сложных и противоречивых проблем.</p>
+        <div class="method-steps"><div class="method-steps-label">Суть</div>
+          <div class="step-list">
+            <div class="step">Сформулируй противоречие</div>
+            <div class="step">Используй приёмы разрешения</div>
+            <div class="step">Переноси решения из других областей</div>
+          </div>
+        </div>
+      </article>
+
+      <article class="method">
+        <div class="method-head"><div class="method-letter" style="color:var(--red)">04</div><span class="method-badge b-red">Причины</span></div>
+        <div class="method-role">Повторяющиеся сбои</div>
+        <h3 class="method-name">8D</h3>
+        <p class="method-desc">Восемь дисциплин для устранения повторяющихся проблем: от формирования команды до профилактики и признания вклада участников.</p>
+        <div class="method-steps"><div class="method-steps-label">Дисциплины</div>
+          <div class="step-list">
+            <div class="step">Команда · Проблема · Containment</div>
+            <div class="step">Корневые причины · Корректирующие меры</div>
+            <div class="step">Проверка · Профилактика · Признание</div>
+          </div>
+        </div>
+      </article>
+
+      <article class="method">
+        <div class="method-head"><div class="method-letter" style="color:var(--teal)">05</div><span class="method-badge b-teal">Процесс</span></div>
+        <div class="method-role">Six Sigma</div>
+        <h3 class="method-name">DMAIC</h3>
+        <p class="method-desc">Классическая логика улучшения процессов на базе измерений: определить, измерить, проанализировать, улучшить, контролировать.</p>
+        <div class="method-steps"><div class="method-steps-label">Фазы</div>
+          <div class="step-list">
+            <div class="step">Define — проблема и цель</div>
+            <div class="step">Measure — текущий уровень</div>
+            <div class="step">Analyse → Improve → Control</div>
+          </div>
+        </div>
+      </article>
+
+      <article class="method">
+        <div class="method-head"><div class="method-letter" style="color:var(--amber)">06</div><span class="method-badge b-amber">Продукт</span></div>
+        <div class="method-role">Product Thinking</div>
+        <h3 class="method-name">CIRCLES</h3>
+        <p class="method-desc">Продуктовый фреймворк для структурирования решения: от понимания ситуации и пользователя до приоритизации, trade‑offs и рекомендаций.</p>
+        <div class="method-steps"><div class="method-steps-label">Шаги</div>
+          <div class="step-list">
+            <div class="step">Comprehend · Identify · Report needs</div>
+            <div class="step">Cut — приоритизация</div>
+            <div class="step">List · Evaluate · Summarize</div>
+          </div>
+        </div>
+      </article>
+
+      <article class="method">
+        <div class="method-head"><div class="method-letter" style="color:var(--red)">07</div><span class="method-badge b-red">Причины</span></div>
+        <div class="method-role">80 / 20</div>
+        <h3 class="method-name">Pareto Analysis</h3>
+        <p class="method-desc">Принцип Парето: 80% результата создаётся 20% причин. Метод помогает найти эти 20% и сфокусировать усилия там, где отдача максимальна.</p>
+        <div class="method-steps"><div class="method-steps-label">Как применять</div>
+          <div class="step-list">
+            <div class="step">Собери данные по категориям</div>
+            <div class="step">Отсортируй по вкладу</div>
+            <div class="step">Бей по верхним 20%</div>
+          </div>
+        </div>
+      </article>
+
+      <article class="method">
+        <div class="method-head"><div class="method-letter" style="color:var(--violet)">08</div><span class="method-badge b-violet">Скорость</span></div>
+        <div class="method-role">Фасилитация</div>
+        <h3 class="method-name">Lightning Decision Jam</h3>
+        <p class="method-desc">Быстрый формат для команд: собрать проблемы, проголосовать, выбрать направление и перейти к действиям за ограниченное время.</p>
+        <div class="method-steps"><div class="method-steps-label">Поток</div>
+          <div class="step-list">
+            <div class="step">Проблемы → голосование</div>
+            <div class="step">Переформулировка в задачи</div>
+            <div class="step">Решения → эксперимент</div>
+          </div>
+        </div>
+      </article>
+
+      <article class="method">
+        <div class="method-head"><div class="method-letter" style="color:var(--red)">09</div><span class="method-badge b-red">Причины</span></div>
+        <div class="method-role">Root Cause</div>
+        <h3 class="method-name">Root Cause Analysis</h3>
+        <p class="method-desc">Анализ корневых причин произошедших проблем: сбор данных, картирование факторов, выявление первопричины и рекомендации.</p>
+        <div class="method-steps"><div class="method-steps-label">Инструменты</div>
+          <div class="step-list">
+            <div class="step">5 Whys · Fishbone</div>
+            <div class="step">Cause mapping</div>
+            <div class="step">Рекомендации и контрмеры</div>
+          </div>
+        </div>
+      </article>
+
+      <article class="method">
+        <div class="method-head"><div class="method-letter" style="color:var(--green)">10</div><span class="method-badge b-green">Стратегия</span></div>
+        <div class="method-role">Стратегия</div>
+        <h3 class="method-name">SWOT</h3>
+        <p class="method-desc">Простой и мощный инструмент командного решения проблем: сильные и слабые стороны, возможности и угрозы проекта, ситуации или цели.</p>
+        <div class="method-steps"><div class="method-steps-label">Четыре квадранта</div>
+          <div class="step-list">
+            <div class="step">Strengths · Weaknesses</div>
+            <div class="step">Opportunities · Threats</div>
+            <div class="step">Решения на пересечениях</div>
+          </div>
+        </div>
+      </article>
+
+      <article class="method">
+        <div class="method-head"><div class="method-letter" style="color:var(--teal)">11</div><span class="method-badge b-teal">Причины</span></div>
+        <div class="method-role">Data-driven</div>
+        <h3 class="method-name">Kepner‑Tregoe</h3>
+        <p class="method-desc">Систематический подход к диагностике и принятию решений: разбивает сложную проблему на управляемые компоненты и оценивает альтернативы.</p>
+        <div class="method-steps"><div class="method-steps-label">Четыре процесса</div>
+          <div class="step-list">
+            <div class="step">Situation Appraisal</div>
+            <div class="step">Problem · Decision Analysis</div>
+            <div class="step">Potential Problem Analysis</div>
+          </div>
+        </div>
+      </article>
+
+      <article class="method">
+        <div class="method-head"><div class="method-letter" style="color:var(--amber)">12</div><span class="method-badge b-amber">Скорость</span></div>
+        <div class="method-role">Решения в движении</div>
+        <h3 class="method-name">OODA Loop</h3>
+        <p class="method-desc">Observe, Orient, Decide, Act — цикл, который помогает оставаться на шаг впереди изменений и принимать своевременные решения в динамичной среде.</p>
+        <div class="method-steps"><div class="method-steps-label">Петля</div>
+          <div class="step-list">
+            <div class="step">Observe — наблюдай</div>
+            <div class="step">Orient — интерпретируй</div>
+            <div class="step">Decide · Act — и снова наблюдай</div>
+          </div>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="block" id="matrix">
+  <div class="container">
+    <div class="section-head">
+      <div class="section-index">03 · Когда применять</div>
+      <div>
+        <h2 class="section-title">Матрица выбора</h2>
+        <p class="section-desc">Один и тот же метод не решает всё. Ниже — быстрые ориентиры: какой тип проблемы ложится на какой фреймворк.</p>
+      </div>
+    </div>
+
+    <div class="matrix">
+      <table>
+        <thead>
+          <tr><th>Тип задачи</th><th>Сигнал</th><th>Чем решать</th></tr>
+        </thead>
+        <tbody>
+          <tr><td class="h">Повторяющийся сбой в процессе</td><td>Одна и та же ошибка возвращается</td><td>8D · DMAIC · Root Cause</td></tr>
+          <tr><td class="h">Нужно найти корневую причину</td><td>Симптомы видны, причина — нет</td><td>Root Cause · Pareto · Kepner‑Tregoe</td></tr>
+          <tr><td class="h">Небольшое улучшение процесса</td><td>Гипотеза + короткий эксперимент</td><td>PDCA · A3</td></tr>
+          <tr><td class="h">Сложная противоречивая задача</td><td>Взаимоисключающие требования</td><td>TRIZ</td></tr>
+          <tr><td class="h">Продуктовое решение</td><td>Нужно структурировать выбор</td><td>CIRCLES · A3</td></tr>
+          <tr><td class="h">Стратегический обзор</td><td>Точка принятия решения по направлению</td><td>SWOT · A3</td></tr>
+          <tr><td class="h">Команда застряла</td><td>Много мнений, нет движения</td><td>Lightning Decision Jam</td></tr>
+          <tr><td class="h">Быстро меняющаяся среда</td><td>Нет времени на длинный анализ</td><td>OODA Loop</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<section class="block">
+  <div class="container">
+    <div class="callout">
+      <div>
+        <div class="callout-eyebrow">Главное правило</div>
+        <h2>Сначала диагноз. Потом лечение.</h2>
+        <p>Большинство команд начинают с мозгового штурма решений, хотя проблема ещё не определена. Сначала — Root Cause, Pareto или Kepner‑Tregoe. Только потом — TRIZ, CIRCLES или LDJ. Метод не заменит мышление, но экономит десятки часов.</p>
+      </div>
+      <div class="callout-stat">
+        <div class="big">12</div>
+        <div class="cap">Методов · 4 группы · 1 шпаргалка</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="block" id="mistakes">
+  <div class="container">
+    <div class="section-head">
+      <div class="section-index">04 · Ошибки</div>
+      <div>
+        <h2 class="section-title">Типичные ошибки</h2>
+        <p class="section-desc">Главная проблема не в отсутствии фреймворков, а в выборе неподходящего метода под неподходящую задачу — или в подмене мышления ритуалом.</p>
+      </div>
+    </div>
+
+    <div class="mistake-grid">
+      <div class="mistake"><div class="num">ERR 01</div><h3>Смешивать диагностику и решение</h3><p>Команда начинает придумывать фичи, пока причина проблемы не ясна. Сначала Root Cause, потом идеи.</p></div>
+      <div class="mistake"><div class="num">ERR 02</div><h3>Использовать тяжёлый метод без нужды</h3><p>Не каждая проблема требует DMAIC или 8D. Иногда достаточно PDCA или часовой сессии LDJ.</p></div>
+      <div class="mistake"><div class="num">ERR 03</div><h3>Путать цель и метод</h3><p>SWOT и Pareto показывают картину, но сами по себе не являются планом. После анализа всегда должны быть шаги.</p></div>
+      <div class="mistake"><div class="num">ERR 04</div><h3>Любимый инструмент на всё</h3><p>Универсального метода нет: OODA — для динамики, A3 — для структурирования, 8D — для повторяющихся дефектов.</p></div>
+      <div class="mistake"><div class="num">ERR 05</div><h3>Пропустить контроль после улучшения</h3><p>DMAIC без Control и 8D без профилактики — это не решение, а временная маска. Проблема возвращается.</p></div>
+      <div class="mistake"><div class="num">ERR 06</div><h3>Делать фреймворк ради фреймворка</h3><p>Если SWOT занимает три встречи и никто им не пользуется — это ритуал, а не инструмент. Упрощай и двигайся к действию.</p></div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="footer-inner">
+      <div>2026 · Master Problem Solving Card · Arrange styleguide</div>
+      <div>PDCA · A3 · TRIZ · 8D · DMAIC · CIRCLES · Pareto · LDJ · RCA · SWOT · KT · OODA</div>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  const t=document.querySelector('[data-theme-toggle]'),r=document.documentElement;
+  let d=matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light';
+  r.setAttribute('data-theme',d);
+  t&&t.addEventListener('click',()=>{
+    d=d==='dark'?'light':'dark';
+    r.setAttribute('data-theme',d);
+    t.innerHTML=d==='dark'
+      ? '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>'
+      : '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>';
+  });
+})();
+</script>
+</body>
+</html>
