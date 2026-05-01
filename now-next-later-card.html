@@ -1,0 +1,762 @@
+<!DOCTYPE html>
+<html lang="ru" data-theme="light">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Now / Next / Later — Карточка метода</title>
+<link href="https://api.fontshare.com/v2/css?f[]=satoshi@300,400,500,700,900&display=swap" rel="stylesheet"/>
+<style>
+:root,[data-theme="light"]{
+  --bg:#f4f4f4;--surface:#fff;--surface-2:#fafafa;--offset:#f0f0f0;--offset-2:#e8e8e8;
+  --divider:#ececec;--border:#e4e4e4;
+  --text:#0a0a0a;--muted:#6b6b6b;--faint:#a3a3a3;--inverse:#fff;
+  --blue:#2b6df6;--green:#22c55e;--amber:#f59e0b;--red:#ef4444;--violet:#8b5cf6;--teal:#14b8a6;--rose:#f43f5e;
+  --shadow-sm:0 1px 2px rgba(10,10,10,.04);
+  --shadow-md:0 4px 16px rgba(10,10,10,.07);
+  --shadow-lg:0 20px 48px rgba(10,10,10,.09);
+  --r-sm:.375rem;--r-md:.5rem;--r-lg:.75rem;--r-xl:1rem;--r-2xl:1.25rem;--r-full:9999px;
+  --s-1:.25rem;--s-2:.5rem;--s-3:.75rem;--s-4:1rem;--s-5:1.25rem;--s-6:1.5rem;
+  --s-8:2rem;--s-10:2.5rem;--s-12:3rem;--s-16:4rem;--s-20:5rem;--s-24:6rem;
+  --t:180ms cubic-bezier(.16,1,.3,1);
+  --xs:clamp(.75rem,.7rem + .2vw,.8125rem);
+  --sm:clamp(.875rem,.82rem + .2vw,.9375rem);
+  --base:clamp(1rem,.95rem + .25vw,1.0625rem);
+  --lg:clamp(1.125rem,1rem + .5vw,1.375rem);
+  --xl:clamp(1.5rem,1.2rem + 1vw,2rem);
+  --2xl:clamp(2rem,1.2rem + 2vw,3rem);
+  --hero:clamp(3.5rem,1rem + 8vw,8rem);
+}
+[data-theme="dark"]{
+  --bg:#0a0a0a;--surface:#141414;--surface-2:#1a1a1a;--offset:#1f1f1f;--offset-2:#262626;
+  --divider:#262626;--border:#2d2d2d;
+  --text:#f4f4f4;--muted:#a3a3a3;--faint:#6b6b6b;--inverse:#0a0a0a;
+  --shadow-sm:0 1px 2px rgba(0,0,0,.3);--shadow-md:0 4px 16px rgba(0,0,0,.4);--shadow-lg:0 20px 48px rgba(0,0,0,.5);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased}
+body{font-family:'Satoshi','Inter',system-ui,sans-serif;font-size:var(--base);line-height:1.6;color:var(--text);background:var(--bg);min-height:100dvh;transition:background var(--t),color var(--t)}
+h1,h2,h3,h4{font-weight:700;letter-spacing:-.02em;line-height:1.1}
+p{color:var(--muted);max-width:72ch}
+button{font:inherit;cursor:pointer;background:none;border:none;color:inherit}
+svg{display:block}
+.container{max-width:1100px;margin-inline:auto;padding-inline:var(--s-6)}
+
+/* ── Header ── */
+.site-header{position:sticky;top:0;z-index:50;backdrop-filter:blur(14px);background:color-mix(in oklab,var(--bg) 80%,transparent);border-bottom:1px solid var(--divider)}
+.header-inner{display:flex;align-items:center;justify-content:space-between;padding-block:var(--s-4)}
+.brand{display:flex;align-items:center;gap:var(--s-2);font-weight:700;font-size:var(--sm)}
+.brand-dot{width:8px;height:8px;border-radius:var(--r-full);background:var(--text)}
+.header-nav{display:flex;gap:var(--s-6);font-size:var(--sm);color:var(--muted)}
+.header-nav a{text-decoration:none;color:inherit;transition:color var(--t)}
+.header-nav a:hover{color:var(--text)}
+.theme-toggle{width:36px;height:36px;border-radius:var(--r-full);border:1px solid var(--border);display:grid;place-items:center;transition:all var(--t)}
+.theme-toggle:hover{background:var(--offset)}
+@media(max-width:720px){.header-nav{display:none}}
+
+/* ── Hero ── */
+.hero{padding-block:var(--s-20) var(--s-14);border-bottom:1px solid var(--divider)}
+.eyebrow{display:inline-flex;align-items:center;gap:var(--s-2);font-size:var(--xs);text-transform:uppercase;letter-spacing:.14em;color:var(--muted);margin-bottom:var(--s-6)}
+.eyebrow::before{content:'';width:6px;height:6px;border-radius:var(--r-full);background:var(--blue)}
+.hero h1{font-size:var(--hero);font-weight:900;letter-spacing:-.05em;margin-bottom:var(--s-5)}
+.hero-lede{font-size:var(--lg);max-width:58ch}
+.hero-meta{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:var(--s-6);margin-top:var(--s-10);padding-top:var(--s-8);border-top:1px solid var(--divider)}
+.hero-meta .k{font-size:var(--xs);color:var(--faint);text-transform:uppercase;letter-spacing:.12em;margin-bottom:var(--s-1)}
+.hero-meta .v{font-size:var(--base);font-weight:500}
+
+/* ── Section ── */
+.block{padding-block:var(--s-20);border-bottom:1px solid var(--divider)}
+.section-head{display:grid;grid-template-columns:180px 1fr;gap:var(--s-12);margin-bottom:var(--s-10)}
+@media(max-width:720px){.section-head{grid-template-columns:1fr;gap:var(--s-3)}}
+.section-index{font-size:var(--xs);color:var(--faint);letter-spacing:.16em;text-transform:uppercase;padding-top:.2rem}
+.section-title{font-size:var(--xl);margin-bottom:var(--s-3)}
+.section-desc{font-size:var(--base)}
+
+/* ── Three columns (Now / Next / Later) ── */
+.nnl-cols{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--s-4)}
+@media(max-width:720px){.nnl-cols{grid-template-columns:1fr}}
+.nnl-col{border-radius:var(--r-2xl);overflow:hidden;border:1px solid var(--border);background:var(--surface);box-shadow:var(--shadow-sm);transition:all var(--t)}
+.nnl-col:hover{box-shadow:var(--shadow-md);transform:translateY(-2px)}
+.nnl-col-head{padding:var(--s-6) var(--s-6) var(--s-5)}
+.nnl-col-tag{display:inline-flex;align-items:center;gap:var(--s-2);font-size:var(--xs);text-transform:uppercase;letter-spacing:.12em;font-weight:600;margin-bottom:var(--s-4)}
+.nnl-col-tag-dot{width:6px;height:6px;border-radius:var(--r-full)}
+.nnl-col-name{font-size:var(--2xl);font-weight:900;letter-spacing:-.04em;line-height:1;margin-bottom:var(--s-3)}
+.nnl-col-horizon{font-size:var(--xs);color:var(--faint);text-transform:uppercase;letter-spacing:.1em;margin-bottom:var(--s-4)}
+.nnl-col-desc{font-size:var(--sm);color:var(--muted)}
+.nnl-col-body{padding:var(--s-4) var(--s-6) var(--s-6);border-top:1px solid var(--divider)}
+.nnl-trait{display:flex;align-items:flex-start;gap:var(--s-3);margin-bottom:var(--s-3)}
+.nnl-trait:last-child{margin-bottom:0}
+.nnl-trait-dot{width:6px;height:6px;border-radius:var(--r-full);margin-top:.5rem;flex-shrink:0}
+.nnl-trait-text{font-size:var(--sm);color:var(--muted)}
+
+/* ── Certainty bar visual ── */
+.certainty-block{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-xl);padding:var(--s-8);margin-top:var(--s-6)}
+.certainty-label{font-size:var(--xs);color:var(--faint);text-transform:uppercase;letter-spacing:.12em;margin-bottom:var(--s-6)}
+.certainty-rows{display:grid;gap:var(--s-4)}
+.certainty-row{display:grid;grid-template-columns:80px 1fr 60px;align-items:center;gap:var(--s-4)}
+.certainty-name{font-size:var(--sm);font-weight:600}
+.certainty-bar-wrap{height:8px;background:var(--offset-2);border-radius:var(--r-full);overflow:hidden}
+.certainty-bar{height:100%;border-radius:var(--r-full);transition:width .8s ease}
+.certainty-pct{font-size:var(--sm);color:var(--muted);text-align:right}
+
+/* ── How to use steps ── */
+.steps{display:grid;gap:var(--s-4)}
+.step{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-xl);padding:var(--s-6);display:grid;grid-template-columns:48px 1fr;gap:var(--s-5);transition:all var(--t)}
+.step:hover{border-color:var(--text);box-shadow:var(--shadow-md)}
+.step-num{width:48px;height:48px;border-radius:var(--r-full);border:1px solid var(--border);display:grid;place-items:center;font-family:'SF Mono',ui-monospace,monospace;font-size:var(--sm);font-weight:600;color:var(--faint);flex-shrink:0}
+.step h3{font-size:var(--lg);margin-bottom:var(--s-2)}
+.step p{font-size:var(--sm)}
+.step-badge{display:inline-flex;align-items:center;padding:2px var(--s-2);border-radius:var(--r-full);font-size:.65rem;font-weight:600;letter-spacing:.04em;background:var(--offset-2);color:var(--muted);margin-top:var(--s-2)}
+
+/* ── OKR tie-in ── */
+.okr-diagram{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-xl);padding:var(--s-8);margin-top:var(--s-6)}
+.okr-row{display:grid;grid-template-columns:1fr;gap:var(--s-3)}
+.okr-item{padding:var(--s-4) var(--s-5);border-radius:var(--r-lg);display:flex;align-items:center;justify-content:space-between;gap:var(--s-4);flex-wrap:wrap}
+.okr-item-label{font-size:var(--base);font-weight:600}
+.okr-item-tag{font-size:var(--xs);font-weight:600;text-transform:uppercase;letter-spacing:.1em;white-space:nowrap}
+.okr-arrow{margin-inline:var(--s-8);height:var(--s-4);border-left:2px dashed var(--divider)}
+
+/* ── vs Timeline table ── */
+.compare{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-xl);overflow:hidden}
+.compare-head{padding:var(--s-5) var(--s-6);border-bottom:1px solid var(--divider);display:flex;align-items:center;justify-content:space-between}
+.compare-head h3{font-size:var(--base);font-weight:600}
+.compare table{width:100%;border-collapse:collapse}
+.compare th{padding:var(--s-3) var(--s-5);font-size:var(--xs);text-transform:uppercase;letter-spacing:.1em;font-weight:600;text-align:left;border-bottom:1px solid var(--divider);background:var(--offset)}
+.compare td{padding:var(--s-3) var(--s-5);font-size:var(--sm);color:var(--muted);border-bottom:1px solid var(--divider)}
+.compare tr:last-child td{border-bottom:0}
+.compare th:not(:last-child),.compare td:not(:last-child){border-right:1px solid var(--divider)}
+.compare .pos{color:var(--green);font-weight:500}
+.compare .neg{color:var(--red)}
+.compare .highlight{color:var(--text);font-weight:500}
+
+/* ── Callout ── */
+.callout{background:var(--text);color:var(--inverse);border-radius:var(--r-2xl);padding:var(--s-12);display:grid;grid-template-columns:1fr 1fr;gap:var(--s-8);align-items:center}
+@media(max-width:720px){.callout{grid-template-columns:1fr;padding:var(--s-8)}}
+.callout-eyebrow{font-size:var(--xs);text-transform:uppercase;letter-spacing:.14em;color:color-mix(in oklab,var(--inverse) 55%,transparent);margin-bottom:var(--s-4)}
+.callout h2{font-size:var(--2xl);letter-spacing:-.03em;line-height:1.1;color:var(--inverse)}
+.callout p{color:color-mix(in oklab,var(--inverse) 70%,transparent);font-size:var(--base);margin-top:var(--s-4);max-width:44ch}
+.callout-quote{font-size:var(--lg);font-weight:700;line-height:1.3;color:var(--inverse);letter-spacing:-.02em}
+.callout-attr{font-size:var(--xs);color:color-mix(in oklab,var(--inverse) 50%,transparent);margin-top:var(--s-4);text-transform:uppercase;letter-spacing:.12em}
+
+/* ── Mistakes ── */
+.mistake-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:var(--s-4)}
+.mistake{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-xl);padding:var(--s-6);transition:all var(--t)}
+.mistake:hover{border-color:var(--text)}
+.mistake .num{font-family:'SF Mono',ui-monospace,monospace;font-size:var(--xs);color:var(--faint);margin-bottom:var(--s-3)}
+.mistake h3{font-size:var(--lg);margin-bottom:var(--s-2)}
+.mistake p{font-size:var(--sm)}
+
+/* ── When to use / not use ── */
+.use-split{display:grid;grid-template-columns:1fr 1fr;gap:var(--s-4)}
+@media(max-width:640px){.use-split{grid-template-columns:1fr}}
+.use-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-xl);padding:var(--s-6)}
+.use-card h3{font-size:var(--lg);margin-bottom:var(--s-5)}
+.use-list{display:grid;gap:var(--s-3)}
+.use-item{display:grid;grid-template-columns:18px 1fr;gap:var(--s-3);font-size:var(--sm);color:var(--muted);align-items:start}
+.use-icon{width:16px;height:16px;margin-top:.15rem;flex-shrink:0}
+
+/* ── Footer ── */
+footer{padding-block:var(--s-12);font-size:var(--sm);color:var(--muted)}
+.footer-inner{display:flex;justify-content:space-between;flex-wrap:wrap;gap:var(--s-4)}
+
+.fade-up{opacity:0;transform:translateY(10px);transition:opacity .6s ease,transform .6s ease}
+.fade-up.in{opacity:1;transform:none}
+
+.back-link{display:inline-flex;align-items:center;gap:6px;padding:6px 12px;border:1px solid var(--border);border-radius:999px;color:var(--muted);font-size:var(--sm);text-decoration:none;transition:color var(--t),border-color var(--t),background var(--t)}
+.back-link:hover{color:var(--text);border-color:var(--text);background:var(--offset)}
+.back-link svg{width:14px;height:14px}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="site-header">
+  <div class="container header-inner">
+    <a class="back-link" href="index.html" aria-label="Вернуться в каталог"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>Каталог</a><div class="brand">
+      <div class="brand-dot"></div>
+      Framework Cards
+    </div>
+    <nav class="header-nav">
+      <a href="#horizons">Горизонты</a>
+      <a href="#how">Применение</a>
+      <a href="#okr">OKR</a>
+      <a href="#compare">Сравнение</a>
+      <a href="#mistakes">Ошибки</a>
+    </nav>
+    <button class="theme-toggle" data-theme-toggle aria-label="Переключить тему">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+    </button>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="container">
+    <div class="eyebrow">Product Roadmapping</div>
+    <h1>Now / Next /<br>Later</h1>
+    <p class="hero-lede">Формат роадмапа, заменяющий жёсткие даты тремя горизонтами уверенности — для команд, которые хотят сохранить направление без ложных обещаний.</p>
+    <div class="hero-meta">
+      <div>
+        <div class="k">Автор</div>
+        <div class="v">Janna Bastow</div>
+      </div>
+      <div>
+        <div class="k">Организация</div>
+        <div class="v">ProdPad · Mind the Product</div>
+      </div>
+      <div>
+        <div class="k">Альтернативное название</div>
+        <div class="v">Lean Roadmap</div>
+      </div>
+      <div>
+        <div class="k">Фокус</div>
+        <div class="v">Outcomes over outputs</div>
+      </div>
+      <div>
+        <div class="k">Основа</div>
+        <div class="v">Cone of Uncertainty</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 01 HORIZONS -->
+<section class="block" id="horizons">
+  <div class="container">
+    <div class="section-head">
+      <div class="section-index">01 — Горизонты</div>
+      <div>
+        <h2 class="section-title">Три колонки роадмапа</h2>
+        <p class="section-desc">Каждая колонка — это уровень уверенности, а не дата. Чем дальше горизонт, тем меньше деталей и тем шире пространство для манёвра.</p>
+      </div>
+    </div>
+
+    <div class="nnl-cols">
+
+      <!-- NOW -->
+      <div class="nnl-col">
+        <div class="nnl-col-head">
+          <div class="nnl-col-tag">
+            <div class="nnl-col-tag-dot" style="background:var(--blue)"></div>
+            <span style="color:var(--blue)">Now</span>
+          </div>
+          <div class="nnl-col-name">Сейчас</div>
+          <div class="nnl-col-horizon">Текущий спринт / квартал</div>
+          <p class="nnl-col-desc">Работа, которая уже идёт или вот-вот начнётся. Наивысший уровень обязательств.</p>
+        </div>
+        <div class="nnl-col-body">
+          <div class="nnl-trait">
+            <div class="nnl-trait-dot" style="background:var(--blue)"></div>
+            <div class="nnl-trait-text">Чётко определённый скоуп и критерии готовности</div>
+          </div>
+          <div class="nnl-trait">
+            <div class="nnl-trait-dot" style="background:var(--blue)"></div>
+            <div class="nnl-trait-text">Назначены ответственные, известны зависимости</div>
+          </div>
+          <div class="nnl-trait">
+            <div class="nnl-trait-dot" style="background:var(--blue)"></div>
+            <div class="nnl-trait-text">3–5 инициатив максимум — чтобы сигнализировать фокус</div>
+          </div>
+          <div class="nnl-trait">
+            <div class="nnl-trait-dot" style="background:var(--blue)"></div>
+            <div class="nnl-trait-text">Discovery уже пройден, решение валидировано</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- NEXT -->
+      <div class="nnl-col">
+        <div class="nnl-col-head">
+          <div class="nnl-col-tag">
+            <div class="nnl-col-tag-dot" style="background:var(--amber)"></div>
+            <span style="color:var(--amber)">Next</span>
+          </div>
+          <div class="nnl-col-name">Потом</div>
+          <div class="nnl-col-horizon">1–3 месяца</div>
+          <p class="nnl-col-desc">Приоритеты согласованы, но детальный дизайн и скоупинг ещё не начались. Направление — твёрдое.</p>
+        </div>
+        <div class="nnl-col-body">
+          <div class="nnl-trait">
+            <div class="nnl-trait-dot" style="background:var(--amber)"></div>
+            <div class="nnl-trait-text">Идеи проходят или ещё проходят discovery</div>
+          </div>
+          <div class="nnl-trait">
+            <div class="nnl-trait-dot" style="background:var(--amber)"></div>
+            <div class="nnl-trait-text">Могут быть отброшены, если discovery покажет проблемы</div>
+          </div>
+          <div class="nnl-trait">
+            <div class="nnl-trait-dot" style="background:var(--amber)"></div>
+            <div class="nnl-trait-text">Известна ранняя дата старта и ключевые зависимости</div>
+          </div>
+          <div class="nnl-trait">
+            <div class="nnl-trait-dot" style="background:var(--amber)"></div>
+            <div class="nnl-trait-text">Стратегический намерен зафиксирован, детали — нет</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- LATER -->
+      <div class="nnl-col">
+        <div class="nnl-col-head">
+          <div class="nnl-col-tag">
+            <div class="nnl-col-tag-dot" style="background:var(--muted)"></div>
+            <span style="color:var(--muted)">Later</span>
+          </div>
+          <div class="nnl-col-name">Позже</div>
+          <div class="nnl-col-horizon">3+ месяцев</div>
+          <p class="nnl-col-desc">Возможности и идеи, которые стоит делать — но инвестиций в детализацию пока нет.</p>
+        </div>
+        <div class="nnl-col-body">
+          <div class="nnl-trait">
+            <div class="nnl-trait-dot" style="background:var(--muted)"></div>
+            <div class="nnl-trait-text">Только темы и гипотезы — без деталей и сроков</div>
+          </div>
+          <div class="nnl-trait">
+            <div class="nnl-trait-dot" style="background:var(--muted)"></div>
+            <div class="nnl-trait-text">Наполнена возможностями, а не обязательствами</div>
+          </div>
+          <div class="nnl-trait">
+            <div class="nnl-trait-dot" style="background:var(--muted)"></div>
+            <div class="nnl-trait-text">Идеи попадают сюда из фидбека пользователей</div>
+          </div>
+          <div class="nnl-trait">
+            <div class="nnl-trait-dot" style="background:var(--muted)"></div>
+            <div class="nnl-trait-text">Пространство для долгосрочного стратегического видения</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Certainty bar -->
+    <div class="certainty-block">
+      <div class="certainty-label">Уровень уверенности по горизонтам (Cone of Uncertainty)</div>
+      <div class="certainty-rows">
+        <div class="certainty-row">
+          <div class="certainty-name" style="color:var(--blue)">Now</div>
+          <div class="certainty-bar-wrap">
+            <div class="certainty-bar" style="width:90%;background:var(--blue)"></div>
+          </div>
+          <div class="certainty-pct">~90%</div>
+        </div>
+        <div class="certainty-row">
+          <div class="certainty-name" style="color:var(--amber)">Next</div>
+          <div class="certainty-bar-wrap">
+            <div class="certainty-bar" style="width:55%;background:var(--amber)"></div>
+          </div>
+          <div class="certainty-pct">~55%</div>
+        </div>
+        <div class="certainty-row">
+          <div class="certainty-name" style="color:var(--muted)">Later</div>
+          <div class="certainty-bar-wrap">
+            <div class="certainty-bar" style="width:20%;background:var(--faint)"></div>
+          </div>
+          <div class="certainty-pct">~20%</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- 02 CONTEXT -->
+<section class="block" id="context">
+  <div class="container">
+    <div class="section-head">
+      <div class="section-index">02 — Контекст</div>
+      <div>
+        <h2 class="section-title">Почему это было создано</h2>
+        <p class="section-desc">Janna Bastow изобрела Now / Next / Later как прямую альтернативу timeline-роадмапу — одному из самых вредных инструментов в продуктовом менеджменте.</p>
+      </div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--s-6)">
+      <div>
+        <div style="font-size:var(--xs);color:var(--faint);text-transform:uppercase;letter-spacing:.12em;margin-bottom:var(--s-5)">Проблема timeline-роадмапа</div>
+        <div style="display:grid;gap:var(--s-3)">
+          <div style="padding:var(--s-4) var(--s-5);background:color-mix(in oklab,var(--red) 6%,var(--offset));border-radius:var(--r-lg);font-size:var(--sm);color:var(--muted)">
+            Создаёт ложную точность: команда знает, что дедлайны условны, но стейкхолдеры воспринимают их как контракт
+          </div>
+          <div style="padding:var(--s-4) var(--s-5);background:color-mix(in oklab,var(--red) 6%,var(--offset));border-radius:var(--r-lg);font-size:var(--sm);color:var(--muted)">
+            Лишает команду гибкости — discovery не укладывается в жёсткие даты
+          </div>
+          <div style="padding:var(--s-4) var(--s-5);background:color-mix(in oklab,var(--red) 6%,var(--offset));border-radius:var(--r-lg);font-size:var(--sm);color:var(--muted)">
+            Фокус смещается с ценности на дедлайн — команды торопятся и жертвуют качеством
+          </div>
+          <div style="padding:var(--s-4) var(--s-5);background:color-mix(in oklab,var(--red) 6%,var(--offset));border-radius:var(--r-lg);font-size:var(--sm);color:var(--muted)">
+            Порождает «Air Sandwich» — разрыв между стратегией топ-менеджмента и тактикой команды
+          </div>
+        </div>
+      </div>
+      <div>
+        <div style="font-size:var(--xs);color:var(--faint);text-transform:uppercase;letter-spacing:.12em;margin-bottom:var(--s-5)">Решение Now / Next / Later</div>
+        <div style="display:grid;gap:var(--s-3)">
+          <div style="padding:var(--s-4) var(--s-5);background:color-mix(in oklab,var(--green) 6%,var(--offset));border-radius:var(--r-lg);font-size:var(--sm);color:var(--muted)">
+            Честное отражение уверенности: Now — это обязательство, Later — это возможность
+          </div>
+          <div style="padding:var(--s-4) var(--s-5);background:color-mix(in oklab,var(--green) 6%,var(--offset));border-radius:var(--r-lg);font-size:var(--sm);color:var(--muted)">
+            Роадмап — прототип стратегии, а не контракт поставки. Его можно и нужно обновлять
+          </div>
+          <div style="padding:var(--s-4) var(--s-5);background:color-mix(in oklab,var(--green) 6%,var(--offset));border-radius:var(--r-lg);font-size:var(--sm);color:var(--muted)">
+            Переключает разговор с «когда» на «зачем» — discovery встроен в процесс
+          </div>
+          <div style="padding:var(--s-4) var(--s-5);background:color-mix(in oklab,var(--green) 6%,var(--offset));border-radius:var(--r-lg);font-size:var(--sm);color:var(--muted)">
+            Каждая инициатива привязана к бизнес-цели — видна связь работы с outcomes
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CALLOUT -->
+<section class="block" style="padding-block:var(--s-12)">
+  <div class="container">
+    <div class="callout">
+      <div>
+        <div class="callout-eyebrow">Ключевая идея Janna Bastow</div>
+        <div class="callout-quote">"Роадмап — это прототип вашей стратегии."</div>
+        <p>Как дизайн-макет проверяет продуктовую гипотезу, роадмап проверяет стратегическую. Его нужно регулярно показывать, получать обратную связь и обновлять — а не хранить как план.</p>
+        <div class="callout-attr">— Janna Bastow, ProdPad · Mind the Product</div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:var(--s-4)">
+        <div style="background:color-mix(in oklab,var(--inverse) 8%,transparent);border-radius:var(--r-xl);padding:var(--s-5) var(--s-6)">
+          <div style="font-size:var(--2xl);font-weight:900;letter-spacing:-.04em;color:var(--inverse);line-height:1;margin-bottom:var(--s-2)">300k+</div>
+          <div style="font-size:var(--xs);color:color-mix(in oklab,var(--inverse) 55%,transparent);text-transform:uppercase;letter-spacing:.1em">участников Mind the Product</div>
+        </div>
+        <div style="background:color-mix(in oklab,var(--inverse) 8%,transparent);border-radius:var(--r-xl);padding:var(--s-5) var(--s-6)">
+          <div style="font-size:var(--2xl);font-weight:900;letter-spacing:-.04em;color:var(--inverse);line-height:1;margin-bottom:var(--s-2)">2010</div>
+          <div style="font-size:var(--xs);color:color-mix(in oklab,var(--inverse) 55%,transparent);text-transform:uppercase;letter-spacing:.1em">год первого ProductTank в Лондоне</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 03 HOW TO USE -->
+<section class="block" id="how">
+  <div class="container">
+    <div class="section-head">
+      <div class="section-index">03 — Применение</div>
+      <div>
+        <h2 class="section-title">Как использовать</h2>
+        <p class="section-desc">Now / Next / Later работает не как список задач, а как иерархия проблем и гипотез, привязанных к целям. Три шага, которые нужно выполнить последовательно.</p>
+      </div>
+    </div>
+
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">01</div>
+        <div>
+          <h3>Приоритизируйте на уровне проблем</h3>
+          <p>Не добавляйте фичи — добавляйте проблемы, которые нужно решить. Спросите: «Какую боль пользователя или бизнес-задачу мы закрываем?» Это основа outcome-driven роадмапа.</p>
+          <div class="step-badge">Проблема, а не решение</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">02</div>
+        <div>
+          <h3>Определите продуктовые инициативы</h3>
+          <p>Инициативы — это прототипы, эксперименты, тесты и финальные решения для реализации. Разложите их по колонкам по уровню срочности и уверенности, а не по дате.</p>
+          <div class="step-badge">Инициатива → горизонт → уверенность</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">03</div>
+        <div>
+          <h3>Привяжите к бизнес-целям</h3>
+          <p>Каждая инициатива должна быть видимо связана с конкретной бизнес-целью или OKR. Взглянув на роадмап, стейкхолдер должен сразу понимать, как эта работа двигает стратегические показатели.</p>
+          <div class="step-badge">Цель + цвет / метка = прозрачность</div>
+        </div>
+      </div>
+    </div>
+
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--r-xl);padding:var(--s-8);margin-top:var(--s-6)">
+      <div style="font-size:var(--xs);color:var(--faint);text-transform:uppercase;letter-spacing:.12em;margin-bottom:var(--s-6)">Ритм обновления роадмапа</div>
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--r-xl);overflow:hidden">
+        <div style="display:grid;grid-template-columns:140px 1fr 1fr;gap:var(--s-4);padding:var(--s-3) var(--s-6);background:var(--offset);font-size:var(--xs);color:var(--faint);text-transform:uppercase;letter-spacing:.1em">
+          <div>Период</div><div>Действие</div><div>Фокус</div>
+        </div>
+        <div style="display:grid;grid-template-columns:140px 1fr 1fr;gap:var(--s-4);padding:var(--s-4) var(--s-6);border-top:1px solid var(--divider)">
+          <div style="font-size:var(--sm);font-weight:600">Еженедельно</div>
+          <div style="font-size:var(--sm);color:var(--muted)">Стендапы только по Now-элементам</div>
+          <div style="font-size:var(--sm);color:var(--muted)">Доставка и блокеры</div>
+        </div>
+        <div style="display:grid;grid-template-columns:140px 1fr 1fr;gap:var(--s-4);padding:var(--s-4) var(--s-6);border-top:1px solid var(--divider)">
+          <div style="font-size:var(--sm);font-weight:600">Ежемесячно</div>
+          <div style="font-size:var(--sm);color:var(--muted)">Outcome review — двинулись ли метрики</div>
+          <div style="font-size:var(--sm);color:var(--muted)">Kill / Scale / Iterate</div>
+        </div>
+        <div style="display:grid;grid-template-columns:140px 1fr 1fr;gap:var(--s-4);padding:var(--s-4) var(--s-6);border-top:1px solid var(--divider)">
+          <div style="font-size:var(--sm);font-weight:600">Ежеквартально</div>
+          <div style="font-size:var(--sm);color:var(--muted)">Переранжировать Next и Later, обновить цели</div>
+          <div style="font-size:var(--sm);color:var(--muted)">Стратегия и приоритеты</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 04 OKR TIE-IN -->
+<section class="block" id="okr">
+  <div class="container">
+    <div class="section-head">
+      <div class="section-index">04 — OKR</div>
+      <div>
+        <h2 class="section-title">Связка с OKR</h2>
+        <p class="section-desc">Now / Next / Later не существует в вакууме. Janna Bastow рекомендует связывать каждую инициативу роадмапа с конкретным Objective и Key Result.</p>
+      </div>
+    </div>
+
+    <div class="okr-diagram">
+      <div style="font-size:var(--xs);color:var(--faint);text-transform:uppercase;letter-spacing:.12em;margin-bottom:var(--s-6)">Принцип каскадирования</div>
+      <div class="okr-row">
+        <div class="okr-item" style="background:color-mix(in oklab,var(--blue) 8%,var(--offset))">
+          <div class="okr-item-label">Бизнес-цель компании</div>
+          <div class="okr-item-tag" style="color:var(--blue)">OKR уровня компании</div>
+        </div>
+        <div class="okr-arrow"></div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--s-3)">
+          <div class="okr-item" style="background:color-mix(in oklab,var(--blue) 6%,var(--offset));border-radius:var(--r-lg)">
+            <div>
+              <div style="font-size:var(--xs);font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--blue);margin-bottom:var(--s-1)">Now</div>
+              <div style="font-size:var(--sm);font-weight:600">Инициатива A</div>
+              <div style="font-size:var(--xs);color:var(--muted);margin-top:2px">Движет KR 1.1</div>
+            </div>
+          </div>
+          <div class="okr-item" style="background:color-mix(in oklab,var(--amber) 6%,var(--offset));border-radius:var(--r-lg)">
+            <div>
+              <div style="font-size:var(--xs);font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--amber);margin-bottom:var(--s-1)">Next</div>
+              <div style="font-size:var(--sm);font-weight:600">Инициатива B</div>
+              <div style="font-size:var(--xs);color:var(--muted);margin-top:2px">Движет KR 1.2</div>
+            </div>
+          </div>
+        </div>
+        <div class="okr-arrow"></div>
+        <div class="okr-item" style="background:color-mix(in oklab,var(--faint) 12%,var(--offset));margin-inline:var(--s-8)">
+          <div class="okr-item-label">Later — темы и гипотезы</div>
+          <div class="okr-item-tag" style="color:var(--faint)">Без KR-привязки пока</div>
+        </div>
+      </div>
+    </div>
+
+    <div style="margin-top:var(--s-6);background:var(--surface);border:1px solid var(--border);border-radius:var(--r-xl);padding:var(--s-6)">
+      <div style="font-size:var(--xs);color:var(--faint);text-transform:uppercase;letter-spacing:.12em;margin-bottom:var(--s-4)">Принцип outcome over output</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--s-4)">
+        <div>
+          <div style="font-size:var(--xs);font-weight:600;color:var(--red);text-transform:uppercase;letter-spacing:.1em;margin-bottom:var(--s-3)">❌ Output (неправильно)</div>
+          <div style="display:grid;gap:var(--s-2)">
+            <div style="font-size:var(--sm);padding:var(--s-2) var(--s-3);background:color-mix(in oklab,var(--red) 6%,var(--offset));border-radius:var(--r-md);color:var(--muted)">«Запустить онбординг»</div>
+            <div style="font-size:var(--sm);padding:var(--s-2) var(--s-3);background:color-mix(in oklab,var(--red) 6%,var(--offset));border-radius:var(--r-md);color:var(--muted)">«Добавить экспорт в PDF»</div>
+            <div style="font-size:var(--sm);padding:var(--s-2) var(--s-3);background:color-mix(in oklab,var(--red) 6%,var(--offset));border-radius:var(--r-md);color:var(--muted)">«Обновить дашборд»</div>
+          </div>
+        </div>
+        <div>
+          <div style="font-size:var(--xs);font-weight:600;color:var(--green);text-transform:uppercase;letter-spacing:.1em;margin-bottom:var(--s-3)">✓ Outcome (правильно)</div>
+          <div style="display:grid;gap:var(--s-2)">
+            <div style="font-size:var(--sm);padding:var(--s-2) var(--s-3);background:color-mix(in oklab,var(--green) 6%,var(--offset));border-radius:var(--r-md);color:var(--muted)">«Снизить отток на 7-й день на 15%»</div>
+            <div style="font-size:var(--sm);padding:var(--s-2) var(--s-3);background:color-mix(in oklab,var(--green) 6%,var(--offset));border-radius:var(--r-md);color:var(--muted)">«Увеличить retention enterprise на 20%»</div>
+            <div style="font-size:var(--sm);padding:var(--s-2) var(--s-3);background:color-mix(in oklab,var(--green) 6%,var(--offset));border-radius:var(--r-md);color:var(--muted)">«Снизить кол-во support-тикетов на 25%»</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 05 COMPARE -->
+<section class="block" id="compare">
+  <div class="container">
+    <div class="section-head">
+      <div class="section-index">05 — Сравнение</div>
+      <div>
+        <h2 class="section-title">Now / Next / Later vs Timeline</h2>
+        <p class="section-desc">Оба формата решают задачу коммуникации стратегии, но делают это принципиально по-разному — по обязательствам, гибкости и честности.</p>
+      </div>
+    </div>
+
+    <div class="compare">
+      <div class="compare-head">
+        <h3>Сравнительная таблица</h3>
+        <span style="font-size:var(--xs);color:var(--faint)">По ключевым параметрам</span>
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <th>Параметр</th>
+            <th>Now / Next / Later</th>
+            <th>Timeline / Gantt</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="highlight">Уровень обязательств</td>
+            <td class="pos">Градуированный (Now &gt; Next &gt; Later)</td>
+            <td class="neg">Единый для всего — все даты воспринимаются как контракт</td>
+          </tr>
+          <tr>
+            <td class="highlight">Гибкость</td>
+            <td class="pos">Высокая — Later можно переосмыслить без последствий</td>
+            <td class="neg">Низкая — перенос даты воспринимается как провал</td>
+          </tr>
+          <tr>
+            <td class="highlight">Фокус команды</td>
+            <td class="pos">На ценности и результате</td>
+            <td class="neg">На дедлайне и доставке</td>
+          </tr>
+          <tr>
+            <td class="highlight">Discovery</td>
+            <td class="pos">Встроен в процесс (Next &amp; Later — зона гипотез)</td>
+            <td class="neg">Конкурирует с дедлайнами, часто сокращается</td>
+          </tr>
+          <tr>
+            <td class="highlight">Обновляемость</td>
+            <td class="pos">Роадмап — живой документ, регулярно пересматривается</td>
+            <td class="neg">Изменения воспринимаются стейкхолдерами болезненно</td>
+          </tr>
+          <tr>
+            <td class="highlight">Ограничения</td>
+            <td class="neg">Нет конкретных дат — может фрустрировать стейкхолдеров</td>
+            <td class="pos">Понятен всем, включая нетехнических руководителей</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- When to use -->
+    <div class="use-split" style="margin-top:var(--s-6)">
+      <div class="use-card">
+        <h3>Когда подходит NNL</h3>
+        <div class="use-list">
+          <div class="use-item">
+            <svg class="use-icon" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="var(--green)" stroke-width="1.5"/><path d="M5 8l2 2 4-4" stroke="var(--green)" stroke-width="1.5" stroke-linecap="round"/></svg>
+            <span>Продукт в условиях высокой неопределённости</span>
+          </div>
+          <div class="use-item">
+            <svg class="use-icon" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="var(--green)" stroke-width="1.5"/><path d="M5 8l2 2 4-4" stroke="var(--green)" stroke-width="1.5" stroke-linecap="round"/></svg>
+            <span>Agile-команда с регулярными релизами</span>
+          </div>
+          <div class="use-item">
+            <svg class="use-icon" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="var(--green)" stroke-width="1.5"/><path d="M5 8l2 2 4-4" stroke="var(--green)" stroke-width="1.5" stroke-linecap="round"/></svg>
+            <span>Нужно коммуницировать направление без обещаний</span>
+          </div>
+          <div class="use-item">
+            <svg class="use-icon" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="var(--green)" stroke-width="1.5"/><path d="M5 8l2 2 4-4" stroke="var(--green)" stroke-width="1.5" stroke-linecap="round"/></svg>
+            <span>Быстро меняющиеся потребности пользователей</span>
+          </div>
+          <div class="use-item">
+            <svg class="use-icon" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="var(--green)" stroke-width="1.5"/><path d="M5 8l2 2 4-4" stroke="var(--green)" stroke-width="1.5" stroke-linecap="round"/></svg>
+            <span>Discovery-driven product process</span>
+          </div>
+        </div>
+      </div>
+      <div class="use-card">
+        <h3>Когда NNL не подходит</h3>
+        <div class="use-list">
+          <div class="use-item">
+            <svg class="use-icon" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="var(--red)" stroke-width="1.5"/><path d="M5.5 10.5l5-5M10.5 10.5l-5-5" stroke="var(--red)" stroke-width="1.5" stroke-linecap="round"/></svg>
+            <span>Жёсткие регуляторные или контрактные дедлайны</span>
+          </div>
+          <div class="use-item">
+            <svg class="use-icon" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="var(--red)" stroke-width="1.5"/><path d="M5.5 10.5l5-5M10.5 10.5l-5-5" stroke="var(--red)" stroke-width="1.5" stroke-linecap="round"/></svg>
+            <span>Стейкхолдерам критически важны точные даты</span>
+          </div>
+          <div class="use-item">
+            <svg class="use-icon" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="var(--red)" stroke-width="1.5"/><path d="M5.5 10.5l5-5M10.5 10.5l-5-5" stroke="var(--red)" stroke-width="1.5" stroke-linecap="round"/></svg>
+            <span>Waterfall-процессы с фиксированными этапами</span>
+          </div>
+          <div class="use-item">
+            <svg class="use-icon" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="var(--red)" stroke-width="1.5"/><path d="M5.5 10.5l5-5M10.5 10.5l-5-5" stroke="var(--red)" stroke-width="1.5" stroke-linecap="round"/></svg>
+            <span>Короткие, хорошо определённые проекты</span>
+          </div>
+          <div class="use-item">
+            <svg class="use-icon" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="var(--red)" stroke-width="1.5"/><path d="M5.5 10.5l5-5M10.5 10.5l-5-5" stroke="var(--red)" stroke-width="1.5" stroke-linecap="round"/></svg>
+            <span>Нужна детальная аллокация ресурсов</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 06 MISTAKES -->
+<section class="block" id="mistakes">
+  <div class="container">
+    <div class="section-head">
+      <div class="section-index">06 — Ошибки</div>
+      <div>
+        <h2 class="section-title">Типичные ошибки</h2>
+        <p class="section-desc">Now / Next / Later часто превращается в те же самые проблемы, от которых призван избавить — если применять его механически, без понимания философии.</p>
+      </div>
+    </div>
+
+    <div class="mistake-grid">
+      <div class="mistake">
+        <div class="num">ERR 01</div>
+        <h3>NNL с фичами вместо проблем</h3>
+        <p>«Новый дашборд» — это решение. «Снизить время до инсайта на 40%» — это проблема. Роадмап из фич — это те же feature factory, только без дат.</p>
+      </div>
+      <div class="mistake">
+        <div class="num">ERR 02</div>
+        <h3>Слишком много в «Now»</h3>
+        <p>Now — это сигнал фокуса. Если в этой колонке 15 инициатив, то нет ни фокуса, ни приоритета. Три-пять — максимум для одной команды.</p>
+      </div>
+      <div class="mistake">
+        <div class="num">ERR 03</div>
+        <h3>Later = мусорная корзина</h3>
+        <p>Later — это пространство для стратегических гипотез, а не кладбище отклонённых запросов. Всё, что туда попадает, должно быть потенциально ценным.</p>
+      </div>
+      <div class="mistake">
+        <div class="num">ERR 04</div>
+        <h3>Роадмап не обновляется</h3>
+        <p>NNL — живой документ. Если его обновляют раз в год — это не lean roadmap, это просто другая форма того же заброшенного плана.</p>
+      </div>
+      <div class="mistake">
+        <div class="num">ERR 05</div>
+        <h3>Нет привязки к целям</h3>
+        <p>Без видимой связи каждой инициативы с бизнес-целью NNL теряет главное преимущество — прозрачность стратегии. Это превращается в список задач.</p>
+      </div>
+      <div class="mistake">
+        <div class="num">ERR 06</div>
+        <h3>Sales продаёт из Later</h3>
+        <p>Later — это «возможно, когда-нибудь». Если продажи обещают клиентам даты для элементов из Later — это катастрофа. Нужно явно коммуницировать, что значит каждая колонка.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container footer-inner">
+    <div>© 2026 · Now / Next / Later Card · Janna Bastow · ProdPad</div>
+    <div>Product Roadmap · Lean Roadmapping · Outcomes over Outputs</div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  const t = document.querySelector('[data-theme-toggle]');
+  const r = document.documentElement;
+  let d = matchMedia('(prefers-color-scheme:dark)').matches ? 'dark' : 'light';
+  r.setAttribute('data-theme', d);
+  updateIcon();
+  t && t.addEventListener('click', () => {
+    d = d === 'dark' ? 'light' : 'dark';
+    r.setAttribute('data-theme', d);
+    updateIcon();
+  });
+  function updateIcon() {
+    if (!t) return;
+    t.innerHTML = d === 'dark'
+      ? '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>'
+      : '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>';
+  }
+  const io = new IntersectionObserver(
+    es => es.forEach(e => e.isIntersecting && e.target.classList.add('in')),
+    { threshold: .08 }
+  );
+  document.querySelectorAll('.block, .hero').forEach(el => {
+    el.classList.add('fade-up');
+    io.observe(el);
+  });
+})();
+</script>
+</body>
+</html>
