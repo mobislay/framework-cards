@@ -158,6 +158,14 @@
       "subtitle": "Hersey & Blanchard · 4 стиля по уровню зрелости сотрудника",
       "category": "leadership",
       "icon": "🏛️"
+    },
+    {
+      "id": "ishikawa",
+      "file": "ishikawa-card.html",
+      "name": "Диаграмма Исикавы",
+      "subtitle": "Каору Исикава · 6M (Method · Machine · Material · Man · Measurement · Mother Nature)",
+      "category": "analysis",
+      "icon": "📊"
     }
   ]
 }
