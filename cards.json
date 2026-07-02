@@ -166,6 +166,14 @@
       "subtitle": "Каору Исикава · 6M (Method · Machine · Material · Man · Measurement · Mother Nature)",
       "category": "analysis",
       "icon": "📊"
+    },
+    {
+      "id": "pdca",
+      "file": "pdca-card.html",
+      "name": "PDCA",
+      "subtitle": "Plan · Do · Check · Act · Цикл Деминга / Шухарта",
+      "category": "analysis",
+      "icon": "📊"
     }
   ]
 }
