@@ -188,6 +188,13 @@
       "name": "MBTI",
       "subtitle": "16 типов личности · 4 дихотомии",
       "category": "leadership"
+    },
+    {
+      "id": "belbin",
+      "file": "belbin-card.html",
+      "name": "Belbin Team Roles",
+      "subtitle": "9 командных ролей · 3 группы",
+      "category": "leadership"
     }
   ]
 }
