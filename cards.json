@@ -181,6 +181,13 @@
       "name": "DISC",
       "subtitle": "Dominance · Influence · Steadiness · Compliance",
       "category": "leadership"
+    },
+    {
+      "id": "mbti",
+      "file": "mbti-card.html",
+      "name": "MBTI",
+      "subtitle": "16 типов личности · 4 дихотомии",
+      "category": "leadership"
     }
   ]
 }
