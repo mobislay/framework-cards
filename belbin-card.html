@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="ru" data-theme="light">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Belbin Team Roles — Карточка фреймворка</title>
+<link href="https://api.fontshare.com/v2/css?f[]=satoshi@300,400,500,700,900&display=swap" rel="stylesheet"/>
+<style>
+:root,[data-theme="light"]{
+  --bg:#f4f4f4;--surface:#fff;--surface-2:#fafafa;--offset:#f0f0f0;--offset-2:#e8e8e8;
+  --divider:#ececec;--border:#e4e4e4;
+  --text:#0a0a0a;--muted:#6b6b6b;--faint:#a3a3a3;--inverse:#fff;
+  --blue:#2b6df6;--green:#22c55e;--amber:#f59e0b;--red:#ef4444;--violet:#8b5cf6;--teal:#14b8a6;--rose:#f43f5e;
+  --shadow-sm:0 1px 2px rgba(10,10,10,.04);
+  --shadow-md:0 4px 16px rgba(10,10,10,.07);
+  --shadow-lg:0 20px 48px rgba(10,10,10,.09);
+  --r-sm:.375rem;--r-md:.5rem;--r-lg:.75rem;--r-xl:1rem;--r-2xl:1.25rem;--r-full:9999px;
+  --s-1:.25rem;--s-2:.5rem;--s-3:.75rem;--s-4:1rem;--s-5:1.25rem;--s-6:1.5rem;
+  --s-8:2rem;--s-10:2.5rem;--s-12:3rem;--s-14:3.5rem;--s-16:4rem;--s-20:5rem;
+  --t:180ms cubic-bezier(.16,1,.3,1);
+  --xs:clamp(.75rem,.7rem + .2vw,.8125rem);
+  --sm:clamp(.875rem,.82rem + .2vw,.9375rem);
+  --base:clamp(1rem,.95rem + .25vw,1.0625rem);
+  --lg:clamp(1.125rem,1rem + .5vw,1.375rem);
+  --xl:clamp(1.5rem,1.2rem + 1vw,2rem);
+  --2xl:clamp(2rem,1.2rem + 2vw,3rem);
+  --hero:clamp(3rem,1rem + 7vw,7rem);
+}
+[data-theme="dark"]{
+  --bg:#0a0a0a;--surface:#141414;--surface-2:#1a1a1a;--offset:#1f1f1f;--offset-2:#262626;
+  --divider:#262626;--border:#2d2d2d;
+  --text:#f4f4f4;--muted:#a3a3a3;--faint:#6b6b6b;--inverse:#0a0a0a;
+  --shadow-sm:0 1px 2px rgba(0,0,0,.3);--shadow-md:0 4px 16px rgba(0,0,0,.4);--shadow-lg:0 20px 48px rgba(0,0,0,.5);
+}
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased}
+body{font-family:'Satoshi','Inter',system-ui,sans-serif;font-size:var(--base);line-height:1.6;color:var(--text);background:var(--bg);min-height:100dvh;transition:background var(--t),color var(--t)}
+h1,h2,h3,h4{font-weight:700;letter-spacing:-.02em;line-height:1.15}
+p{color:var(--muted);max-width:72ch}
+button{font:inherit;cursor:pointer;background:none;border:none;color:inherit}
+svg{display:block}
+.container{max-width:1100px;margin-inline:auto;padding-inline:var(--s-6)}
+
+/* Header */
+.site-header{position:sticky;top:0;z-index:50;backdrop-filter:blur(14px);background:color-mix(in oklab,var(--bg) 80%,transparent);border-bottom:1px solid var(--divider)}
+.header-inner{display:flex;align-items:center;justify-content:space-between;padding-block:var(--s-4)}
+.brand{display:flex;align-items:center;gap:var(--s-2);font-weight:700}
+.brand-dot{width:8px;height:8px;border-radius:var(--r-full);background:var(--text)}
+.header-nav{display:flex;gap:var(--s-6);font-size:var(--sm);color:var(--muted)}
+.header-nav a{text-decoration:none;transition:color var(--t)}
+.header-nav a:hover{color:var(--text)}
+.theme-toggle{width:36px;height:36px;border-radius:var(--r-full);border:1px solid var(--border);display:grid;place-items:center;transition:all var(--t)}
+.theme-toggle:hover{background:var(--offset)}
+@media(max-width:720px){.header-nav{display:none}}
+
+/* Hero */
+.hero{padding-block:var(--s-20) var(--s-14);border-bottom:1px solid var(--divider)}
+.eyebrow{display:inline-flex;align-items:center;gap:var(--s-2);font-size:var(--xs);text-transform:uppercase;letter-spacing:.14em;color:var(--muted);margin-bottom:var(--s-6)}
+.eyebrow::before{content:'';width:6px;height:6px;border-radius:var(--r-full);background:var(--rose)}
+.hero h1{font-size:var(--hero);font-weight:900;letter-spacing:-.05em;margin-bottom:var(--s-5)}
+.hero-lede{font-size:var(--lg);max-width:58ch}
+.hero-meta{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:var(--s-6);margin-top:var(--s-10);padding-top:var(--s-8);border-top:1px solid var(--divider)}
+.hero-meta .k{font-size:var(--xs);color:var(--faint);text-transform:uppercase;letter-spacing:.12em;margin-bottom:var(--s-1)}
+.hero-meta .v{font-size:var(--base);font-weight:500}
+
+/* Section */
+.block{padding-block:var(--s-20);border-bottom:1px solid var(--divider)}
+.section-head{display:grid;grid-template-columns:180px 1fr;gap:var(--s-12);margin-bottom:var(--s-10)}
+@media(max-width:720px){.section-head{grid-template-columns:1fr;gap:var(--s-3)}}
+.section-index{font-size:var(--xs);color:var(--faint);letter-spacing:.16em;text-transform:uppercase}
+.section-title{font-size:var(--xl);margin-bottom:var(--s-3)}
+.section-desc{font-size:var(--base)}
+
+/* groups — 3 категории ролей */
+.groups{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--s-4)}
+@media(max-width:900px){.groups{grid-template-columns:1fr}}
+.group-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-xl);padding:var(--s-6);display:flex;flex-direction:column;gap:var(--s-4);box-shadow:var(--shadow-sm);transition:all var(--t)}
+.group-card:hover{box-shadow:var(--shadow-md)}
+.group-tag{display:inline-flex;align-items:center;gap:var(--s-2);font-size:var(--xs);text-transform:uppercase;letter-spacing:.12em;font-weight:600}
+.group-dot{width:8px;height:8px;border-radius:var(--r-full);flex-shrink:0}
+.group-card h3{font-size:var(--lg);margin:0}
+.group-card .group-sub{font-size:var(--xs);color:var(--faint);margin-top:calc(var(--s-2) * -1)}
+.role-list{display:grid;gap:var(--s-3)}
+.role{padding:var(--s-4);background:var(--offset);border-radius:var(--r-lg);border-left:3px solid var(--rc,var(--faint))}
+.role .rhead{display:flex;align-items:baseline;justify-content:space-between;gap:var(--s-2);margin-bottom:var(--s-1)}
+.role .rname{font-weight:700;font-size:var(--sm)}
+.role .rabbr{font-family:'SF Mono',ui-monospace,monospace;font-size:var(--xs);color:var(--faint)}
+.role .ren{font-size:var(--xs);color:var(--faint);text-transform:uppercase;letter-spacing:.06em;margin-bottom:var(--s-2)}
+.role p{font-size:var(--xs);margin:0;line-height:1.5}
+.role .weak{font-size:var(--xs);color:var(--muted);margin-top:var(--s-2);padding-top:var(--s-2);border-top:1px solid var(--divider)}
+.role .weak b{color:var(--text);font-weight:600}
+
+/* contribution table */
+.tbl{width:100%;border-collapse:collapse;background:var(--surface);border:1px solid var(--border);border-radius:var(--r-xl);overflow:hidden;font-size:var(--sm)}
+.tbl th{text-align:left;padding:var(--s-4) var(--s-5);background:var(--offset);font-size:var(--xs);text-transform:uppercase;letter-spacing:.1em;color:var(--muted);font-weight:600}
+.tbl td{padding:var(--s-4) var(--s-5);border-top:1px solid var(--divider);vertical-align:top}
+.tbl td:first-child{font-weight:700;white-space:nowrap}
+.tbl .cat-dot{display:inline-block;width:8px;height:8px;border-radius:var(--r-full);margin-right:var(--s-2);vertical-align:middle}
+.tbl tr:hover td{background:var(--surface-2)}
+.tbl-scroll{overflow-x:auto}
+
+/* callout */
+.callout{background:var(--text);color:var(--inverse);border-radius:var(--r-2xl);padding:var(--s-12);display:grid;grid-template-columns:1fr 1fr;gap:var(--s-8);align-items:center}
+@media(max-width:720px){.callout{grid-template-columns:1fr;padding:var(--s-8)}}
+.callout-eyebrow{font-size:var(--xs);text-transform:uppercase;letter-spacing:.14em;color:color-mix(in oklab,var(--inverse) 50%,transparent);margin-bottom:var(--s-4)}
+.callout h2{font-size:var(--2xl);letter-spacing:-.03em;line-height:1.1}
+.callout p{color:color-mix(in oklab,var(--inverse) 65%,transparent);font-size:var(--base);margin-top:var(--s-4);max-width:44ch}
+.odi-formula{background:color-mix(in oklab,var(--inverse) 8%,transparent);border-radius:var(--r-xl);padding:var(--s-6)}
+.odi-label{font-size:var(--xs);text-transform:uppercase;letter-spacing:.12em;color:color-mix(in oklab,var(--inverse) 45%,transparent);margin-bottom:var(--s-4)}
+.odi-eq{font-size:var(--base);font-weight:500;line-height:1.8}
+.odi-eq .b{font-weight:700}
+
+/* Mistakes */
+.mistake-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:var(--s-4)}
+.mistake{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-xl);padding:var(--s-6);transition:all var(--t)}
+.mistake:hover{border-color:var(--text)}
+.mistake .num{font-family:'SF Mono',ui-monospace,monospace;font-size:var(--xs);color:var(--faint);margin-bottom:var(--s-3)}
+.mistake h3{font-size:var(--lg);margin-bottom:var(--s-2)}
+.mistake p{font-size:var(--sm)}
+
+/* See Also */
+.see-also{display:flex;flex-wrap:wrap;gap:var(--s-3)}
+.see-chip{display:inline-flex;align-items:center;gap:var(--s-2);padding:var(--s-2) var(--s-4);background:var(--surface);border:1px solid var(--border);border-radius:var(--r-full);font-size:var(--sm);transition:all var(--t)}
+.see-chip:hover{background:var(--offset);border-color:var(--text)}
+
+/* Footer & fade */
+footer{padding-block:var(--s-12);font-size:var(--sm);color:var(--muted)}
+.footer-inner{display:flex;justify-content:space-between;flex-wrap:wrap;gap:var(--s-4)}
+.fade-up{opacity:0;transform:translateY(10px);transition:opacity .6s ease,transform .6s ease}
+.fade-up.in{opacity:1;transform:none}
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container header-inner">
+    <div class="brand"><span class="brand-dot"></span> Belbin</div>
+    <nav class="header-nav">
+      <a href="#s1">Группы</a>
+      <a href="#s2">9 ролей</a>
+      <a href="#s3">Баланс</a>
+      <a href="#mistakes">Mistakes</a>
+    </nav>
+    <button class="theme-toggle" data-theme-toggle aria-label="Переключить тему">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+    </button>
+  </div>
+</header>
+
+<!-- Hero -->
+<section class="hero">
+  <div class="container">
+    <div class="eyebrow">Leadership · Командные роли</div>
+    <h1>Belbin<br/>девять ролей</h1>
+    <p class="hero-lede">Модель командных ролей: девять типов вклада, которые люди привносят в работу группы. Помогает собрать сбалансированную команду и понять, каких ролей не хватает.</p>
+    <div class="hero-meta">
+      <div><div class="k">Автор</div><div class="v">Р. Мередит Белбин</div></div>
+      <div><div class="k">Год</div><div class="v">1981 · «Management Teams»</div></div>
+      <div><div class="k">Структура</div><div class="v">3 группы × 9 ролей</div></div>
+      <div><div class="k">Применение</div><div class="v">Сборка команд · Развитие · Роли</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- 01 — 3 группы ролей -->
+<section class="block" id="s1">
+  <div class="container">
+    <div class="section-head">
+      <div class="section-index">01 — Группы</div>
+      <div>
+        <h2 class="section-title">Три категории ролей</h2>
+        <p class="section-desc">Девять ролей делятся по ориентации: на действие, на людей и на мышление. У каждого человека обычно 2–3 естественные роли.</p>
+      </div>
+    </div>
+    <div class="groups">
+      <div class="group-card">
+        <div class="group-tag"><span class="group-dot" style="background:var(--red)"></span>Ориентация на действие</div>
+        <h3>Двигают дело вперёд</h3>
+        <div class="group-sub">Энергия, темп, результат</div>
+        <div class="role-list">
+          <div class="role" style="--rc:var(--red)">
+            <div class="rhead"><span class="rname">Шейпер</span><span class="rabbr">SH</span></div>
+            <div class="ren">Shaper</div>
+            <p>Заряжает и толкает команду, преодолевает препятствия, любит вызовы.</p>
+            <div class="weak"><b>Слабость:</b> провоцирует, задевает чувства</div>
+          </div>
+          <div class="role" style="--rc:var(--red)">
+            <div class="rhead"><span class="rname">Реализатор</span><span class="rabbr">IMP</span></div>
+            <div class="ren">Implementer</div>
+            <p>Превращает идеи в план и действия, дисциплинирован и надёжен.</p>
+            <div class="weak"><b>Слабость:</b> негибок, медленно принимает новое</div>
+          </div>
+          <div class="role" style="--rc:var(--red)">
+            <div class="rhead"><span class="rname">Педант</span><span class="rabbr">CF</span></div>
+            <div class="ren">Completer Finisher</div>
+            <p>Доводит до конца, ловит ошибки, следит за качеством и сроками.</p>
+            <div class="weak"><b>Слабость:</b> тревожность, неохотно делегирует</div>
+          </div>
+        </div>
+      </div>
+      <div class="group-card">
+        <div class="group-tag"><span class="group-dot" style="background:var(--teal)"></span>Ориентация на людей</div>
+        <h3>Связывают команду</h3>
+        <div class="group-sub">Отношения, контакты, координация</div>
+        <div class="role-list">
+          <div class="role" style="--rc:var(--teal)">
+            <div class="rhead"><span class="rname">Координатор</span><span class="rabbr">CO</span></div>
+            <div class="ren">Co-ordinator</div>
+            <p>Ставит цели, делегирует, направляет команду к общему результату.</p>
+            <div class="weak"><b>Слабость:</b> может перекладывать свою работу</div>
+          </div>
+          <div class="role" style="--rc:var(--teal)">
+            <div class="rhead"><span class="rname">Душа команды</span><span class="rabbr">TW</span></div>
+            <div class="ren">Teamworker</div>
+            <p>Сглаживает конфликты, поддерживает, укрепляет атмосферу и доверие.</p>
+            <div class="weak"><b>Слабость:</b> избегает трудных решений</div>
+          </div>
+          <div class="role" style="--rc:var(--teal)">
+            <div class="rhead"><span class="rname">Исследователь ресурсов</span><span class="rabbr">RI</span></div>
+            <div class="ren">Resource Investigator</div>
+            <p>Ищет возможности и контакты вовне, коммуникабелен, энергичен.</p>
+            <div class="weak"><b>Слабость:</b> теряет интерес после старта</div>
+          </div>
+        </div>
+      </div>
+      <div class="group-card">
+        <div class="group-tag"><span class="group-dot" style="background:var(--violet)"></span>Ориентация на мышление</div>
+        <h3>Дают идеи и экспертизу</h3>
+        <div class="group-sub">Знание, анализ, креатив</div>
+        <div class="role-list">
+          <div class="role" style="--rc:var(--violet)">
+            <div class="rhead"><span class="rname">Генератор идей</span><span class="rabbr">PL</span></div>
+            <div class="ren">Plant</div>
+            <p>Придумывает нестандартные решения, творческий источник идей.</p>
+            <div class="weak"><b>Слабость:</b> витает в облаках, забывает детали</div>
+          </div>
+          <div class="role" style="--rc:var(--violet)">
+            <div class="rhead"><span class="rname">Аналитик-стратег</span><span class="rabbr">ME</span></div>
+            <div class="ren">Monitor Evaluator</div>
+            <p>Трезво оценивает варианты, взвешивает за и против, беспристрастен.</p>
+            <div class="weak"><b>Слабость:</b> не вдохновляет, кажется холодным</div>
+          </div>
+          <div class="role" style="--rc:var(--violet)">
+            <div class="rhead"><span class="rname">Специалист</span><span class="rabbr">SP</span></div>
+            <div class="ren">Specialist</div>
+            <p>Носитель глубокой узкой экспертизы, обеспечивает знания и навыки.</p>
+            <div class="weak"><b>Слабость:</b> узкий фокус, тонет в деталях</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 02 — таблица вклада -->
+<section class="block" id="s2">
+  <div class="container">
+    <div class="section-head">
+      <div class="section-index">02 — 9 ролей</div>
+      <div>
+        <h2 class="section-title">Вклад и допустимые слабости</h2>
+        <p class="section-desc">Каждая роль ценна своим вкладом. «Допустимая слабость» — обратная сторона силы, которую команда терпит ради вклада.</p>
+      </div>
+    </div>
+    <div class="tbl-scroll">
+      <table class="tbl">
+        <thead>
+          <tr><th>Роль</th><th>Вклад в команду</th><th>Допустимая слабость</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><span class="cat-dot" style="background:var(--violet)"></span>Генератор идей</td><td>Креативность, нестандартные решения сложных проблем</td><td>Игнорирует детали, погружён в себя</td></tr>
+          <tr><td><span class="cat-dot" style="background:var(--teal)"></span>Исследователь ресурсов</td><td>Находит возможности и связи, развивает контакты</td><td>Излишний оптимизм, быстро остывает</td></tr>
+          <tr><td><span class="cat-dot" style="background:var(--teal)"></span>Координатор</td><td>Проясняет цели, делегирует, объединяет усилия</td><td>Может манипулировать, перекладывать задачи</td></tr>
+          <tr><td><span class="cat-dot" style="background:var(--red)"></span>Шейпер</td><td>Драйв и энергия, преодоление препятствий под давлением</td><td>Задевает людей, склонен к провокации</td></tr>
+          <tr><td><span class="cat-dot" style="background:var(--violet)"></span>Аналитик-стратег</td><td>Беспристрастная оценка вариантов, здравый суд</td><td>Не вдохновляет, чрезмерно критичен</td></tr>
+          <tr><td><span class="cat-dot" style="background:var(--teal)"></span>Душа команды</td><td>Дипломатия, поддержка, гашение конфликтов</td><td>Нерешителен в острых ситуациях</td></tr>
+          <tr><td><span class="cat-dot" style="background:var(--red)"></span>Реализатор</td><td>Дисциплина, превращение идей в конкретные действия</td><td>Негибок, медленно реагирует на новое</td></tr>
+          <tr><td><span class="cat-dot" style="background:var(--red)"></span>Педант</td><td>Внимание к деталям, доведение до конца без ошибок</td><td>Тревожность, неохотно делегирует</td></tr>
+          <tr><td><span class="cat-dot" style="background:var(--violet)"></span>Специалист</td><td>Глубокая экспертиза и редкие профессиональные навыки</td><td>Узкий фокус, теряет общую картину</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- 03 — callout: баланс -->
+<section class="block" id="s3">
+  <div class="container">
+    <div class="section-head">
+      <div class="section-index">03 — Баланс</div>
+      <div>
+        <h2 class="section-title">Сила команды — в балансе ролей</h2>
+        <p class="section-desc">Эффективна не команда из «звёзд», а команда, где закрыты все три ориентации. Дисбаланс ролей — типичная причина сбоев.</p>
+      </div>
+    </div>
+    <div class="callout">
+      <div>
+        <div class="callout-eyebrow">Главный принцип</div>
+        <h2>Нужны все три ориентации</h2>
+        <p>Роль — это вклад, а не должность. Один человек закрывает 2–3 роли; важно, чтобы в команде были представлены действие, люди и мышление.</p>
+      </div>
+      <div class="odi-formula">
+        <div class="odi-label">Здоровый баланс</div>
+        <div class="odi-eq">
+          <span class="b" style="color:var(--red)">Действие</span> — кто-то двигает вперёд<br/>
+          <span class="b" style="color:var(--teal)">Люди</span> — кто-то связывает команду<br/>
+          <span class="b" style="color:var(--violet)">Мышление</span> — кто-то даёт идеи<br/><br/>
+          Нет ориентации → предсказуемый провал
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Mistakes -->
+<section class="block" id="mistakes">
+  <div class="container">
+    <div class="section-head">
+      <div class="section-index">04 — Mistakes</div>
+      <div>
+        <h2 class="section-title">Типичные ошибки</h2>
+        <p class="section-desc">Где чаще всего спотыкаются при работе с моделью Белбина.</p>
+      </div>
+    </div>
+    <div class="mistake-grid">
+      <div class="mistake"><div class="num">ERR 01</div><h3>Роль = должность</h3><p>Путают командную роль с функцией в оргструктуре. Роль по Белбину — это стиль вклада, а не позиция в штатке.</p></div>
+      <div class="mistake"><div class="num">ERR 02</div><h3>Одна роль на человека</h3><p>Приписывают человеку ровно одну роль. На деле у каждого 2–3 естественные и несколько «управляемых» ролей.</p></div>
+      <div class="mistake"><div class="num">ERR 03</div><h3>Команда из «лучших»</h3><p>Собирают команду из одних Шейперов или Генераторов идей — получают конфликт и хаос вместо результата.</p></div>
+      <div class="mistake"><div class="num">ERR 04</div><h3>Слабость как порок</h3><p>Пытаются «исправить» допустимую слабость, теряя вместе с ней и силу роли. Её нужно принимать, а не искоренять.</p></div>
+      <div class="mistake"><div class="num">ERR 05</div><h3>Ярлык на человека</h3><p>«Ты Педант, вот и проверяй» — роль превращают в клетку вместо инструмента распределения задач.</p></div>
+      <div class="mistake"><div class="num">ERR 06</div><h3>Тест без контекста</h3><p>Опираются только на самооценку, игнорируя оценки коллег (360°), которые Белбин считал обязательными.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- See Also -->
+<section class="block" style="border-bottom:none">
+  <div class="container">
+    <div class="section-head">
+      <div class="section-index">See Also</div>
+      <div>
+        <h2 class="section-title">Смотрите также</h2>
+        <p class="section-desc">Смежные модели личности, ролей и командного развития.</p>
+      </div>
+    </div>
+    <div class="see-also">
+      <div class="see-chip">DISC</div>
+      <div class="see-chip">MBTI</div>
+      <div class="see-chip">Tuckman Stages</div>
+      <div class="see-chip">RACI</div>
+      <div class="see-chip">Big Five (OCEAN)</div>
+      <div class="see-chip">Situational Leadership</div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container footer-inner">
+    <div>© 2026 · Belbin Team Roles</div>
+    <div>Девять командных ролей на одном листе</div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  const t=document.querySelector('[data-theme-toggle]'),r=document.documentElement;
+  let d=matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light';
+  r.setAttribute('data-theme',d);
+  t&&t.addEventListener('click',()=>{
+    d=d==='dark'?'light':'dark';
+    r.setAttribute('data-theme',d);
+    t.innerHTML=d==='dark'
+      ?'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>'
+      :'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>';
+  });
+  const io=new IntersectionObserver(es=>es.forEach(e=>e.isIntersecting&&e.target.classList.add('in')),{threshold:.08});
+  document.querySelectorAll('.block,.hero').forEach(el=>{el.classList.add('fade-up');io.observe(el);});
+})();
+</script>
+</body>
+</html>
